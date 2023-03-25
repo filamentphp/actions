@@ -8,6 +8,7 @@ use Filament\Actions\Modal\Actions\Action as ModalAction;
 use Filament\Support\View\Components\Modal;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 
 trait CanOpenModal
 {
@@ -25,11 +26,11 @@ trait CanOpenModal
      */
     protected array | Closure | null $modalActions = null;
 
-    protected ModalAction | Closure | null $modalCancelAction = null;
+    protected ModalAction | bool | Closure | null $modalCancelAction = null;
 
-    protected ModalAction | Closure | null $modalSubmitAction = null;
+    protected ModalAction | bool | Closure | null $modalSubmitAction = null;
 
-    protected string | Closure | null $modalButtonLabel = null;
+    protected string | Closure | null $modalSubmitActionLabel = null;
 
     protected View | Htmlable | Closure | null $modalContent = null;
 
@@ -86,23 +87,33 @@ trait CanOpenModal
         return $this;
     }
 
-    public function modalSubmitAction(ModalAction | Closure | null $action = null): static
+    public function modalSubmitAction(ModalAction | bool | Closure | null $action = null): static
     {
         $this->modalSubmitAction = $action;
 
         return $this;
     }
 
-    public function modalCancelAction(ModalAction | Closure | null $action = null): static
+    public function modalCancelAction(ModalAction | bool | Closure | null $action = null): static
     {
         $this->modalCancelAction = $action;
 
         return $this;
     }
 
+    public function modalSubmitActionLabel(string | Closure | null $label = null): static
+    {
+        $this->modalSubmitActionLabel = $label;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated Use `modalSubmitActionLabel()` instead.
+     */
     public function modalButton(string | Closure | null $label = null): static
     {
-        $this->modalButtonLabel = $label;
+        $this->modalSubmitActionLabel($label);
 
         return $this;
     }
@@ -167,9 +178,9 @@ trait CanOpenModal
         }
 
         $actions = array_merge(
-            [$this->getModalSubmitAction()],
+            Arr::wrap($this->getModalSubmitAction()),
             $this->getExtraModalActions(),
-            [$this->getModalCancelAction()],
+            Arr::wrap($this->getModalCancelAction()),
         );
 
         if ($this->isModalCentered()) {
@@ -191,31 +202,43 @@ trait CanOpenModal
         );
     }
 
-    public function getModalSubmitAction(): ModalAction
+    public function getModalSubmitAction(): ?ModalAction
     {
-        if ($this->modalSubmitAction) {
-            return $this->evaluate($this->modalSubmitAction);
-        }
-
-        return static::makeModalAction('submit')
-            ->label($this->getModalButtonLabel())
+        $action = static::makeModalAction('submit')
+            ->label($this->getModalSubmitActionLabel())
             ->submit($this->getLivewireCallActionName())
             ->color(match ($color = $this->getColor()) {
                 'gray' => 'primary',
                 default => $color,
             });
-    }
 
-    public function getModalCancelAction(): ModalAction
-    {
-        if ($this->modalCancelAction) {
-            return $this->evaluate($this->modalCancelAction);
+        if ($this->modalSubmitAction) {
+            $action = $this->evaluate($this->modalSubmitAction, ['action' => $action]) ?? $action;
         }
 
-        return static::makeModalAction('cancel')
+        if ($action === false) {
+            return null;
+        }
+
+        return $action;
+    }
+
+    public function getModalCancelAction(): ?ModalAction
+    {
+        $action = static::makeModalAction('cancel')
             ->label(__('filament-actions::modal.actions.cancel.label'))
             ->cancel()
             ->color('gray');
+
+        if ($this->modalCancelAction) {
+            $action = $this->evaluate($this->modalCancelAction, ['action' => $action]) ?? $action;
+        }
+
+        if ($action === false) {
+            return null;
+        }
+
+        return $action;
     }
 
     /**
@@ -226,9 +249,9 @@ trait CanOpenModal
         return $this->evaluate($this->extraModalActions);
     }
 
-    public function getModalButtonLabel(): string
+    public function getModalSubmitActionLabel(): string
     {
-        return $this->evaluate($this->modalButtonLabel) ?? __('filament-actions::modal.actions.submit.label');
+        return $this->evaluate($this->modalSubmitActionLabel) ?? __('filament-actions::modal.actions.submit.label');
     }
 
     public function getModalContent(): View | Htmlable | null
