@@ -2,8 +2,8 @@
 
 namespace Filament\Actions;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Js;
+use ReflectionParameter;
 
 class Action extends MountableAction implements Contracts\Groupable, Contracts\HasRecord, Contracts\SubmitsForm
 {
@@ -37,16 +37,11 @@ class Action extends MountableAction implements Contracts\Groupable, Contracts\H
         return "mountAction('{$this->getName()}'{$argumentsParameter})";
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function getDefaultEvaluationParameters(): array
+    protected function resolveClosureDependencyForEvaluation(ReflectionParameter $parameter): mixed
     {
-        return array_merge(parent::getDefaultEvaluationParameters(), [
-            'record' => $this->resolveEvaluationParameter(
-                'record',
-                fn (): ?Model => $this->getRecord(),
-            ),
-        ]);
+        return match ($parameter->getName()) {
+            'record' => $this->getRecord(),
+            default => parent::resolveClosureDependencyForEvaluation($parameter),
+        };
     }
 }
