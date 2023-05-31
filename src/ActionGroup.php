@@ -2,55 +2,53 @@
 
 namespace Filament\Actions;
 
-use Filament\Actions\Contracts\HasLivewire;
+use Filament\Actions\Concerns\CanBeHidden;
+use Filament\Actions\Concerns\CanBeInline;
+use Filament\Actions\Concerns\CanBeOutlined;
+use Filament\Actions\Concerns\HasColor;
+use Filament\Actions\Concerns\HasDropdown;
+use Filament\Actions\Concerns\HasGroupedIcon;
+use Filament\Actions\Concerns\HasIcon;
+use Filament\Actions\Concerns\HasLabel;
+use Filament\Actions\Concerns\HasSize;
+use Filament\Actions\Concerns\HasTooltip;
+use Filament\Actions\Contracts\Groupable;
 use Filament\Support\Components\ViewComponent;
 use Filament\Support\Concerns\HasExtraAttributes;
-use Livewire\Component;
 
-class ActionGroup extends ViewComponent implements HasLivewire
+class ActionGroup extends ViewComponent
 {
-    use Concerns\CanBeHidden {
+    use CanBeHidden {
         isHidden as baseIsHidden;
     }
-    use Concerns\CanBeInline;
-    use Concerns\CanBeLabeledFrom;
-    use Concerns\CanBeOutlined;
-    use Concerns\HasColor;
-    use Concerns\HasDropdown;
-    use Concerns\HasGroupedIcon;
-    use Concerns\HasIcon {
+    use CanBeInline;
+    use CanBeOutlined;
+    use HasColor;
+    use HasDropdown;
+    use HasExtraAttributes;
+    use HasGroupedIcon;
+    use HasIcon {
         getIcon as getBaseIcon;
     }
     use Concerns\HasIndicator;
-    use Concerns\HasLabel;
-    use Concerns\HasSize;
-    use Concerns\HasTooltip;
-    use HasExtraAttributes;
-
-    /**
-     * @var array<StaticAction | ActionGroup>
-     */
-    protected array $actions;
-
-    /**
-     * @var array<string, StaticAction>
-     */
-    protected array $flatActions;
+    use HasLabel;
+    use HasSize;
+    use HasTooltip;
 
     protected string $evaluationIdentifier = 'group';
 
     protected string $viewIdentifier = 'group';
 
     /**
-     * @param  array<StaticAction | ActionGroup>  $actions
+     * @param  array<Groupable&StaticAction>  $actions
      */
-    public function __construct(array $actions)
-    {
-        $this->actions($actions);
+    public function __construct(
+        protected array $actions,
+    ) {
     }
 
     /**
-     * @param  array<StaticAction | ActionGroup>  $actions
+     * @param  array<Groupable&StaticAction>  $actions
      */
     public static function make(array $actions): static
     {
@@ -65,34 +63,6 @@ class ActionGroup extends ViewComponent implements HasLivewire
         parent::setUp();
 
         $this->iconButton();
-    }
-
-    /**
-     * @param  array<StaticAction | ActionGroup>  $actions
-     */
-    public function actions(array $actions): static
-    {
-        $this->actions = [];
-        $this->flatActions = [];
-
-        foreach ($actions as $action) {
-            $action->grouped();
-
-            if ($action instanceof ActionGroup) {
-                $action->dropdownPlacement('right-top');
-
-                $this->flatActions = [
-                    ...$this->flatActions,
-                    ...$action->getFlatActions(),
-                ];
-            } else {
-                $this->flatActions[$action->getName()] = $action;
-            }
-
-            $this->actions[] = $action;
-        }
-
-        return $this;
     }
 
     public function button(): static
@@ -123,19 +93,6 @@ class ActionGroup extends ViewComponent implements HasLivewire
         return $this;
     }
 
-    public function livewire(Component $livewire): static
-    {
-        foreach ($this->actions as $action) {
-            if (! $action instanceof HasLivewire) {
-                continue;
-            }
-
-            $action->livewire($livewire);
-        }
-
-        return $this;
-    }
-
     public function getLabel(): string
     {
         $label = $this->evaluate($this->label) ?? __('filament-actions::group.trigger.label');
@@ -144,19 +101,17 @@ class ActionGroup extends ViewComponent implements HasLivewire
     }
 
     /**
-     * @return array<StaticAction | ActionGroup>
+     * @return array<string, Groupable&StaticAction>
      */
     public function getActions(): array
     {
-        return $this->actions;
-    }
+        $actions = [];
 
-    /**
-     * @return array<string, StaticAction>
-     */
-    public function getFlatActions(): array
-    {
-        return $this->flatActions;
+        foreach ($this->actions as $action) {
+            $actions[$action->getName()] = $action->grouped();
+        }
+
+        return $actions;
     }
 
     public function getIcon(): string

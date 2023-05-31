@@ -2,12 +2,11 @@
 
 namespace Filament\Actions;
 
-use Filament\Actions\Contracts\HasLivewire;
 use Filament\Notifications\Notification;
 use Filament\Support\Exceptions\Cancel;
 use Filament\Support\Exceptions\Halt;
 
-class MountableAction extends StaticAction implements HasLivewire
+class MountableAction extends StaticAction
 {
     use Concerns\BelongsToLivewire;
     use Concerns\CanBeMounted;

@@ -1,7 +1,7 @@
 ---
 title: Trigger button
 ---
-import AutoScreenshot from "@components/AutoScreenshot.astro"
+import PreviewScreenshot from "@components/PreviewScreenshot.astro"
 
 ## Overview
 
@@ -20,7 +20,7 @@ Action::make('edit')
     ->button()
 ```
 
-<AutoScreenshot name="actions/trigger-button/button" alt="Button trigger" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/button" alt="Button trigger" version="3.x" />
 
 "Link" triggers have no background color. They must have a label and optionally an [icon](#setting-an-icon). They look like a link that you might find embedded within text. You can switch to that style with the `link()` method:
 
@@ -29,7 +29,7 @@ Action::make('edit')
     ->link()
 ```
 
-<AutoScreenshot name="actions/trigger-button/link" alt="Link trigger" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/link" alt="Link trigger" version="3.x" />
 
 "Icon button" triggers are circular buttons with an [icon](#setting-an-icon) and no label. You can switch to that style with the `iconButton()` method:
 
@@ -39,18 +39,7 @@ Action::make('edit')
     ->iconButton()
 ```
 
-<AutoScreenshot name="actions/trigger-button/icon-button" alt="Icon button trigger" version="3.x" />
-
-### Using an icon button on mobile devices only
-
-You may want to use a button style with a label on desktop, but remove the label on mobile. This will transform it into an icon button. You can do this with the `labeledFrom()` method, passing in the responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) at which you want the label to be added to the button:
-
-```php
-Action::make('edit')
-    ->icon('heroicon-o-pencil-square')
-    ->button()
-    ->labeledFrom('md')
-```
+<PreviewScreenshot name="actions/trigger-button/icon-button" alt="Icon button trigger" version="3.x" />
 
 ## Setting a label
 
@@ -72,14 +61,14 @@ Action::make('edit')
 
 ## Setting a color
 
-Buttons may have a color to indicate their significance. It may be either `danger`, `gray`, `info`, `primary`, `secondary`, `success` or `warning`:
+Buttons may have a color to indicate their significance. It may be either `primary`, `secondary`, `success`, `warning` or `danger`:
 
 ```php
 Action::make('delete')
     ->color('danger')
 ```
 
-<AutoScreenshot name="actions/trigger-button/danger" alt="Red trigger" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/danger" alt="Red trigger" version="3.x" />
 
 ## Setting a size
 
@@ -90,7 +79,7 @@ Action::make('create')
     ->size('lg')
 ```
 
-<AutoScreenshot name="actions/trigger-button/large" alt="Large trigger" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/large" alt="Large trigger" version="3.x" />
 
 ## Setting an icon
 
@@ -102,7 +91,7 @@ Action::make('edit')
     ->icon('heroicon-m-pencil-square')
 ```
 
-<AutoScreenshot name="actions/trigger-button/icon" alt="Trigger with icon" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/icon" alt="Trigger with icon" version="3.x" />
 
 You can also change the icon's position to be after the label instead of before it, using the `iconPosition()` method:
 
@@ -113,7 +102,7 @@ Action::make('edit')
     ->iconPosition('after')
 ```
 
-<AutoScreenshot name="actions/trigger-button/icon-after" alt="Trigger with icon after the label" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/icon-after" alt="Trigger with icon after the label" version="3.x" />
 
 ## Authorization
 
@@ -172,9 +161,9 @@ Action::make('filter')
     ->indicator(5)
 ```
 
-<AutoScreenshot name="actions/trigger-button/indicator" alt="Trigger with indicator" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/indicator" alt="Trigger with indicator" version="3.x" />
 
-You can also pass a color to be used for the indicator, which can be either `danger`, `gray`, `info`, `primary`, `secondary`, `success` and `warning`:
+You can also pass a color to be used for the indicator, which can be either `primary`, `secondary`, `success`, `warning` or `danger`:
 
 ```php
 use Filament\Actions\Action;
@@ -186,7 +175,7 @@ Action::make('filter')
     ->indicatorColor('success')
 ```
 
-<AutoScreenshot name="actions/trigger-button/success-indicator" alt="Trigger with green indicator" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/success-indicator" alt="Trigger with green indicator" version="3.x" />
 
 ## Outlined button style
 
@@ -201,7 +190,7 @@ Action::make('edit')
     ->outlined()
 ```
 
-<AutoScreenshot name="actions/trigger-button/outlined" alt="Outlined trigger button" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/outlined" alt="Outlined trigger button" version="3.x" />
 
 ## Inline icon button style
 
@@ -216,7 +205,7 @@ Action::make('edit')
     ->inline()
 ```
 
-<AutoScreenshot name="actions/trigger-button/inline-icon" alt="Inline icon button" version="3.x" />
+<PreviewScreenshot name="actions/trigger-button/inline-icon" alt="Inline icon button" version="3.x" />
 
 ## Adding extra HTML attributes
 

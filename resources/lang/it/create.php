@@ -8,16 +8,16 @@ return [
 
         'modal' => [
 
-            'heading' => 'Salva :label',
+            'heading' => 'Nuovo :label',
 
             'actions' => [
 
                 'create' => [
-                    'label' => 'Salva',
+                    'label' => 'Nuovo',
                 ],
 
                 'create_another' => [
-                    'label' => 'Salva & crea uno nuovo',
+                    'label' => 'Nuovo & un altro nuovo',
                 ],
 
             ],

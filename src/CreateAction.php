@@ -88,9 +88,4 @@ class CreateAction extends Action
     {
         return (bool) $this->evaluate($this->canCreateAnother);
     }
-
-    public function shouldClearRecordAfter(): bool
-    {
-        return true;
-    }
 }

@@ -5,10 +5,8 @@ namespace Filament\Actions\Testing;
 use Closure;
 use Exception;
 use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Actions\MountableAction;
-use Filament\Actions\StaticAction;
 use Illuminate\Support\Arr;
 use Illuminate\Testing\Assert;
 use Livewire\Testing\TestableLivewire;
@@ -578,23 +576,6 @@ class TestsActions
             /** @var array<string> $names */
             $names = array_map(fn (string $name): string => $this->parseActionName($name), $names); // @phpstan-ignore-line
             $namesIndex = 0;
-
-            $actions = array_reduce(
-                $actions,
-                function (array $carry, StaticAction | ActionGroup $action): array {
-                    if ($action instanceof ActionGroup) {
-                        return [
-                            ...$carry,
-                            ...$action->getFlatActions(),
-                        ];
-                    }
-
-                    $carry[$action->getName()] = $action;
-
-                    return $carry;
-                },
-                initial: [],
-            );
 
             foreach ($actions as $actionName => $action) {
                 if ($namesIndex === count($names)) {

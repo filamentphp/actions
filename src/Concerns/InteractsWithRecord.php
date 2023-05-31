@@ -159,8 +159,6 @@ trait InteractsWithRecord
     {
         if ($record = $this->getRecord()) {
             array_unshift($arguments, $record);
-        } elseif ($model = $this->getModel()) {
-            array_unshift($arguments, $model);
         }
 
         return $arguments;
