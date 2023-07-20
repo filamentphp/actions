@@ -11,6 +11,7 @@ use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
+use function Livewire\store;
 
 /**
  * @property Forms\Form $mountedActionForm
@@ -81,6 +82,8 @@ trait InteractsWithActions
             ]);
 
             $result = $action->callAfter() ?? $result;
+
+            $this->afterActionCalled();
         } catch (Halt $exception) {
             return null;
         } catch (Cancel $exception) {
@@ -97,13 +100,17 @@ trait InteractsWithActions
             return null;
         }
 
-        if (filled($this->redirectTo)) {
+        if (store($this)->has('redirect')) {
             return $result;
         }
 
         $this->unmountAction();
 
         return $result;
+    }
+
+    protected function afterActionCalled(): void
+    {
     }
 
     /**
@@ -399,15 +406,16 @@ trait InteractsWithActions
 
     protected function closeActionModal(): void
     {
-        $this->dispatchBrowserEvent('close-modal', [
-            'id' => "{$this->id}-action",
-        ]);
+        $this->dispatch('close-modal', id: "{$this->getId()}-action");
     }
 
     protected function openActionModal(): void
     {
-        $this->dispatchBrowserEvent('open-modal', [
-            'id' => "{$this->id}-action",
-        ]);
+        $this->dispatch('open-modal', id: "{$this->getId()}-action");
+    }
+
+    public function getActiveActionsLocale(): ?string
+    {
+        return null;
     }
 }
