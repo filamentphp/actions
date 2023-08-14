@@ -95,10 +95,6 @@ trait InteractsWithRecord
 
         $titleAttribute = $this->getCustomRecordTitleAttribute();
 
-        if (blank($titleAttribute)) {
-            return null;
-        }
-
         return $record->getAttributeValue($titleAttribute);
     }
 

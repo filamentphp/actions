@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Data berhasil dipisahkan',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Data berhasil dipisahkan',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Data berhasil dipisahkan',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Data berhasil dipisahkan',
         ],
 
     ],

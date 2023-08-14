@@ -20,40 +20,32 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Dissociato',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Dissociato',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Dissocia selezionati',
+        'label' => 'Dissocia selezionato',
 
         'modal' => [
 
-            'heading' => 'Dissocia :label selezionati',
+            'heading' => 'Dissocia selezionato :label',
 
             'actions' => [
 
                 'dissociate' => [
-                    'label' => 'Dissocia',
+                    'label' => 'Dissocia selezionato',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Dissociati',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Dissociato',
         ],
 
     ],

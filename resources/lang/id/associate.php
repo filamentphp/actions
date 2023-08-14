@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'associated' => [
-                'title' => 'Data berhasil dikaitkan',
-            ],
-
+        'messages' => [
+            'associated' => 'Data berhasil dikaitkan',
         ],
 
     ],

@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Kayıt kalıcı olarak silindi',
-            ],
-
+        'messages' => [
+            'deleted' => 'Kayıt kalıcı olarak silindi',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Kayıtlar kalıcı olarak silindi',
-            ],
-
+        'messages' => [
+            'deleted' => 'Kayıtlar kalıcı olarak silindi',
         ],
 
     ],

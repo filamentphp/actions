@@ -25,19 +25,15 @@ return [
                 ],
 
                 'attach_another' => [
-                    'label' => 'Salvar e vincular outro',
+                    'label' => 'Vincular e Vincular outro',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'Vinculado',
-            ],
-
+        'messages' => [
+            'attached' => 'Vinculado!',
         ],
 
     ],

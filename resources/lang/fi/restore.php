@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Palautettu',
-            ],
-
+        'messages' => [
+            'restored' => 'Palautettu',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Palautettu',
-            ],
-
+        'messages' => [
+            'restored' => 'Palautettu',
         ],
 
     ],

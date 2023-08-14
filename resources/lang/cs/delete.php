@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Smazáno',
-            ],
-
+        'messages' => [
+            'deleted' => 'Smazáno',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Smazáno',
-            ],
-
+        'messages' => [
+            'deleted' => 'Smazáno',
         ],
 
     ],

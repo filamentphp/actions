@@ -24,12 +24,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => 'Aangemaakt',
-            ],
-
+        'messages' => [
+            'created' => 'Aangemaakt',
         ],
 
     ],

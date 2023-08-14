@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'تم الفصل',
-            ],
-
+        'messages' => [
+            'detached' => 'تم الفصل',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'تم الفصل',
-            ],
-
+        'messages' => [
+            'detached' => 'تم الفصل',
         ],
 
     ],

@@ -2,7 +2,7 @@
     :action="$action"
     dynamic-component="filament::dropdown.list.item"
     :icon="$getGroupedIcon()"
-    class="fi-ac-grouped-action"
+    class="filament-actions-grouped-action"
 >
     {{ $getLabel() }}
 </x-filament-actions::action>

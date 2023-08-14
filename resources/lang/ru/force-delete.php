@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Запись удалена',
-            ],
-
+        'messages' => [
+            'deleted' => 'Запись удалена',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Записи удалены',
-            ],
-
+        'messages' => [
+            'deleted' => 'Записи удалены',
         ],
 
     ],
