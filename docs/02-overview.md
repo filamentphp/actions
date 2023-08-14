@@ -46,7 +46,7 @@ The entire look of the action's trigger button and the modal is customizable usi
 
 ## Types of action
 
-The concept of "actions" is used throughout Filament in many contexts. Some contexts don't support opening modals from actions - they can only open a URL, call a public Livewire method, or emit a Livewire event. Additionally, different contexts use different action PHP classes, since they provide the developer context-aware data that is appropriate to that use-case.
+The concept of "actions" is used throughout Filament in many contexts. Some contexts don't support opening modals from actions - they can only open a URL, call a public Livewire method, or dispatch a Livewire event. Additionally, different contexts use different action PHP classes since they provide the developer context-aware data that is appropriate to that use-case.
 
 ### Custom Livewire component actions
 
@@ -66,7 +66,7 @@ If you're looking to add an action to a table in your app, [visit this page](../
 
 #### Table bulk actions
 
-Tables also support "bulk actions". These can be used when the user selects rows int the table. Traditionally, when rows are selected, a "bulk actions" button appears in the top left corner of the table. When the user clicks this button, they are presented with a dropdown menu of actions to choose from. Bulk actions may also be added to the header of a table, next to other header actions. In this case, bulk action trigger buttons are disabled until the user selects table rows.
+Tables also support "bulk actions". These can be used when the user selects rows in the table. Traditionally, when rows are selected, a "bulk actions" button appears in the top left corner of the table. When the user clicks this button, they are presented with a dropdown menu of actions to choose from. Bulk actions may also be added to the header of a table, next to other header actions. In this case, bulk action trigger buttons are disabled until the user selects table rows.
 
 These actions use the `Filament\Tables\Actions\BulkAction` class. They can open modals if you choose.
 
@@ -74,25 +74,31 @@ If you're looking to add a bulk action to a table in your app, [visit this page]
 
 ### Form component actions
 
-Form components can contain actions. A good use case for actions inside form components would be with a select field, and an action button to "create" a new record. When you click on the button, a modal opens to collect the new record's data. When the modal form is submitted, the new record is created in the database, and the select field is filled with the newly created record. Fortunately, [this case is handled for you out of the box](../forms/fields/select#creating-new-records), but it's a good example for how form component actions can be powerful.
+Form components can contain actions. A good use case for actions inside form components would be with a select field, and an action button to "create" a new record. When you click on the button, a modal opens to collect the new record's data. When the modal form is submitted, the new record is created in the database, and the select field is filled with the newly created record. Fortunately, [this case is handled for you out of the box](../forms/fields/select#creating-new-records), but it's a good example of how form component actions can be powerful.
 
 These actions use the `Filament\Forms\Components\Actions\Action` class. They can open a modal if you choose, or even just a URL.
 
 If you're looking to add an action to a form component in your app, [visit this page](../forms/actions) in the docs.
 
+### Infolist component actions
+
+Infolist components can contain actions. These use the `Filament\Infolists\Components\Actions\Action` class. They can open a modal if you choose, or even just a URL.
+
+If you're looking to add an action to an infolist component in your app, [visit this page](../infolists/actions) in the docs.
+
 ### Notification actions
 
 When you [send notifications](../notifications/sending-notifications), you can add actions. These buttons are rendered below the content of the notification. For example, a notification to alert the user that they have a new message should contain an action button that opens the conversation thread.
 
-These actions use the `Filament\Notifications\Actions\Action` class. They aren't able to open modals, but they can open a URL or emit a Livewire event.
+These actions use the `Filament\Notifications\Actions\Action` class. They aren't able to open modals, but they can open a URL or dispatch a Livewire event.
 
 If you're looking to add an action to a notification in your app, [visit this page](../notifications/sending-notifications#adding-actions-to-notifications) in the docs.
 
 ### Global search result actions
 
-In the panel builder, there is a [global search](../panels/resources/global-search) input that allows you to search all resources in your app from one place. When you click on a search result, it leads you to the resource page for that record. However, you may add additional actions below each global search result. For example, you may want both "Edit" and "View" options for a client search result, so the user can quickly edit their profile as well as view it in read-only mode.
+In the Panel Builder, there is a [global search](../panels/resources/global-search) field that allows you to search all resources in your app from one place. When you click on a search result, it leads you to the resource page for that record. However, you may add additional actions below each global search result. For example, you may want both "Edit" and "View" options for a client search result, so the user can quickly edit their profile as well as view it in read-only mode.
 
-These actions use the `Filament\GlobalSearch\Actions\Action` class. They aren't able to open modals, but they can open a URL or emit a Livewire event.
+These actions use the `Filament\GlobalSearch\Actions\Action` class. They aren't able to open modals, but they can open a URL or dispatch a Livewire event.
 
 If you're looking to add an action to a global search result in a panel, [visit this page](../panels/resources/global-search#adding-actions-to-global-search-results) in the docs.
 

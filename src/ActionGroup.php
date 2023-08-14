@@ -14,12 +14,11 @@ class ActionGroup extends ViewComponent implements HasLivewire
     use Concerns\CanBeHidden {
         isHidden as baseIsHidden;
     }
-    use Concerns\CanBeInline;
+    use Concerns\HasBadge;
     use Concerns\CanBeLabeledFrom;
     use Concerns\CanBeOutlined;
     use Concerns\HasDropdown;
     use Concerns\HasGroupedIcon;
-    use Concerns\HasIndicator;
     use Concerns\HasLabel;
     use Concerns\HasSize;
     use Concerns\HasTooltip;
@@ -28,6 +27,14 @@ class ActionGroup extends ViewComponent implements HasLivewire
     use HasIcon {
         getIcon as getBaseIcon;
     }
+
+    public const BUTTON_VIEW = 'filament-actions::button-group';
+
+    public const GROUPED_VIEW = 'filament-actions::grouped-group';
+
+    public const ICON_BUTTON_VIEW = 'filament-actions::icon-button-group';
+
+    public const LINK_VIEW = 'filament-actions::link-group';
 
     /**
      * @var array<StaticAction | ActionGroup>
@@ -97,30 +104,45 @@ class ActionGroup extends ViewComponent implements HasLivewire
 
     public function button(): static
     {
-        $this->view('filament-actions::button-group');
+        $this->view(static::BUTTON_VIEW);
 
         return $this;
     }
 
+    public function isButton(): bool
+    {
+        return $this->getView() === static::BUTTON_VIEW;
+    }
+
     public function grouped(): static
     {
-        $this->view('filament-actions::grouped-group');
+        $this->view(static::GROUPED_VIEW);
 
         return $this;
     }
 
     public function iconButton(): static
     {
-        $this->view('filament-actions::icon-button-group');
+        $this->view(static::ICON_BUTTON_VIEW);
 
         return $this;
     }
 
+    public function isIconButton(): bool
+    {
+        return $this->getView() === static::ICON_BUTTON_VIEW;
+    }
+
     public function link(): static
     {
-        $this->view('filament-actions::link-group');
+        $this->view(static::LINK_VIEW);
 
         return $this;
+    }
+
+    public function isLink(): bool
+    {
+        return $this->getView() === static::LINK_VIEW;
     }
 
     public function livewire(Component $livewire): static
@@ -149,7 +171,7 @@ class ActionGroup extends ViewComponent implements HasLivewire
     public function getActions(): array
     {
         return array_map(
-            fn (StaticAction | ActionGroup $action) => $this->hasDropdown() ? $action->grouped() : $action,
+            fn (StaticAction | ActionGroup $action) => $action->defaultView($action::GROUPED_VIEW),
             $this->actions,
         );
     }
