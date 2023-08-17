@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Tietue poistettu',
-            ],
-
+        'messages' => [
+            'deleted' => 'Tietue poistettu',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Tietueet poistettu',
-            ],
-
+        'messages' => [
+            'deleted' => 'Tietueet poistettu',
         ],
 
     ],

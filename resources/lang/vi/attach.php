@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'Đã đính kèm',
-            ],
-
+        'messages' => [
+            'attached' => 'Đã đính kèm',
         ],
 
     ],

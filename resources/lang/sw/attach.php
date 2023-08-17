@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'Imepakiwa',
-            ],
-
+        'messages' => [
+            'attached' => 'Imepakiwa',
         ],
 
     ],

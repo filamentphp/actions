@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'replicated' => [
-                'title' => 'Gedupliceerd',
-            ],
-
+        'messages' => [
+            'replicated' => 'Gedupliceerd',
         ],
 
     ],

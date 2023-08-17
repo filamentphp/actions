@@ -19,7 +19,7 @@ Then, render your Livewire component on the page:
 Alternatively, you can use a full-page Livewire component:
 
 ```php
-use App\Livewire\ManageProduct;
+use App\Http\Livewire\ManageProduct;
 use Illuminate\Support\Facades\Route;
 
 Route::get('products/{product}/manage', ManageProduct::class);
@@ -34,7 +34,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 
-class ManagePost extends Component implements HasForms, HasActions
+class ManagePost extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -56,7 +56,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 
-class ManagePost extends Component implements HasForms, HasActions
+class ManagePost extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -86,7 +86,7 @@ Finally, you need to render the action in your view. To do this, you can use `{{
 
 You also need `<x-filament-actions::modals />` which injects the HTML required to render action modals. This only needs to be included within the Livewire component once, regardless of how many actions you have for that component.
 
-## Passing action arguments
+## Action arguments
 
 Sometimes, you may wish to pass arguments to your action. For example, if you're rendering the same action multiple times in the same view, but each time for a different model, you could pass the model ID as an argument, and then retrieve it later. To do this, you can invoke the action in your view and pass in the arguments as an array:
 
@@ -157,44 +157,3 @@ You can also pass in any attributes to customize the appearance of the trigger b
     <x-filament-actions::modals />
 </div>
 ```
-
-## Chaining actions
-
-You can chain multiple actions together, by calling the `replaceMountedAction()` method to replace the current action with another when it has finished:
-
-```php
-use App\Models\Post;
-use Filament\Actions\Action;
-
-public function editAction(): Action
-{
-    return Action::make('edit')
-        ->form([
-            // ...
-        ])
-        // ...
-        ->action(function (array $arguments) {
-            $post = Post::find($arguments['post']);
-            
-            // ...
-            
-            $this->replaceMountedAction('publish', $arguments);        
-        });
-}
-
-public function publishAction(): Action
-{
-    return Action::make('publish')
-        ->requiresConfirmation()
-        // ...
-        ->action(function (array $arguments) {
-            $post = Post::find($arguments['post']);
-            
-            $post->publish();
-        });
-}
-```
-
-Now, when the first action is submitted, the second action will open in its place. The [arguments](#passing-action-arguments) that were originally passed to the first action get passed to the second action, so you can use them to persist data between requests.
-
-If the first action is canceled, the second one is not opened. If the second action is canceled, the first one has already run and cannot be cancelled.

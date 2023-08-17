@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'associated' => [
-                'title' => '已關聯',
-            ],
-
+        'messages' => [
+            'associated' => '已關聯',
         ],
 
     ],

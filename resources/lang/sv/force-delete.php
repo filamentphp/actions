@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Rad raderad',
-            ],
-
+        'messages' => [
+            'deleted' => 'Rad raderad',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Rader raderade',
-            ],
-
+        'messages' => [
+            'deleted' => 'Rader raderade',
         ],
 
     ],

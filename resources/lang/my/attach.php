@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'သိမ်းဆည်းပြီး',
-            ],
-
+        'messages' => [
+            'attached' => 'သိမ်းဆည်းပြီး',
         ],
 
     ],

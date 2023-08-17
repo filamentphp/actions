@@ -24,12 +24,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => 'Ստեղծվել է',
-            ],
-
+        'messages' => [
+            'created' => 'Ստեղծվել է',
         ],
 
     ],

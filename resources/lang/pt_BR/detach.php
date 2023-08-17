@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Desvinculado',
-            ],
-
+        'messages' => [
+            'detached' => 'Desvinculado!',
         ],
 
     ],
@@ -36,24 +32,20 @@ return [
 
         'modal' => [
 
-            'heading' => 'Desvincular :label selecionado',
+            'heading' => 'Desvincular selecionado :label',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Desvincular',
+                    'label' => 'Desvincular selecionado',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Desvinculado',
-            ],
-
+        'messages' => [
+            'detached' => 'Desvinculado!',
         ],
 
     ],

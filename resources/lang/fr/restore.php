@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Enregistrement restauré',
-            ],
-
+        'messages' => [
+            'restored' => 'Enregistrement restauré',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Enregistrements restaurés',
-            ],
-
+        'messages' => [
+            'restored' => 'Enregistrements restaurés',
         ],
 
     ],

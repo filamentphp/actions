@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'বিচ্ছিন্ন করা হয়েছে',
-            ],
-
+        'messages' => [
+            'detached' => 'বিচ্ছিন্ন করা হয়েছে',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'বিচ্ছিন্ন করা হয়েছে',
-            ],
-
+        'messages' => [
+            'detached' => 'বিচ্ছিন্ন করা হয়েছে',
         ],
 
     ],

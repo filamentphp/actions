@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'replicated' => [
-                'title' => 'Tietue monistettu',
-            ],
-
+        'messages' => [
+            'replicated' => 'Tietue monistettu',
         ],
 
     ],

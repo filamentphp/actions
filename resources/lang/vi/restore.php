@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Đã khôi phục',
-            ],
-
+        'messages' => [
+            'restored' => 'Đã khôi phục',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Đã khôi phục',
-            ],
-
+        'messages' => [
+            'restored' => 'Đã khôi phục',
         ],
 
     ],

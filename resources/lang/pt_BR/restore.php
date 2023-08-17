@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Restaurado',
-            ],
-
+        'messages' => [
+            'restored' => 'Restaurado',
         ],
 
     ],
@@ -36,7 +32,7 @@ return [
 
         'modal' => [
 
-            'heading' => 'Restaurar :label selecionado',
+            'heading' => 'Restaurar selecionado :label',
 
             'actions' => [
 
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Restaurado',
-            ],
-
+        'messages' => [
+            'restored' => 'Restored',
         ],
 
     ],

@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'replicated' => [
-                'title' => 'Zapis dupliciran',
-            ],
-
+        'messages' => [
+            'replicated' => 'Zapis dupliciran',
         ],
 
     ],

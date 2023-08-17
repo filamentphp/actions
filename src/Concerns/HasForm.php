@@ -67,7 +67,6 @@ trait HasForm
         if (is_array($modifiedForm) && $this->isWizard()) {
             $modifiedForm = [
                 Wizard::make($modifiedForm)
-                    ->contained(false)
                     ->startOnStep($this->getWizardStartStep())
                     ->cancelAction($this->getModalCancelAction())
                     ->submitAction($this->getModalSubmitAction())

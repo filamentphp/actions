@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Đã xoá',
-            ],
-
+        'messages' => [
+            'deleted' => 'Đã xoá',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Đã xoá',
-            ],
-
+        'messages' => [
+            'deleted' => 'Đã xoá',
         ],
 
     ],

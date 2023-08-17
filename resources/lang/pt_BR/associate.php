@@ -25,19 +25,15 @@ return [
                 ],
 
                 'associate_another' => [
-                    'label' => 'Salvar e associar outro',
+                    'label' => 'Associar e Associar outro',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'associated' => [
-                'title' => 'Associado',
-            ],
-
+        'messages' => [
+            'associated' => 'Associado',
         ],
 
     ],

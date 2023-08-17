@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'لکێنرا',
-            ],
-
+        'messages' => [
+            'attached' => 'لکێنرا',
         ],
 
     ],

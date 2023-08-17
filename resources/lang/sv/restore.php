@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Rad återställd',
-            ],
-
+        'messages' => [
+            'restored' => 'Rad återställd',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Rader återställda',
-            ],
-
+        'messages' => [
+            'restored' => 'Rader återställda',
         ],
 
     ],

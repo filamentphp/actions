@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Excluído',
-            ],
-
+        'messages' => [
+            'deleted' => 'Excluído',
         ],
 
     ],
@@ -36,24 +32,20 @@ return [
 
         'modal' => [
 
-            'heading' => 'Excluir :label selecionado',
+            'heading' => 'Excluir selecionado :label',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'Excluir',
+                    'label' => 'Excluir selecionado',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Excluído',
-            ],
-
+        'messages' => [
+            'deleted' => 'Excluído!',
         ],
 
     ],

@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'تم فك الارتباط',
-            ],
-
+        'messages' => [
+            'dissociated' => 'تم فك الارتباط',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'تم فك الارتباط',
-            ],
-
+        'messages' => [
+            'dissociated' => 'تم فك الارتباط',
         ],
 
     ],

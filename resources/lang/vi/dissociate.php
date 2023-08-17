@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Đã huỷ liên kết',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Đã huỷ liên kết',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Đã huỷ liên kết',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Đã huỷ liên kết',
         ],
 
     ],

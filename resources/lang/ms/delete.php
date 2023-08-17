@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Dipadamkan',
-            ],
-
+        'messages' => [
+            'deleted' => 'Dipadamkan',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Dipadamkan',
-            ],
-
+        'messages' => [
+            'deleted' => 'Dipadamkan',
         ],
 
     ],

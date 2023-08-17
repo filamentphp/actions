@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => '追加しました',
-            ],
-
+        'messages' => [
+            'attached' => '追加しました',
         ],
 
     ],

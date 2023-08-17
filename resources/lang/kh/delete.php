@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'បានលុបដោយជោគជ័យ',
-            ],
-
+        'messages' => [
+            'deleted' => 'បានលុបដោយជោគជ័យ',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'បានលុបដោយជោគជ័យ',
-            ],
-
+        'messages' => [
+            'deleted' => 'បានលុបដោយជោគជ័យ',
         ],
 
     ],

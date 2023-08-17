@@ -63,12 +63,10 @@ You can tweak how the record is created with the `using()` method:
 use Illuminate\Database\Eloquent\Model;
 
 CreateAction::make()
-    ->using(function (array $data, string $model): Model {
-        return $model::create($data);
+    ->using(function (array $data): Model {
+        return static::getModel()::create($data);
     })
 ```
-
-`$model` is the class name of the model, but you can replace this with your own hard-coded class if you wish.
 
 ## Redirecting after creation
 
@@ -201,7 +199,7 @@ CreateAction::make()
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->live()
+                    ->reactive()
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')
                     ->disabled()
