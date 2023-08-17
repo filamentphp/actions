@@ -4,11 +4,11 @@ return [
 
     'single' => [
 
-        'label' => 'سڕینەوە',
+        'label' => 'سڕینەوەی بەهێز',
 
         'modal' => [
 
-            'heading' => 'سڕینەوەی :label',
+            'heading' => 'سڕینەوەی بەهێزی :label',
 
             'actions' => [
 
@@ -32,11 +32,11 @@ return [
 
     'multiple' => [
 
-        'label' => 'سڕینەوەی دیاریکراوەکان',
+        'label' => 'سڕینەوەی بەهێزی دیاریکراوەکان',
 
         'modal' => [
 
-            'heading' => 'سڕینەوەی دیاریکراوەکانی :label',
+            'heading' => 'سڕینەوەی بەهێزی دیاریکراوەکانی :label',
 
             'actions' => [
 
