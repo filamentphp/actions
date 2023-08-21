@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Szétválasztva',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Szétválasztva',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Szétválasztva',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Szétválasztva',
         ],
 
     ],

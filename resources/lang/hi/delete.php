@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'हटा दिया',
-            ],
-
+        'messages' => [
+            'deleted' => 'हटा दिया',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'हटा दिया',
-            ],
-
+        'messages' => [
+            'deleted' => 'हटा दिया',
         ],
 
     ],

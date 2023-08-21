@@ -17,19 +17,15 @@ return [
                 ],
 
                 'create_another' => [
-                    'label' => 'Salva & crea un altro',
+                    'label' => 'Salva & crea uno nuovo',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => 'Creato',
-            ],
-
+        'messages' => [
+            'created' => 'Creato',
         ],
 
     ],

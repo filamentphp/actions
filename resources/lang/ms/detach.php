@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Ditanggalkan',
-            ],
-
+        'messages' => [
+            'detached' => 'Ditanggalkan',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Ditanggalkan',
-            ],
-
+        'messages' => [
+            'detached' => 'Ditanggalkan',
         ],
 
     ],

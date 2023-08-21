@@ -24,12 +24,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => 'Sukurta',
-            ],
-
+        'messages' => [
+            'created' => 'Sukurta',
         ],
 
     ],

@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'जुड़ गया',
-            ],
-
+        'messages' => [
+            'attached' => 'जुड़ गया',
         ],
 
     ],

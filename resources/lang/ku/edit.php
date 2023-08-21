@@ -4,28 +4,24 @@ return [
 
     'single' => [
 
-        'label' => 'دەستکارکردن',
+        'label' => 'دەستکاری',
 
         'modal' => [
 
-            'heading' => 'دەستکارکردنی :label',
+            'heading' => 'دەستکاری :label',
 
             'actions' => [
 
                 'save' => [
-                    'label' => 'نوێکردنەوە',
+                    'label' => 'هەڵگرتن',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'saved' => [
-                'title' => 'نوێکرایەوە',
-            ],
-
+        'messages' => [
+            'saved' => 'هەڵگیرا',
         ],
 
     ],

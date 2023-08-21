@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'replicated' => [
-                'title' => 'שוכפל',
-            ],
-
+        'messages' => [
+            'replicated' => 'שוכפל',
         ],
 
     ],

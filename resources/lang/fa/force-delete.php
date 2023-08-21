@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'رکورد حذف شد',
-            ],
-
+        'messages' => [
+            'deleted' => 'رکورد حذف شد',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'رکوردها حذف شدند',
-            ],
-
+        'messages' => [
+            'deleted' => 'رکوردها حذف شدند',
         ],
 
     ],

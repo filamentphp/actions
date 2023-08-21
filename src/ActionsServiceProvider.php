@@ -3,7 +3,7 @@
 namespace Filament\Actions;
 
 use Filament\Actions\Testing\TestsActions;
-use Livewire\Features\SupportTesting\Testable;
+use Livewire\Testing\TestableLivewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -19,6 +19,6 @@ class ActionsServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        Testable::mixin(new TestsActions());
+        TestableLivewire::mixin(new TestsActions());
     }
 }

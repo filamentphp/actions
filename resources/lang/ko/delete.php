@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => '삭제 완료',
-            ],
-
+        'messages' => [
+            'deleted' => '삭제 완료',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => '삭제 완료',
-            ],
-
+        'messages' => [
+            'deleted' => '삭제 완료',
         ],
 
     ],

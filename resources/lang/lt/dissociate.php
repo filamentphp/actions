@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Atsieta',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Atsieta',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Atsieta',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Atsieta',
         ],
 
     ],

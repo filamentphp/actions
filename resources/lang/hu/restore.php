@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Visszaállítva',
-            ],
-
+        'messages' => [
+            'restored' => 'Visszaállítva',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Visszaállítva',
-            ],
-
+        'messages' => [
+            'restored' => 'Visszaállítva',
         ],
 
     ],

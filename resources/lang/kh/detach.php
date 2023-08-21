@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'បានផ្ដាច់ដោយជោគជ័យ',
-            ],
-
+        'messages' => [
+            'detached' => 'បានផ្ដាច់ដោយជោគជ័យ',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'បានផ្ដាច់',
-            ],
-
+        'messages' => [
+            'detached' => 'បានផ្ដាច់',
         ],
 
     ],

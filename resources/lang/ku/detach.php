@@ -4,56 +4,48 @@ return [
 
     'single' => [
 
-        'label' => 'سەربەخۆکردن',
+        'label' => 'لێکردنەوە',
 
         'modal' => [
 
-            'heading' => 'سەربەخۆکردنی :label',
+            'heading' => 'لێکردنەوەی :label',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'سەربەخۆکردن',
+                    'label' => 'لێکردنەوە',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'سەربەخۆکرا',
-            ],
-
+        'messages' => [
+            'detached' => 'لێکرایەوە',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'سەربەخۆکردنی دیاریکراوەکان',
+        'label' => 'دیاریکراوەکان لێبکەرەوە',
 
         'modal' => [
 
-            'heading' => 'سەربەخۆکردنی دیاریکراوەکانی :label',
+            'heading' => 'دیاریکراوی :label لێبکەرەوە',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'سەربەخۆکردن',
+                    'label' => 'دیاریکراوەکان لێبکەرەوە',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'سەربەخۆکرا',
-            ],
-
+        'messages' => [
+            'detached' => 'لێکرایەوە',
         ],
 
     ],

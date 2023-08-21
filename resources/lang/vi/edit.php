@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'saved' => [
-                'title' => 'Đã lưu',
-            ],
-
+        'messages' => [
+            'saved' => 'Đã lưu',
         ],
 
     ],

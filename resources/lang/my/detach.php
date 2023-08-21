@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'သိမ်းဆည်းပြီး',
-            ],
-
+        'messages' => [
+            'detached' => 'သိမ်းဆည်းပြီး',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Detached',
-            ],
-
+        'messages' => [
+            'detached' => 'Detached',
         ],
 
     ],

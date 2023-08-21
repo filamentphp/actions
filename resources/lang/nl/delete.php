@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Verwijderd',
-            ],
-
+        'messages' => [
+            'deleted' => 'Verwijderd',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Verwijderd',
-            ],
-
+        'messages' => [
+            'deleted' => 'Verwijderd',
         ],
 
     ],
