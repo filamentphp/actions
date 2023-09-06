@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Liên kết',
+        'label' => 'जोड्नुहोस्',
 
         'modal' => [
 
-            'heading' => 'Liên kết :label',
+            'heading' => ':label सँग जोड्नुहोस्',
 
             'fields' => [
 
                 'record_id' => [
-                    'label' => 'Bản ghi',
+                    'label' => 'रेकर्ड',
                 ],
 
             ],
@@ -21,11 +21,11 @@ return [
             'actions' => [
 
                 'associate' => [
-                    'label' => 'Liên kết',
+                    'label' => 'जोड्नुहोस्',
                 ],
 
                 'associate_another' => [
-                    'label' => 'Liên kết & liên kết thêm',
+                    'label' => 'यो जोड्नुहोस र अर्को जोड्नुहोस',
                 ],
 
             ],
@@ -35,7 +35,7 @@ return [
         'notifications' => [
 
             'associated' => [
-                'title' => 'Đã liên kết',
+                'title' => 'जोडियो',
             ],
 
         ],
