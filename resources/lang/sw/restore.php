@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Imerudishwa',
-            ],
-
+        'messages' => [
+            'restored' => 'Imerudishwa',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Imerudishwa',
-            ],
-
+        'messages' => [
+            'restored' => 'Imerudishwa',
         ],
 
     ],

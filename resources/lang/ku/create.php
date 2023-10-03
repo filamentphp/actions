@@ -4,32 +4,28 @@ return [
 
     'single' => [
 
-        'label' => 'دروستکردنی :label',
+        'label' => 'دروستکردن',
 
         'modal' => [
 
-            'heading' => ':دروستکردنی :label',
+            'heading' => 'دروستکردنی :label',
 
             'actions' => [
 
                 'create' => [
-                    'label' => 'دروستکرن',
+                    'label' => 'دروستکردن',
                 ],
 
                 'create_another' => [
-                    'label' => 'دروستکردن و تۆمارێکی تر',
+                    'label' => 'دروستکردن و دانەیەکی تر',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => 'دروستکرا',
-            ],
-
+        'messages' => [
+            'created' => 'دروستکرا',
         ],
 
     ],

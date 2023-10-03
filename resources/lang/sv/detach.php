@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Koppling släppt',
-            ],
-
+        'messages' => [
+            'detached' => 'Koppling släppt',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Koppling släppt',
-            ],
-
+        'messages' => [
+            'detached' => 'Koppling släppt',
         ],
 
     ],

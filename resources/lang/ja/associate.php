@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'associated' => [
-                'title' => '紐づけました',
-            ],
-
+        'messages' => [
+            'associated' => '紐づけました',
         ],
 
     ],

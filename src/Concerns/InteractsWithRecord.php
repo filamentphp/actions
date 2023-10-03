@@ -3,11 +3,10 @@
 namespace Filament\Actions\Concerns;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-
 use function Filament\Support\get_model_label;
 use function Filament\Support\locale_has_pluralization;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 trait InteractsWithRecord
 {
@@ -70,12 +69,12 @@ trait InteractsWithRecord
         return $this->evaluate($this->record);
     }
 
-    public function getRecordTitle(?Model $record = null): ?string
+    public function getRecordTitle(Model $record = null): ?string
     {
         return $this->getCustomRecordTitle($record) ?? $this->getModelLabel();
     }
 
-    public function getCustomRecordTitle(?Model $record = null): ?string
+    public function getCustomRecordTitle(Model $record = null): ?string
     {
         $record ??= $this->getRecord();
 
@@ -95,10 +94,6 @@ trait InteractsWithRecord
         }
 
         $titleAttribute = $this->getCustomRecordTitleAttribute();
-
-        if (blank($titleAttribute)) {
-            return null;
-        }
 
         return $record->getAttributeValue($titleAttribute);
     }

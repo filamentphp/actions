@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Odebráno',
-            ],
-
+        'messages' => [
+            'detached' => 'Odebráno',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Odebráno',
-            ],
-
+        'messages' => [
+            'detached' => 'Odebráno',
         ],
 
     ],

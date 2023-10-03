@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'تم استعادة السجل',
-            ],
-
+        'messages' => [
+            'restored' => 'تم استعادة السجل',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'تم استعادة السجلات',
-            ],
-
+        'messages' => [
+            'restored' => 'تم استعادة السجلات',
         ],
 
     ],

@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => '外しました',
-            ],
-
+        'messages' => [
+            'detached' => '外しました',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => '外しました',
-            ],
-
+        'messages' => [
+            'detached' => '外しました',
         ],
 
     ],

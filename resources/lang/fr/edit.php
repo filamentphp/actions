@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'saved' => [
-                'title' => 'Sauvegardé(e)',
-            ],
-
+        'messages' => [
+            'saved' => 'Sauvegardé(e)',
         ],
 
     ],

@@ -20,40 +20,32 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'سڕدرایەوە',
-            ],
-
+        'messages' => [
+            'deleted' => 'سڕدرایەوە',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'سڕینەوەی دیاریکراوەکان',
+        'label' => 'دیاریکراوەکان بسڕەوە',
 
         'modal' => [
 
-            'heading' => 'سڕینەوەی دیاریکراوەکانی :label',
+            'heading' => 'دیاریکراوەکانی :label بسڕەوە',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'سڕینەوە',
+                    'label' => 'دیاریکراوەکان بسڕەوە',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'سڕدرایەوە',
-            ],
-
+        'messages' => [
+            'deleted' => 'سڕدرایەوە',
         ],
 
     ],

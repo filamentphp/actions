@@ -43,7 +43,6 @@ class Action extends MountableAction implements Contracts\Groupable, Contracts\H
     protected function resolveDefaultClosureDependencyForEvaluationByName(string $parameterName): array
     {
         return match ($parameterName) {
-            'model' => [$this->getModel()],
             'record' => [$this->getRecord()],
             default => parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName),
         };
@@ -83,10 +82,5 @@ class Action extends MountableAction implements Contracts\Groupable, Contracts\H
         }
 
         $this->record(null);
-    }
-
-    public function getInfolistName(): string
-    {
-        return 'mountedActionInfolist';
     }
 }

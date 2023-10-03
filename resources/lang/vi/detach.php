@@ -4,56 +4,48 @@ return [
 
     'single' => [
 
-        'label' => 'Tách',
+        'label' => 'Huỷ đính kèm',
 
         'modal' => [
 
-            'heading' => 'Tách :label',
+            'heading' => 'Huỷ đính kèm :label',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Tách',
+                    'label' => 'Huỷ đính kèm',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Đã tách',
-            ],
-
+        'messages' => [
+            'detached' => 'Đã huỷ đính kèm',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Tách các mục đã chọn',
+        'label' => 'Huỷ đính kèm với những mục đã chọn',
 
         'modal' => [
 
-            'heading' => 'Tách các mục :label đã chọn',
+            'heading' => 'Huỷ đính kèm :label đã chọn',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Tách',
+                    'label' => 'Huỷ đính kèm với những mục đã chọn',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Đã tách',
-            ],
-
+        'messages' => [
+            'detached' => 'Đã huỷ đính kèm',
         ],
 
     ],

@@ -4,10 +4,6 @@
     'fullWidth' => false,
 ])
 
-@php
-    use Filament\Support\Enums\Alignment;
-@endphp
-
 @if ($actions instanceof \Illuminate\Contracts\View\View)
     {{ $actions }}
 @elseif (is_array($actions))
@@ -22,15 +18,14 @@
         <div
             {{
                 $attributes->class([
-                    'fi-ac gap-3',
-                    'flex flex-wrap items-center' => ! $fullWidth,
+                    'filament-actions-actions',
+                    'flex flex-wrap items-center gap-3' => ! $fullWidth,
                     match ($alignment) {
-                        Alignment::Center, 'center' => 'justify-center',
-                        Alignment::End, Alignment::Right, 'end', 'right' => 'flex-row-reverse',
-                        Alignment::Between, 'between' => 'justify-between',
+                        'center' => 'justify-center',
+                        'end', 'right' => 'flex-row-reverse space-x-reverse',
                         default => 'justify-start',
                     } => ! $fullWidth,
-                    'grid grid-cols-[repeat(auto-fit,minmax(0,1fr))]' => $fullWidth,
+                    'grid grid-cols-[repeat(auto-fit,minmax(0,1fr))] gap-2' => $fullWidth,
                 ])
             }}
         >

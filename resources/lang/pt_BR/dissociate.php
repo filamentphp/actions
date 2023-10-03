@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Dissociado',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Dissociado',
         ],
 
     ],
@@ -36,7 +32,7 @@ return [
 
         'modal' => [
 
-            'heading' => 'Dissociar :label selecionado',
+            'heading' => 'Dissociar selecionado :label',
 
             'actions' => [
 
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Dissociado',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Dissociado',
         ],
 
     ],

@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Запись восстановлена',
-            ],
-
+        'messages' => [
+            'restored' => 'Запись восстановлена',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Записи восстановлены',
-            ],
-
+        'messages' => [
+            'restored' => 'Записи восстановлены',
         ],
 
     ],

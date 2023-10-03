@@ -20,40 +20,32 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Leválasztva',
-            ],
-
+        'messages' => [
+            'detached' => 'Leválasztva',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Kijelöltek leválasztása',
+        'label' => 'Kiválasztottak leválasztása',
 
         'modal' => [
 
-            'heading' => 'Kijelölt :label leválasztása',
+            'heading' => 'Kiválasztott :label leválasztása',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Kijelöltek leválasztása',
+                    'label' => 'Kiválasztottak leválasztása',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Leválasztva',
-            ],
-
+        'messages' => [
+            'detached' => 'Leválasztva',
         ],
 
     ],

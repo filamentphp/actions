@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'replicated' => [
-                'title' => 'Imeigwa',
-            ],
-
+        'messages' => [
+            'replicated' => 'Imeigwa',
         ],
 
     ],

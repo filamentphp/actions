@@ -20,23 +20,19 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Ištrinta',
-            ],
-
+        'messages' => [
+            'deleted' => 'Ištrinta',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Priverstinai ištrinti pasirinktus',
+        'label' => 'Force delete selected',
 
         'modal' => [
 
-            'heading' => 'Priverstinai ištrinti pasirinktus :label',
+            'heading' => 'Force delete selected :label',
 
             'actions' => [
 
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Ištrinta',
-            ],
-
+        'messages' => [
+            'deleted' => 'Ištrinta',
         ],
 
     ],

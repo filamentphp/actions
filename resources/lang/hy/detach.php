@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Անջատվել է',
-            ],
-
+        'messages' => [
+            'detached' => 'Անջատվել է',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Անջատվել է',
-            ],
-
+        'messages' => [
+            'detached' => 'Անջատվել է',
         ],
 
     ],

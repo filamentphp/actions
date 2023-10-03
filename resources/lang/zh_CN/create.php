@@ -4,11 +4,11 @@ return [
 
     'single' => [
 
-        'label' => '创建:label',
+        'label' => '创建',
 
         'modal' => [
 
-            'heading' => '创建:label',
+            'heading' => '创建 :label',
 
             'actions' => [
 
@@ -24,12 +24,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => '已创建',
-            ],
-
+        'messages' => [
+            'created' => '已创建',
         ],
 
     ],

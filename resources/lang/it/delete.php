@@ -20,40 +20,32 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Eliminato',
-            ],
-
+        'messages' => [
+            'deleted' => 'Eliminato',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Elimina selezionati',
+        'label' => 'Elimina selezionato',
 
         'modal' => [
 
-            'heading' => 'Elimina :label selezionati',
+            'heading' => 'Elimina selezionato :label',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'Elimina',
+                    'label' => 'Elimina selezionato',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Eliminati',
-            ],
-
+        'messages' => [
+            'deleted' => 'Eliminato',
         ],
 
     ],

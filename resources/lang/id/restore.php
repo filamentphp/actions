@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Data berhasil dikembalikan',
-            ],
-
+        'messages' => [
+            'restored' => 'Data berhasil dikembalikan',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Data berhasil dikembalikan',
-            ],
-
+        'messages' => [
+            'restored' => 'Data berhasil dikembalikan',
         ],
 
     ],

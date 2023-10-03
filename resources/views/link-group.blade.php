@@ -3,8 +3,7 @@
     dynamic-component="filament::link"
     :icon-position="$getIconPosition()"
     :icon-size="$getIconSize()"
-    tag="button"
-    class="fi-ac-link-group"
+    class="filament-actions-link-group"
 >
     {{ $getLabel() }}
 </x-filament-actions::group>

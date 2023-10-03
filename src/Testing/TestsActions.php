@@ -11,14 +11,12 @@ use Filament\Actions\MountableAction;
 use Filament\Actions\StaticAction;
 use Illuminate\Support\Arr;
 use Illuminate\Testing\Assert;
-use Livewire\Features\SupportTesting\Testable;
-
-use function Livewire\store;
+use Livewire\Testing\TestableLivewire;
 
 /**
  * @method HasActions instance()
  *
- * @mixin Testable
+ * @mixin TestableLivewire
  */
 class TestsActions
 {
@@ -29,6 +27,9 @@ class TestsActions
             /** @phpstan-ignore-next-line */
             $name = $this->parseNestedActionName($name);
 
+            /** @phpstan-ignore-next-line */
+            $this->assertActionVisible($name);
+
             foreach ($name as $actionNestingIndex => $actionName) {
                 $this->call(
                     'mountAction',
@@ -37,28 +38,21 @@ class TestsActions
                 );
             }
 
-            if (store($this->instance())->has('redirect')) {
+            if (filled($this->instance()->redirectTo)) {
                 return $this;
             }
 
             if (! count($this->instance()->mountedActions)) {
-                $this->assertNotDispatched('open-modal');
+                $this->assertNotDispatchedBrowserEvent('open-modal');
 
                 return $this;
             }
 
             $this->assertSet('mountedActions', $name);
 
-            $this->assertDispatched('open-modal', id: "{$this->instance()->getId()}-action");
-
-            return $this;
-        };
-    }
-
-    public function unmountAction(): Closure
-    {
-        return function (): static {
-            $this->call('unmountAction');
+            $this->assertDispatchedBrowserEvent('open-modal', [
+                'id' => "{$this->instance()->id}-action",
+            ]);
 
             return $this;
         };
@@ -90,9 +84,6 @@ class TestsActions
     {
         return function (string | array $name, array $data = [], array $arguments = []): static {
             /** @phpstan-ignore-next-line */
-            $this->assertActionVisible($name);
-
-            /** @phpstan-ignore-next-line */
             $this->mountAction($name, $arguments);
 
             if (! $this->instance()->getMountedAction()) {
@@ -120,12 +111,14 @@ class TestsActions
 
             $this->call('callMountedAction', $arguments);
 
-            if (store($this->instance())->has('redirect')) {
+            if (filled($this->instance()->redirectTo)) {
                 return $this;
             }
 
             if (! count($this->instance()->mountedActions)) {
-                $this->assertDispatched('close-modal', id: "{$this->instance()->getId()}-action");
+                $this->assertDispatchedBrowserEvent('close-modal', [
+                    'id' => "{$this->instance()->id}-action",
+                ]);
             }
 
             return $this;
@@ -515,7 +508,7 @@ class TestsActions
         };
     }
 
-    public function assertActionMounted(): Closure
+    public function assertActionHalted(): Closure
     {
         return function (string | array $name): static {
             /** @var array<string> $name */
@@ -531,29 +524,8 @@ class TestsActions
         };
     }
 
-    public function assertActionNotMounted(): Closure
-    {
-        return function (string | array $name): static {
-            /** @var array<string> $name */
-            /** @phpstan-ignore-next-line */
-            $name = $this->parseNestedActionName($name);
-
-            /** @phpstan-ignore-next-line */
-            $this->assertActionExists($name);
-
-            $this->assertNotSet('mountedActions', $name);
-
-            return $this;
-        };
-    }
-
-    public function assertActionHalted(): Closure
-    {
-        return $this->assertActionMounted();
-    }
-
     /**
-     * @deprecated Use `assertActionHalted()` instead.
+     * @deprecated Use `->assertActionHalted()` instead.
      */
     public function assertActionHeld(): Closure
     {

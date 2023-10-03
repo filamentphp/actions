@@ -3,10 +3,10 @@
 namespace Filament\Actions;
 
 use Filament\Support\Components\ViewComponent;
-use Filament\Support\Concerns\HasBadge;
 use Filament\Support\Concerns\HasColor;
 use Filament\Support\Concerns\HasExtraAttributes;
 use Filament\Support\Concerns\HasIcon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Js;
 use Illuminate\Support\Traits\Conditionable;
 
@@ -14,23 +14,24 @@ class StaticAction extends ViewComponent
 {
     use Concerns\CanBeDisabled;
     use Concerns\CanBeHidden;
+    use Concerns\CanBeInline;
     use Concerns\CanBeLabeledFrom;
     use Concerns\CanBeOutlined;
     use Concerns\CanCallParentAction;
     use Concerns\CanClose;
-    use Concerns\CanDispatchEvent;
+    use Concerns\CanEmitEvent;
     use Concerns\CanOpenUrl;
     use Concerns\CanSubmitForm;
     use Concerns\HasAction;
     use Concerns\HasArguments;
     use Concerns\HasGroupedIcon;
+    use Concerns\HasIndicator;
     use Concerns\HasKeyBindings;
     use Concerns\HasLabel;
     use Concerns\HasName;
     use Concerns\HasSize;
     use Concerns\HasTooltip;
     use Conditionable;
-    use HasBadge;
     use HasColor;
     use HasIcon;
     use HasExtraAttributes;
@@ -52,7 +53,7 @@ class StaticAction extends ViewComponent
         $this->name($name);
     }
 
-    public static function make(?string $name = null): static
+    public static function make(string $name = null): static
     {
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
@@ -69,11 +70,6 @@ class StaticAction extends ViewComponent
         return $this;
     }
 
-    public function isButton(): bool
-    {
-        return $this->getView() === static::BUTTON_VIEW;
-    }
-
     public function grouped(): static
     {
         $this->view(static::GROUPED_VIEW);
@@ -88,21 +84,11 @@ class StaticAction extends ViewComponent
         return $this;
     }
 
-    public function isIconButton(): bool
-    {
-        return $this->getView() === static::ICON_BUTTON_VIEW;
-    }
-
     public function link(): static
     {
         $this->view(static::LINK_VIEW);
 
         return $this;
-    }
-
-    public function isLink(): bool
-    {
-        return $this->getView() === static::LINK_VIEW;
     }
 
     public static function getDefaultName(): ?string
@@ -121,24 +107,20 @@ class StaticAction extends ViewComponent
         }
 
         if ($event = $this->getEvent()) {
-            $arguments = '';
+            $arguments = collect([$event])
+                ->merge($this->getEventData())
+                ->when(
+                    $this->getEmitToComponent(),
+                    fn (Collection $collection, string $component) => $collection->prepend($component),
+                )
+                ->map(fn (mixed $value): string => Js::from($value)->toHtml())
+                ->implode(', ');
 
-            if ($component = $this->getDispatchToComponent()) {
-                $arguments .= Js::from($component)->toHtml();
-                $arguments .= ', ';
-            }
-
-            $arguments .= Js::from($event)->toHtml();
-
-            if ($this->getEventData()) {
-                $arguments .= ', ';
-                $arguments .= Js::from($this->getEventData())->toHtml();
-            }
-
-            return match ($this->getDispatchDirection()) {
-                'self' => "\$dispatchSelf($arguments)",
-                'to' => "\$dispatchTo($arguments)",
-                default => "\$dispatch($arguments)"
+            return match ($this->getEmitDirection()) {
+                'self' => "\$emitSelf($arguments)",
+                'to' => "\$emitTo($arguments)",
+                'up' => "\$emitUp($arguments)",
+                default => "\$emit($arguments)"
             };
         }
 
@@ -162,13 +144,8 @@ class StaticAction extends ViewComponent
         return 'close()';
     }
 
-    public function getLivewireTarget(): ?string
-    {
-        return null;
-    }
-
     /**
-     * @deprecated Use `extraAttributes()` instead.
+     * @deprecated Use `->extraAttributes()` instead.
      *
      * @param  array<mixed>  $attributes
      */

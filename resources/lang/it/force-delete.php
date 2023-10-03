@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Eliminato',
-            ],
-
+        'messages' => [
+            'deleted' => 'Eliminato',
         ],
 
     ],
@@ -36,7 +32,7 @@ return [
 
         'modal' => [
 
-            'heading' => 'Elimina forzatamente :label selezionati',
+            'heading' => 'Elimina forzatamente selezionati :label',
 
             'actions' => [
 
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Eliminati',
-            ],
-
+        'messages' => [
+            'deleted' => 'Eliminati',
         ],
 
     ],

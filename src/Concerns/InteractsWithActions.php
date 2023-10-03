@@ -6,14 +6,11 @@ use Closure;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Infolists\Infolist;
 use Filament\Support\Exceptions\Cancel;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
-
-use function Livewire\store;
 
 /**
  * @property Forms\Form $mountedActionForm
@@ -84,8 +81,6 @@ trait InteractsWithActions
             ]);
 
             $result = $action->callAfter() ?? $result;
-
-            $this->afterActionCalled();
         } catch (Halt $exception) {
             return null;
         } catch (Cancel $exception) {
@@ -102,17 +97,13 @@ trait InteractsWithActions
             return null;
         }
 
-        if (store($this)->has('redirect')) {
+        if (filled($this->redirectTo)) {
             return $result;
         }
 
         $this->unmountAction();
 
         return $result;
-    }
-
-    protected function afterActionCalled(): void
-    {
     }
 
     /**
@@ -159,7 +150,7 @@ trait InteractsWithActions
         } catch (Halt $exception) {
             return null;
         } catch (Cancel $exception) {
-            $this->unmountAction(shouldCancelParentActions: false);
+            $this->unmountAction(shouldCloseParentActions: false);
 
             return null;
         }
@@ -360,23 +351,23 @@ trait InteractsWithActions
         $this->mountedActionsData = [];
     }
 
-    public function unmountAction(bool $shouldCancelParentActions = true): void
+    public function unmountAction(bool $shouldCloseParentActions = true): void
     {
         $action = $this->getMountedAction();
 
-        if (! ($shouldCancelParentActions && $action)) {
+        if (! ($shouldCloseParentActions && $action)) {
             $this->popMountedAction();
-        } elseif ($action->shouldCancelAllParentActions()) {
+        } elseif ($action->shouldCloseAllParentActions()) {
             $this->resetMountedActionProperties();
         } else {
-            $parentActionToCancelTo = $action->getParentActionToCancelTo();
+            $parentActionToCloseTo = $action->getParentActionToCloseTo();
 
             while (true) {
                 $recentlyClosedParentAction = $this->popMountedAction();
 
                 if (
-                    blank($parentActionToCancelTo) ||
-                    ($recentlyClosedParentAction === $parentActionToCancelTo)
+                    blank($parentActionToCloseTo) ||
+                    ($recentlyClosedParentAction === $parentActionToCloseTo)
                 ) {
                     break;
                 }
@@ -408,21 +399,15 @@ trait InteractsWithActions
 
     protected function closeActionModal(): void
     {
-        $this->dispatch('close-modal', id: "{$this->getId()}-action");
+        $this->dispatchBrowserEvent('close-modal', [
+            'id' => "{$this->id}-action",
+        ]);
     }
 
     protected function openActionModal(): void
     {
-        $this->dispatch('open-modal', id: "{$this->getId()}-action");
-    }
-
-    public function getActiveActionsLocale(): ?string
-    {
-        return null;
-    }
-
-    public function mountedActionInfolist(): Infolist
-    {
-        return $this->getMountedAction()->getInfolist();
+        $this->dispatchBrowserEvent('open-modal', [
+            'id' => "{$this->id}-action",
+        ]);
     }
 }

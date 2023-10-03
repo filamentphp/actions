@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Disociat cu succes',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Disociat cu succes',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Disociat cu succes',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Disociat cu succes',
         ],
 
     ],

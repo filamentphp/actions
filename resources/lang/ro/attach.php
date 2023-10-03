@@ -32,12 +32,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'Atașat cu succes',
-            ],
-
+        'messages' => [
+            'attached' => 'Atașat cu succes',
         ],
 
     ],

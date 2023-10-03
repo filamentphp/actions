@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Supprimé(e)',
-            ],
-
+        'messages' => [
+            'deleted' => 'Supprimé(e)',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Supprimé(e)s',
-            ],
-
+        'messages' => [
+            'deleted' => 'Supprimé(e)s',
         ],
 
     ],

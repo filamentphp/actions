@@ -24,12 +24,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => 'Criado!',
-            ],
-
+        'messages' => [
+            'created' => 'Criado!',
         ],
 
     ],

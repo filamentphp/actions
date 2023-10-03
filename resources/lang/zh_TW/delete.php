@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => '已刪除',
-            ],
-
+        'messages' => [
+            'deleted' => '已刪除',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => '已刪除',
-            ],
-
+        'messages' => [
+            'deleted' => '已刪除',
         ],
 
     ],

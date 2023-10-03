@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Șters cu succes',
-            ],
-
+        'messages' => [
+            'deleted' => 'Șters cu succes',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Șters cu succes',
-            ],
-
+        'messages' => [
+            'deleted' => 'Șters cu succes',
         ],
 
     ],

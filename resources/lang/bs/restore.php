@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Zapis restauriran',
-            ],
-
+        'messages' => [
+            'restored' => 'Zapis restauriran',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Zapisi restaurirani',
-            ],
-
+        'messages' => [
+            'restored' => 'Zapisi restaurirani',
         ],
 
     ],

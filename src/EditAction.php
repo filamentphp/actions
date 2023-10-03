@@ -4,7 +4,6 @@ namespace Filament\Actions;
 
 use Closure;
 use Filament\Actions\Concerns\CanCustomizeProcess;
-use Filament\Actions\Contracts\HasActions;
 use Illuminate\Database\Eloquent\Model;
 
 class EditAction extends Action
@@ -28,16 +27,12 @@ class EditAction extends Action
 
         $this->modalSubmitActionLabel(__('filament-actions::edit.single.modal.actions.save.label'));
 
-        $this->successNotificationTitle(__('filament-actions::edit.single.notifications.saved.title'));
+        $this->successNotificationTitle(__('filament-actions::edit.single.messages.saved'));
 
         $this->groupedIcon('heroicon-m-pencil-square');
 
-        $this->fillForm(function (HasActions $livewire, Model $record): array {
-            if ($translatableContentDriver = $livewire->makeFilamentTranslatableContentDriver()) {
-                $data = $translatableContentDriver->getRecordAttributesToArray($record);
-            } else {
-                $data = $record->attributesToArray();
-            }
+        $this->fillForm(function (Model $record): array {
+            $data = $record->attributesToArray();
 
             if ($this->mutateRecordDataUsing) {
                 $data = $this->evaluate($this->mutateRecordDataUsing, ['data' => $data]);
@@ -47,12 +42,8 @@ class EditAction extends Action
         });
 
         $this->action(function (): void {
-            $this->process(function (array $data, HasActions $livewire, Model $record) {
-                if ($translatableContentDriver = $livewire->makeFilamentTranslatableContentDriver()) {
-                    $translatableContentDriver->updateRecord($record, $data);
-                } else {
-                    $record->update($data);
-                }
+            $this->process(function (array $data, Model $record) {
+                $record->update($data);
             });
 
             $this->success();

@@ -20,23 +20,19 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Atsieta',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Atsieta',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Atsieti pasirinktus',
+        'label' => 'Atsieti pažymėtą',
 
         'modal' => [
 
-            'heading' => 'Atsieti pasirinktus :label',
+            'heading' => 'Atsieti pažymėtą :label',
 
             'actions' => [
 
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'dissociated' => [
-                'title' => 'Atsieta',
-            ],
-
+        'messages' => [
+            'dissociated' => 'Atsieta',
         ],
 
     ],

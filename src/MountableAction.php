@@ -7,7 +7,7 @@ use Filament\Notifications\Notification;
 use Filament\Support\Exceptions\Cancel;
 use Filament\Support\Exceptions\Halt;
 
-abstract class MountableAction extends StaticAction implements HasLivewire
+class MountableAction extends StaticAction implements HasLivewire
 {
     use Concerns\BelongsToLivewire;
     use Concerns\CanBeMounted;
@@ -50,7 +50,7 @@ abstract class MountableAction extends StaticAction implements HasLivewire
     }
 
     /**
-     * @deprecated Use `halt()` instead.
+     * @deprecated Use `->halt()` instead.
      */
     public function hold(): void
     {

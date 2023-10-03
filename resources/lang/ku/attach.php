@@ -8,7 +8,7 @@ return [
 
         'modal' => [
 
-            'heading' => 'لکاندنی :label',
+            'heading' => ':label بیلکێنە',
 
             'fields' => [
 
@@ -21,23 +21,19 @@ return [
             'actions' => [
 
                 'attach' => [
-                    'label' => 'لکاندن',
+                    'label' => 'بیلکێنە',
                 ],
 
                 'attach_another' => [
-                    'label' => 'لکاندن و تۆمارێکی تر',
+                    'label' => 'لکاندن و دانەیەکی تر',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'attached' => [
-                'title' => 'لکێنرا',
-            ],
-
+        'messages' => [
+            'attached' => 'لکێنرا',
         ],
 
     ],

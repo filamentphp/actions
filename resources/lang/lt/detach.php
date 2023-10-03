@@ -20,23 +20,19 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Atskirta',
-            ],
-
+        'messages' => [
+            'detached' => 'Atskirta',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Atskirti pasirinktus',
+        'label' => 'Atskirti pasirinktą',
 
         'modal' => [
 
-            'heading' => 'Atskirti pasirinktus :label',
+            'heading' => 'Atskirti pasirinktą :label',
 
             'actions' => [
 
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'detached' => [
-                'title' => 'Atskirta',
-            ],
-
+        'messages' => [
+            'detached' => 'Atskirta',
         ],
 
     ],

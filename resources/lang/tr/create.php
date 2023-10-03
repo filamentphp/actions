@@ -17,19 +17,15 @@ return [
                 ],
 
                 'create_another' => [
-                    'label' => 'Oluştur ve başka bir tane oluştur',
+                    'label' => 'Oluştur ve başka bir taneye başla',
                 ],
 
             ],
 
         ],
 
-        'notifications' => [
-
-            'created' => [
-                'title' => 'Oluşturuldu',
-            ],
-
+        'messages' => [
+            'created' => 'Oluşturuldu',
         ],
 
     ],

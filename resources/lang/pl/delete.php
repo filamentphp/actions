@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Usunięto',
-            ],
-
+        'messages' => [
+            'deleted' => 'Usunięto',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Usunięto',
-            ],
-
+        'messages' => [
+            'deleted' => 'Usunięto',
         ],
 
     ],

@@ -2,12 +2,12 @@
 
 return [
 
-    'confirmation' => 'Bạn có chắc chắn khi thực hiện thao tác này?',
+    'confirmation' => 'Bạn có chắc chắn khi thực hiện hành động này?',
 
     'actions' => [
 
         'cancel' => [
-            'label' => 'Huỷ bỏ',
+            'label' => 'Huỷ',
         ],
 
         'confirm' => [

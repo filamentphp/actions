@@ -20,12 +20,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Kayıt geri yüklendi',
-            ],
-
+        'messages' => [
+            'restored' => 'Kayıt geri yüklendi',
         ],
 
     ],
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'restored' => [
-                'title' => 'Kayıtlar geri yüklendi',
-            ],
-
+        'messages' => [
+            'restored' => 'Kayıtlar geri yüklendi',
         ],
 
     ],

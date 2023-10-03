@@ -20,23 +20,19 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Törölve',
-            ],
-
+        'messages' => [
+            'deleted' => 'Törölve',
         ],
 
     ],
 
     'multiple' => [
 
-        'label' => 'Kijelöltek törlése',
+        'label' => 'Kiválasztottak törlése',
 
         'modal' => [
 
-            'heading' => 'Kijelölt :label törlése',
+            'heading' => 'Kiválasztott :label törlése',
 
             'actions' => [
 
@@ -48,12 +44,8 @@ return [
 
         ],
 
-        'notifications' => [
-
-            'deleted' => [
-                'title' => 'Törölve',
-            ],
-
+        'messages' => [
+            'deleted' => 'Törölve',
         ],
 
     ],
