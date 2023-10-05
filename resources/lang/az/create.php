@@ -4,20 +4,20 @@ return [
 
     'single' => [
 
-        'label' => '新規:label',
+        'label' => ':label Yarat',
 
         'modal' => [
 
-            'heading' => ':label作成',
+            'heading' => ':label yarat',
 
             'actions' => [
 
                 'create' => [
-                    'label' => '作成',
+                    'label' => 'Yarat',
                 ],
 
                 'create_another' => [
-                    'label' => '保存して、続けて作成',
+                    'label' => 'Yarat ve başqasını yarat',
                 ],
 
             ],
@@ -27,7 +27,7 @@ return [
         'notifications' => [
 
             'created' => [
-                'title' => '作成しました',
+                'title' => 'Yaradıldı',
             ],
 
         ],

@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => '削除',
+        'label' => 'Sil',
 
         'modal' => [
 
-            'heading' => ':label削除',
+            'heading' => ':label Sil',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => '削除',
+                    'label' => 'Sil',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => '削除しました',
+                'title' => 'Silindi',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => '選択中を削除',
+        'label' => 'Seçilənləri sil',
 
         'modal' => [
 
-            'heading' => '選択中の:labelを削除',
+            'heading' => 'Seçilənləri sil',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => '削除',
+                    'label' => 'Sil',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => '削除しました',
+                'title' => 'Silindi',
             ],
 
         ],

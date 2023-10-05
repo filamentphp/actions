@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => '削除',
+        'label' => 'Həmişəlik sil',
 
         'modal' => [
 
-            'heading' => ':label削除',
+            'heading' => ':label həmişəlik sil',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => '削除',
+                    'label' => 'Həmişəlik sil',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => '削除しました',
+                'title' => 'Məlumat həmişəlik silindi',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => '選択中を削除',
+        'label' => 'Seçilənləri həmişəlik sil',
 
         'modal' => [
 
-            'heading' => '選択中の:labelを削除',
+            'heading' => ':label seçilənləri həmişəlik sil',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => '削除',
+                    'label' => 'Həmişəlik sil',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => '削除しました',
+                'title' => 'Məlumat həmişəlik silindi',
             ],
 
         ],

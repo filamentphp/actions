@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => '編集',
+        'label' => 'Redaktə et',
 
         'modal' => [
 
-            'heading' => ':label編集',
+            'heading' => ':label redaktə et',
 
             'actions' => [
 
                 'save' => [
-                    'label' => '変更を保存',
+                    'label' => 'Yadda saxla',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'saved' => [
-                'title' => '保存しました',
+                'title' => 'Yadda saxlanıldı',
             ],
 
         ],

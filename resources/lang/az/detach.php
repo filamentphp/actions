@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => '外す',
+        'label' => 'Ayır',
 
         'modal' => [
 
-            'heading' => ':labelを外す',
+            'heading' => ':label ayır',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => '外す',
+                    'label' => 'Ayır',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => '外しました',
+                'title' => 'Ayrıldı',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => '選択中を外す',
+        'label' => 'Seçiləni ayır',
 
         'modal' => [
 
-            'heading' => '選択中の:labelを外す',
+            'heading' => ':label seçiləni ayır ',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => '外す',
+                    'label' => 'Seçiləni ayır',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => '外しました',
+                'title' => 'Ayrıldı',
             ],
 
         ],

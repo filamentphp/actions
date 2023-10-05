@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => '解除',
+        'label' => 'Parçala',
 
         'modal' => [
 
-            'heading' => ':labelの解除',
+            'heading' => ':label parçala',
 
             'actions' => [
 
                 'dissociate' => [
-                    'label' => '解除',
+                    'label' => 'Parçala',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'dissociated' => [
-                'title' => '解除しました',
+                'title' => 'Parçalandı',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => '選択中を解除',
+        'label' => 'Seçiləni parçala',
 
         'modal' => [
 
-            'heading' => '選択中の:labelを解除',
+            'heading' => ':label seçiləni parçala',
 
             'actions' => [
 
                 'dissociate' => [
-                    'label' => '解除',
+                    'label' => 'Seçiləni parçala',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'dissociated' => [
-                'title' => '解除しました',
+                'title' => 'Parçalandı',
             ],
 
         ],
