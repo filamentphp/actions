@@ -1,29 +1,28 @@
 <?php
 
-namespace Filament\Actions\Imports\Models;
+namespace Filament\Actions\Exports\Models;
 
 use Carbon\CarbonInterface;
 use Exception;
-use Filament\Actions\Imports\Importer;
+use Filament\Actions\Exports\Exporter;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property CarbonInterface | null $completed_at
+ * @property string $file_disk
  * @property string $file_name
- * @property string $file_path
- * @property class-string<Importer> $importer
+ * @property class-string<Exporter> $exporter
  * @property int $processed_rows
  * @property int $total_rows
  * @property int $successful_rows
- * @property-read Collection<FailedImportRow> $failedRows
  * @property-read Authenticatable $user
  */
-class Import extends Model
+class Export extends Model
 {
     use Prunable;
 
@@ -37,11 +36,6 @@ class Import extends Model
     protected $guarded = [];
 
     protected static bool $hasPolymorphicUserRelationship = false;
-
-    public function failedRows(): HasMany
-    {
-        return $this->hasMany(app(FailedImportRow::class)::class);
-    }
 
     public function user(): BelongsTo
     {
@@ -66,12 +60,12 @@ class Import extends Model
      * @param  array<string, string>  $columnMap
      * @param  array<string, mixed>  $options
      */
-    public function getImporter(
+    public function getExporter(
         array $columnMap,
         array $options,
-    ): Importer {
-        return app($this->importer, [
-            'import' => $this,
+    ): Exporter {
+        return app($this->exporter, [
+            'export' => $this,
             'columnMap' => $columnMap,
             'options' => $options,
         ]);
@@ -90,5 +84,15 @@ class Import extends Model
     public static function hasPolymorphicUserRelationship(): bool
     {
         return static::$hasPolymorphicUserRelationship;
+    }
+
+    public function getFileDisk(): Filesystem
+    {
+        return Storage::disk($this->file_disk);
+    }
+
+    public function getFileDirectory(): string
+    {
+        return 'filament_exports' . DIRECTORY_SEPARATOR . $this->getKey();
     }
 }
