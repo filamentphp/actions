@@ -103,16 +103,18 @@ class PrepareCsvExport implements ShouldQueue
             return;
         }
 
-        $qualifiedKeyName = $query->getModel()->getQualifiedKeyName();
+        $baseQuery = $query->toBase();
+        $sortDirection = $baseQuery->orders[0]['direction'] ?? 'asc';
 
-        $query->toBase()
-            ->select([$qualifiedKeyName])
-            ->chunkById(
+        $baseQuery
+            ->select([$query->getModel()->getQualifiedKeyName()])
+            ->orderedChunkById(
                 $this->chunkSize * 10,
                 fn (Collection $records) => $dispatchRecords(
                     Arr::pluck($records->all(), $keyName),
                 ),
-                $qualifiedKeyName,
+                $keyName,
+                descending: $sortDirection === 'desc',
             );
     }
 
