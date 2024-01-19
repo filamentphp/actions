@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Bog\'lash',
+        'label' => 'Associer',
 
         'modal' => [
 
-            'heading' => ':labelni bog\'lash',
+            'heading' => 'Associer :label',
 
             'fields' => [
 
                 'record_id' => [
-                    'label' => 'Yozib olish',
+                    'label' => 'Registrering',
                 ],
 
             ],
@@ -21,11 +21,11 @@ return [
             'actions' => [
 
                 'associate' => [
-                    'label' => 'Bog\'lash',
+                    'label' => 'Associer',
                 ],
 
                 'associate_another' => [
-                    'label' => 'Bog\'lash va yana boshqa bog\'lash',
+                    'label' => 'Associer & Associer en mere',
                 ],
 
             ],
@@ -35,7 +35,7 @@ return [
         'notifications' => [
 
             'associated' => [
-                'title' => 'Bog\'langan',
+                'title' => 'Associeret',
             ],
 
         ],

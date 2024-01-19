@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Qayta tiklash',
+        'label' => 'Gendan',
 
         'modal' => [
 
-            'heading' => ':labelni qayta tiklash',
+            'heading' => 'Gendan :label',
 
             'actions' => [
 
                 'restore' => [
-                    'label' => 'Qayta tiklash',
+                    'label' => 'Gendan',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'restored' => [
-                'title' => 'Qayta tiklandi',
+                'title' => 'Gendannet',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'Tanlangan elementlarni qayta tiklash',
+        'label' => 'Gendan valgte',
 
         'modal' => [
 
-            'heading' => ':labelni qayta tiklash',
+            'heading' => 'Gendan valgte :label',
 
             'actions' => [
 
                 'restore' => [
-                    'label' => 'Qayta tiklash',
+                    'label' => 'Gendan',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'restored' => [
-                'title' => 'Qayta tiklandi',
+                'title' => 'Gendannet',
             ],
 
         ],

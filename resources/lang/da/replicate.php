@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Takrorlash',
+        'label' => 'Repliker',
 
         'modal' => [
 
-            'heading' => ':labelni takrorlash',
+            'heading' => 'Repliker :label',
 
             'actions' => [
 
                 'replicate' => [
-                    'label' => 'Takrorlash',
+                    'label' => 'Repliker',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'replicated' => [
-                'title' => 'Takrorlandi',
+                'title' => 'Replikeret',
             ],
 
         ],

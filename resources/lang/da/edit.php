@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Tahrirlash',
+        'label' => 'Rediger',
 
         'modal' => [
 
-            'heading' => ':labelni tahrirlash',
+            'heading' => 'Rediger :label',
 
             'actions' => [
 
                 'save' => [
-                    'label' => 'O\'zgarishlarni saqlash',
+                    'label' => 'Gem ændringer',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'saved' => [
-                'title' => 'Saqlandi',
+                'title' => 'Gemt',
             ],
 
         ],

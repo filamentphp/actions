@@ -4,20 +4,20 @@ return [
 
     'single' => [
 
-        'label' => 'Yangi :labelni yaratish',
+        'label' => 'Opret :label',
 
         'modal' => [
 
-            'heading' => 'Yangi :labelni yaratish',
+            'heading' => 'Opret :label',
 
             'actions' => [
 
                 'create' => [
-                    'label' => 'Yaratish',
+                    'label' => 'Opret',
                 ],
 
                 'create_another' => [
-                    'label' => 'Yaratish va yana boshqa yaratish',
+                    'label' => 'Opret & opret en mere',
                 ],
 
             ],
@@ -27,7 +27,7 @@ return [
         'notifications' => [
 
             'created' => [
-                'title' => 'Yaratildi',
+                'title' => 'Oprettet',
             ],
 
         ],

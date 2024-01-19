@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Ajratish',
+        'label' => 'Frigør',
 
         'modal' => [
 
-            'heading' => ':labelni ajratish',
+            'heading' => 'Frigør :label',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Ajratish',
+                    'label' => 'Frigør',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => 'Ajratish',
+                'title' => 'Frigjort',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'Tanlanganlarni ajratish',
+        'label' => 'Frigør valgte',
 
         'modal' => [
 
-            'heading' => ':labelni ajratish ',
+            'heading' => 'Frigør valgte :label',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Ajratish',
+                    'label' => 'Frigør',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => 'Ajratish',
+                'title' => 'Frigjort',
             ],
 
         ],

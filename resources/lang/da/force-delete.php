@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'O\'chirish',
+        'label' => 'Fremtving sletning',
 
         'modal' => [
 
-            'heading' => ':labelni o\'chirish',
+            'heading' => 'Fremtving sletning af :label',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'O\'chirish',
+                    'label' => 'Slet',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => 'O\'chirildi',
+                'title' => 'Slettet',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'Tanlanganlarni o\'chirish',
+        'label' => 'Fremtving sletning af valgte',
 
         'modal' => [
 
-            'heading' => ':labelni o\'chirish',
+            'heading' => 'Fremtving sletning af valgte :label',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'O\'chirish',
+                    'label' => 'Slet',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => 'O\'chirish',
+                'title' => 'Slettet',
             ],
 
         ],

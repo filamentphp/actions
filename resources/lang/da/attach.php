@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Biriktirish',
+        'label' => 'Attach',
 
         'modal' => [
 
-            'heading' => ':labelni biriktirish',
+            'heading' => 'Vedhæft :label',
 
             'fields' => [
 
                 'record_id' => [
-                    'label' => 'Yozib olish',
+                    'label' => 'Record',
                 ],
 
             ],
@@ -21,11 +21,11 @@ return [
             'actions' => [
 
                 'attach' => [
-                    'label' => 'Biriktirish',
+                    'label' => 'Vedhæft',
                 ],
 
                 'attach_another' => [
-                    'label' => 'Biriktirish va yana boshqa biriktirish',
+                    'label' => 'Vedhæft & vedhæft en mere',
                 ],
 
             ],
@@ -35,7 +35,7 @@ return [
         'notifications' => [
 
             'attached' => [
-                'title' => 'Biriktirilgan',
+                'title' => 'Vedhæftet',
             ],
 
         ],
