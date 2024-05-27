@@ -27,6 +27,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\ValidationException;
 use League\Csv\ByteSequence;
@@ -272,12 +273,12 @@ trait CanImportRecords
             $import->unsetRelation('user');
 
             $importJobs = collect($importChunks)
-                ->map(fn (array $importChunk): object => new ($job)(
-                    $import,
-                    rows: base64_encode(serialize($importChunk)),
-                    columnMap: $data['columnMap'],
-                    options: $options,
-                ));
+                ->map(fn (array $importChunk): object => app($job, [
+                    'import' => $import,
+                    'rows' => base64_encode(serialize($importChunk)),
+                    'columnMap' => $data['columnMap'],
+                    'options' => $options,
+                ]));
 
             $importer = $import->getImporter(
                 columnMap: $data['columnMap'],
@@ -421,15 +422,19 @@ trait CanImportRecords
             ]));
         }
 
-        $encoding = $this->detectCsvEncoding($resource);
+        $inputEncoding = $this->detectCsvEncoding($resource);
+        $outputEncoding = 'UTF-8';
 
-        if (filled($encoding)) {
+        if (
+            filled($inputEncoding) &&
+            (Str::lower($inputEncoding) !== Str::lower($outputEncoding))
+        ) {
             CharsetConverter::register();
 
             stream_filter_append(
                 $resource,
-                CharsetConverter::getFiltername($encoding, 'utf-8'),
-                STREAM_FILTER_READ
+                CharsetConverter::getFiltername($inputEncoding, $outputEncoding),
+                STREAM_FILTER_READ,
             );
         }
 
