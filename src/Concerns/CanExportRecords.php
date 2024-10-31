@@ -115,9 +115,15 @@ trait CanExportRecords
 
             $query = $exporter::modifyQuery($query);
 
+            $options = array_merge(
+                $action->getOptions(),
+                Arr::except($data, ['columnMap']),
+            );
+
             if ($this->modifyQueryUsing) {
                 $query = $this->evaluate($this->modifyQueryUsing, [
                     'query' => $query,
+                    'options' => $options,
                 ]) ?? $query;
             }
 
@@ -139,11 +145,6 @@ trait CanExportRecords
             }
 
             $user = auth()->user();
-
-            $options = array_merge(
-                $action->getOptions(),
-                Arr::except($data, ['columnMap']),
-            );
 
             if ($action->hasColumnMapping()) {
                 $columnMap = collect($data['columnMap'])

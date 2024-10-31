@@ -174,7 +174,8 @@ class PrepareCsvExport implements ShouldQueue
                 fn (Collection $records) => $dispatchRecords(
                     Arr::pluck($records->all(), $keyName),
                 ),
-                column: $keyName,
+                column: $qualifiedKeyName,
+                alias: $keyName,
                 descending: ($baseQueryOrders[0]['direction'] ?? 'asc') === 'desc',
             );
     }

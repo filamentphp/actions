@@ -11,8 +11,15 @@ return [
         'form' => [
 
             'file' => [
+
                 'label' => 'Tiedosto',
+
                 'placeholder' => 'Siirrä CSV tiedosto',
+
+                'rules' => [
+                    'duplicate_columns' => '{0} Tiedostossa voi olla enimmillään yksi tyhjä sarakkeen otsake.|{1,*} Tiedostossa ei voi olla toistuvia sarakkeiden otsakkeita: :columns.',
+                ],
+
             ],
 
             'columns' => [
@@ -72,6 +79,7 @@ return [
         'file_name' => 'import-:import_id-:csv_name-failed-rows',
         'error_header' => 'virhe',
         'system_error' => 'Järjestelmävirhe, ota yhteyttä tukeen.',
+        'column_mapping_required_for_new_record' => 'Otsaketta :attribute ei voitu yhdistää tiedostosta löytyvään otsakkeeseen, se on vaadittu tuontia varten.',
     ],
 
 ];

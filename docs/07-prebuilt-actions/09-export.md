@@ -345,6 +345,17 @@ ExportAction::make()
     ->modifyQueryUsing(fn (Builder $query) => $query->where('is_active', true))
 ```
 
+You may inject the `$options` argument into the function, which is an array of [options](#using-export-options) for that export:
+
+```php
+use App\Filament\Exports\ProductExporter;
+use Illuminate\Database\Eloquent\Builder;
+
+ExportAction::make()
+    ->exporter(ProductExporter::class)
+    ->modifyQueryUsing(fn (Builder $query, array $options) => $query->where('is_active', $options['isActive'] ?? true))
+```
+
 Alternatively, you can override the `modifyQuery()` method on the exporter class, which will modify the query for all actions that use that exporter:
 
 ```php
