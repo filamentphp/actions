@@ -32,7 +32,7 @@ return [
         'actions' => [
 
             'download_example' => [
-                'label' => 'Tải xuống tệp mẫu CSV',
+                'label' => 'Tải xuống tệp CSV mẫu',
             ],
 
             'import' => [
@@ -52,7 +52,7 @@ return [
             'actions' => [
 
                 'download_failed_rows_csv' => [
-                    'label' => 'Tải thông tin về hàng bị lỗi xuống',
+                    'label' => 'Tải xuống thông tin hàng bị lỗi',
                 ],
 
             ],
@@ -76,9 +76,10 @@ return [
     ],
 
     'failure_csv' => [
-        'file_name' => 'import-:import_id-:csv_name-failed-rows',
+        'file_name' => 'import-:import_id-:csv_name-hàng-lỗi',
         'error_header' => 'lỗi',
         'system_error' => 'Lỗi hệ thống, vui lòng liên hệ bộ phận hỗ trợ.',
+        'column_mapping_required_for_new_record' => 'Cột :attribute không được ánh xạ với cột nào trong tệp, nhưng nó là bắt buộc để tạo bản ghi mới.',
     ],
 
 ];
