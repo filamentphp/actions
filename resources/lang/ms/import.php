@@ -11,8 +11,14 @@ return [
         'form' => [
 
             'file' => [
+
                 'label' => 'Fail',
+
                 'placeholder' => 'Muat naik fail CSV',
+
+                'rules' => [
+                    'duplicate_columns' => '{0} Fail tidak boleh mengandungi lebih daripada satu pengepala lajur kosong.|{1,*} Fail tidak boleh mengandungi pengepala lajur pendua: :columns.',
+                ],
             ],
 
             'columns' => [

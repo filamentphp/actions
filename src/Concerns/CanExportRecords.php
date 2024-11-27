@@ -240,13 +240,15 @@ trait CanExportRecords
                 )
                 ->dispatch();
 
-            Notification::make()
-                ->title($action->getSuccessNotificationTitle())
-                ->body(trans_choice('filament-actions::export.notifications.started.body', $export->total_rows, [
-                    'count' => Number::format($export->total_rows),
-                ]))
-                ->success()
-                ->send();
+            if ($jobConnection !== 'sync') {
+                Notification::make()
+                    ->title($action->getSuccessNotificationTitle())
+                    ->body(trans_choice('filament-actions::export.notifications.started.body', $export->total_rows, [
+                        'count' => Number::format($export->total_rows),
+                    ]))
+                    ->success()
+                    ->send();
+            }
         });
 
         $this->color('gray');

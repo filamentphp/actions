@@ -15,7 +15,7 @@ return [
                 'placeholder' => 'Carregar un arxiu CSV',
                 'rules' => [
                     'duplicate_columns' => '{0} El fitxer no ha de contenir més d\'un encapçalament de columna buit.|{1,*} El fitxer no ha de contenir encapçalaments de columna duplicats: :columns.',
-                ],            
+                ],
             ],
 
             'columns' => [
