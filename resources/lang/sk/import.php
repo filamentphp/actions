@@ -19,7 +19,7 @@ return [
                 'rules' => [
                     'duplicate_columns' => '{0} Súbor nesmie obsahovať viac ako jeden prázdny názov stĺpca.|{1,*} Súbor nesmie obsahovať duplicitné názvy stĺpcov: :columns.',
                 ],
-                
+
             ],
 
             'columns' => [
