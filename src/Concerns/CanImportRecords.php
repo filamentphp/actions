@@ -269,7 +269,7 @@ trait CanImportRecords
                     filled($jobBatchName = $importer->getJobBatchName()),
                     fn (PendingBatch $batch) => $batch->name($jobBatchName),
                 )
-                ->finally(function () use ($import, $columnMap, $options) {
+                ->finally(function () use ($columnMap, $import, $jobConnection, $options) {
                     $import->touch('completed_at');
 
                     event(new ImportCompleted($import, $columnMap, $options));
@@ -307,17 +307,29 @@ trait CanImportRecords
                                     ->markAsRead(),
                             ]),
                         )
-                        ->sendToDatabase($import->user, isEventDispatched: true);
+                        ->when(
+                            ($jobConnection === 'sync') ||
+                                (blank($jobConnection) && (config('queue.default') === 'sync')),
+                            fn (Notification $notification) => $notification
+                                ->persistent()
+                                ->send(),
+                            fn (Notification $notification) => $notification->sendToDatabase($import->user, isEventDispatched: true),
+                        );
                 })
                 ->dispatch();
 
-            Notification::make()
-                ->title($action->getSuccessNotificationTitle())
-                ->body(trans_choice('filament-actions::import.notifications.started.body', $import->total_rows, [
-                    'count' => Number::format($import->total_rows),
-                ]))
-                ->success()
-                ->send();
+            if (
+                (filled($jobConnection) && ($jobConnection !== 'sync')) ||
+                (blank($jobConnection) && (config('queue.default') !== 'sync'))
+            ) {
+                Notification::make()
+                    ->title($action->getSuccessNotificationTitle())
+                    ->body(trans_choice('filament-actions::import.notifications.started.body', $import->total_rows, [
+                        'count' => Number::format($import->total_rows),
+                    ]))
+                    ->success()
+                    ->send();
+            }
         });
 
         $this->registerModalActions([
