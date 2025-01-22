@@ -36,7 +36,7 @@ return [
 
         'modal' => [
 
-            'heading' => 'Հարկադրված ջնջել ընտրված :label',
+            'heading' => 'Հարկադրված ջնջել ընտրված :labelը',
 
             'actions' => [
 
