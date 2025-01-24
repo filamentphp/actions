@@ -8,7 +8,7 @@ return [
 
         'modal' => [
 
-            'heading' => 'Հարկադրված ջնջել :label',
+            'heading' => 'Հարկադրված ջնջել :labelը',
 
             'actions' => [
 
