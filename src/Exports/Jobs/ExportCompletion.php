@@ -2,7 +2,7 @@
 
 namespace Filament\Actions\Exports\Jobs;
 
-use Filament\Actions\Exports\Enums\ExportFormat;
+use Filament\Actions\Exports\Enums\Contracts\ExportFormat;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
 use Filament\Notifications\Actions\Action as NotificationAction;

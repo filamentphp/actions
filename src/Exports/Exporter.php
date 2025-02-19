@@ -3,6 +3,7 @@
 namespace Filament\Actions\Exports;
 
 use Carbon\CarbonInterface;
+use Filament\Actions\Exports\Enums\Contracts\ExportFormat as ExportFormatInterface;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\Exports\Models\Export;
 use Filament\Forms\Components\Component;
@@ -172,7 +173,7 @@ abstract class Exporter
     }
 
     /**
-     * @return array<ExportFormat>
+     * @return array<ExportFormatInterface>
      */
     public function getFormats(): array
     {

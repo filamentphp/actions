@@ -5,10 +5,11 @@ namespace Filament\Actions\Exports\Enums;
 use Filament\Actions\Exports\Downloaders\Contracts\Downloader;
 use Filament\Actions\Exports\Downloaders\CsvDownloader;
 use Filament\Actions\Exports\Downloaders\XlsxDownloader;
+use Filament\Actions\Exports\Enums\Contracts\ExportFormat as ExportFormatInterface;
 use Filament\Actions\Exports\Models\Export;
 use Filament\Notifications\Actions\Action as NotificationAction;
 
-enum ExportFormat: string
+enum ExportFormat: string implements ExportFormatInterface
 {
     case Csv = 'csv';
 
