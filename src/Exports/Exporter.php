@@ -122,7 +122,7 @@ abstract class Exporter
      */
     public function getCachedColumns(): array
     {
-        return $this->cachedColumns ?? array_reduce(static::getColumns(), function (array $carry, ExportColumn $column): array {
+        return $this->cachedColumns ??= array_reduce(static::getColumns(), function (array $carry, ExportColumn $column): array {
             $carry[$column->getName()] = $column->exporter($this);
 
             return $carry;
