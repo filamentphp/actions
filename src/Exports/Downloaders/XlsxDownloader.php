@@ -30,6 +30,8 @@ class XlsxDownloader implements Downloader
                 ob_end_clean();
             }
 
+            $response->headers->set('X-Vapor-Base64-Encode', 'True');
+
             return $response;
         }
 
