@@ -42,7 +42,7 @@ class XlsxDownloader implements Downloader
         $writeRowsFromFile = function (string $file) use ($csvDelimiter, $disk, $writer) {
             $csvReader = CsvReader::createFromStream($disk->readStream($file));
             $csvReader->setDelimiter($csvDelimiter);
-            $csvResults = Statement::create()->process($csvReader);
+            $csvResults = (new Statement)->process($csvReader);
 
             foreach ($csvResults->getRecords() as $row) {
                 $writer->addRow(Row::fromValues($row));
