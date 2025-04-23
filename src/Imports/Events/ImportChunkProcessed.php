@@ -4,6 +4,7 @@ namespace Filament\Actions\Imports\Events;
 
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Foundation\Events\Dispatchable;
+use Throwable;
 
 class ImportChunkProcessed
 {
@@ -12,6 +13,7 @@ class ImportChunkProcessed
     /**
      * @param  array<string, string>  $columnMap
      * @param  array<string, mixed>  $options
+     * @param  array<Throwable>  $exceptions
      */
     public function __construct(
         protected Import $import,
@@ -19,6 +21,7 @@ class ImportChunkProcessed
         protected array $options,
         protected int $processedRows,
         protected int $successfulRows,
+        protected array $exceptions,
     ) {}
 
     public function getImport(): Import
@@ -50,5 +53,13 @@ class ImportChunkProcessed
     public function getSuccessfulRows(): int
     {
         return $this->successfulRows;
+    }
+
+    /**
+     * @return array<Throwable>
+     */
+    public function getExceptions(): array
+    {
+        return $this->exceptions;
     }
 }

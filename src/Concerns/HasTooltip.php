@@ -17,14 +17,6 @@ trait HasTooltip
 
     public function getTooltip(): ?string
     {
-        if (
-            $this->hasAuthorizationTooltip() &&
-            ($response = $this->getAuthorizationResponseWithMessage())->denied() &&
-            filled($responseMessage = $response->message())
-        ) {
-            return $responseMessage;
-        }
-
         return $this->evaluate($this->tooltip);
     }
 }

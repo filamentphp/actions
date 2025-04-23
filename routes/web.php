@@ -9,7 +9,7 @@ $prefix = config('filament.system_route_prefix', 'filament');
 Route::middleware('filament.actions')
     ->name('filament.')
     ->prefix($prefix)
-    ->group(function (): void {
+    ->group(function () {
         Route::get('/exports/{export}/download', DownloadExport::class)
             ->name('exports.download');
 

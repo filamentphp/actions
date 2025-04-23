@@ -3,7 +3,6 @@
 namespace Filament\Actions\Exports;
 
 use Closure;
-use Exception;
 use Filament\Support\Components\Component;
 use Filament\Support\Concerns\CanAggregateRelatedModels;
 use Filament\Support\Concerns\HasCellState;
@@ -32,25 +31,12 @@ class ExportColumn extends Component
         $this->name($name);
     }
 
-    public static function make(?string $name = null): static
+    public static function make(string $name): static
     {
-        $exportColumnClass = static::class;
-
-        $name ??= static::getDefaultName();
-
-        if (blank($name)) {
-            throw new Exception("Export column of class [$exportColumnClass] must have a unique name, passed to the [make()] method.");
-        }
-
-        $static = app($exportColumnClass, ['name' => $name]);
+        $static = app(static::class, ['name' => $name]);
         $static->configure();
 
         return $static;
-    }
-
-    public static function getDefaultName(): ?string
-    {
-        return null;
     }
 
     public function name(string $name): static
@@ -140,7 +126,7 @@ class ExportColumn extends Component
             return $query;
         }
 
-        $relationshipName = $this->getRelationshipName($query->getModel());
+        $relationshipName = $this->getRelationshipName();
 
         if (array_key_exists($relationshipName, $query->getEagerLoads())) {
             return $query;

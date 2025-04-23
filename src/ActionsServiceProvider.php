@@ -3,8 +3,7 @@
 namespace Filament\Actions;
 
 use Filament\Actions\Testing\TestsActions;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Package;
@@ -16,10 +15,7 @@ class ActionsServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('filament-actions')
-            ->hasCommands([
-                Commands\MakeExporterCommand::class,
-                Commands\MakeImporterCommand::class,
-            ])
+            ->hasCommands($this->getCommands())
             ->hasMigrations([
                 'create_imports_table',
                 'create_exports_table',
@@ -32,15 +28,47 @@ class ActionsServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        app(Router::class)->middlewareGroup('filament.actions', ['web']);
+        app(Router::class)->middlewareGroup('filament.actions', ['web', 'auth']);
     }
 
     public function packageBooted(): void
     {
-        FilamentAsset::register([
-            Js::make('actions', __DIR__ . '/../dist/index.js'),
-        ], 'filament/actions');
+        if ($this->app->runningInConsole()) {
+            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
+                $this->publishes([
+                    $file->getRealPath() => base_path("stubs/filament/{$file->getFilename()}"),
+                ], 'filament-stubs');
+            }
+        }
 
         Testable::mixin(new TestsActions);
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function getCommands(): array
+    {
+        $commands = [
+            Commands\MakeExporterCommand::class,
+            Commands\MakeImporterCommand::class,
+        ];
+
+        $aliases = [];
+
+        foreach ($commands as $command) {
+            $class = 'Filament\\Actions\\Commands\\Aliases\\' . class_basename($command);
+
+            if (! class_exists($class)) {
+                continue;
+            }
+
+            $aliases[] = $class;
+        }
+
+        return [
+            ...$commands,
+            ...$aliases,
+        ];
     }
 }

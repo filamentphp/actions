@@ -5,13 +5,8 @@ namespace Filament\Actions;
 use Closure;
 use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Actions\Contracts\HasActions;
-use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Support\Facades\FilamentIcon;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Arr;
 
 class EditAction extends Action
 {
@@ -36,10 +31,9 @@ class EditAction extends Action
 
         $this->successNotificationTitle(__('filament-actions::edit.single.notifications.saved.title'));
 
-        $this->tableIcon(FilamentIcon::resolve('actions::edit-action') ?? Heroicon::PencilSquare);
-        $this->groupedIcon(FilamentIcon::resolve('actions::edit-action.grouped') ?? Heroicon::PencilSquare);
+        $this->groupedIcon(FilamentIcon::resolve('actions::edit-action.grouped') ?? 'heroicon-m-pencil-square');
 
-        $this->fillForm(function (HasActions & HasSchemas $livewire, Model $record): array {
+        $this->fillForm(function (HasActions $livewire, Model $record): array {
             if ($translatableContentDriver = $livewire->makeFilamentTranslatableContentDriver()) {
                 $data = $translatableContentDriver->getRecordAttributesToArray($record);
             } else {
@@ -54,29 +48,8 @@ class EditAction extends Action
         });
 
         $this->action(function (): void {
-            $this->process(function (array $data, HasActions & HasSchemas $livewire, Model $record, ?Table $table): void {
-                $relationship = $table?->getRelationship();
-
-                $translatableContentDriver = $livewire->makeFilamentTranslatableContentDriver();
-
-                if ($relationship instanceof BelongsToMany) {
-                    $pivot = $record->getRelationValue($relationship->getPivotAccessor());
-
-                    $pivotColumns = $relationship->getPivotColumns();
-                    $pivotData = Arr::only($data, $pivotColumns);
-
-                    if (count($pivotColumns)) {
-                        if ($translatableContentDriver) {
-                            $translatableContentDriver->updateRecord($pivot, $pivotData);
-                        } else {
-                            $pivot->update($pivotData);
-                        }
-                    }
-
-                    $data = Arr::except($data, $pivotColumns);
-                }
-
-                if ($translatableContentDriver) {
+            $this->process(function (array $data, HasActions $livewire, Model $record) {
+                if ($translatableContentDriver = $livewire->makeFilamentTranslatableContentDriver()) {
                     $translatableContentDriver->updateRecord($record, $data);
                 } else {
                     $record->update($data);

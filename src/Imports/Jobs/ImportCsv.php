@@ -3,19 +3,21 @@
 namespace Filament\Actions\Imports\Jobs;
 
 use Carbon\CarbonInterface;
+use Exception;
 use Filament\Actions\Imports\Events\ImportChunkProcessed;
 use Filament\Actions\Imports\Exceptions\RowImportFailedException;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
+use Filament\Actions\Imports\Models\FailedImportRow;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -31,11 +33,6 @@ class ImportCsv implements ShouldQueue
     public bool $deleteWhenMissingModels = true;
 
     protected Importer $importer;
-
-    /** @var array<array<string, mixed>> */
-    protected array $failedRows = [];
-
-    public ?int $maxExceptions = 5;
 
     /**
      * @param  array<array<string, string>> | string  $rows
@@ -67,59 +64,60 @@ class ImportCsv implements ShouldQueue
         /** @var Authenticatable $user */
         $user = $this->import->user;
 
-        auth()->setUser($user);
+        if (method_exists(auth()->guard(), 'login')) {
+            auth()->login($user);
+        } else {
+            auth()->setUser($user);
+        }
+
+        $exceptions = [];
 
         $processedRows = 0;
         $successfulRows = 0;
 
-        $rows = is_array($this->rows) ? $this->rows : unserialize(base64_decode($this->rows));
+        if (! is_array($this->rows)) {
+            $rows = unserialize(base64_decode($this->rows));
+        }
 
-        DB::transaction(function () use (&$processedRows, $rows, &$successfulRows): void {
-            foreach ($rows as $row) {
-                $row = $this->utf8Encode($row);
+        foreach (($rows ?? $this->rows) as $row) {
+            $row = $this->utf8Encode($row);
 
-                try {
-                    ($this->importer)($row);
-                    $successfulRows++;
-                } catch (RowImportFailedException $exception) {
-                    $this->logFailedRow($row, $exception->getMessage());
-                } catch (ValidationException $exception) {
-                    $this->logFailedRow($row, collect($exception->errors())->flatten()->implode(' '));
-                } catch (Throwable $exception) {
-                    report($exception);
+            try {
+                DB::transaction(fn () => ($this->importer)($row));
+                $successfulRows++;
+            } catch (RowImportFailedException $exception) {
+                $this->logFailedRow($row, $exception->getMessage());
+            } catch (ValidationException $exception) {
+                $this->logFailedRow($row, collect($exception->errors())->flatten()->implode(' '));
+            } catch (Throwable $exception) {
+                $exceptions[$exception::class] = $exception;
 
-                    $this->logFailedRow($row);
-                }
-
-                $processedRows++;
+                $this->logFailedRow($row);
             }
 
-            $this->import::query()
-                ->whereKey($this->import)
-                ->lockForUpdate()
-                ->update([
-                    'processed_rows' => new Expression('processed_rows + ' . $processedRows),
-                    'successful_rows' => new Expression('successful_rows + ' . $successfulRows),
-                ]);
+            $processedRows++;
+        }
 
-            $this->import::query()
-                ->whereKey($this->import)
-                ->whereColumn('processed_rows', '>', 'total_rows')
-                ->lockForUpdate()
-                ->update([
-                    'processed_rows' => new Expression('total_rows'),
-                ]);
+        $this->import::query()
+            ->whereKey($this->import)
+            ->update([
+                'processed_rows' => DB::raw('processed_rows + ' . $processedRows),
+                'successful_rows' => DB::raw('successful_rows + ' . $successfulRows),
+            ]);
 
-            $this->import::query()
-                ->whereKey($this->import)
-                ->whereColumn('successful_rows', '>', 'total_rows')
-                ->lockForUpdate()
-                ->update([
-                    'successful_rows' => new Expression('total_rows'),
-                ]);
+        $this->import::query()
+            ->whereKey($this->import)
+            ->whereColumn('processed_rows', '>', 'total_rows')
+            ->update([
+                'processed_rows' => DB::raw('total_rows'),
+            ]);
 
-            $this->import->failedRows()->createMany($this->failedRows);
-        });
+        $this->import::query()
+            ->whereKey($this->import)
+            ->whereColumn('successful_rows', '>', 'total_rows')
+            ->update([
+                'successful_rows' => DB::raw('total_rows'),
+            ]);
 
         $this->import->refresh();
 
@@ -129,20 +127,15 @@ class ImportCsv implements ShouldQueue
             $this->options,
             $processedRows,
             $successfulRows,
+            $exceptions,
         ));
+
+        $this->handleExceptions($exceptions);
     }
 
     public function retryUntil(): ?CarbonInterface
     {
         return $this->importer->getJobRetryUntil();
-    }
-
-    /**
-     * @return int | array<int> | null
-     */
-    public function backoff(): int | array | null
-    {
-        return $this->importer->getJobBackoff();
     }
 
     /**
@@ -158,10 +151,11 @@ class ImportCsv implements ShouldQueue
      */
     protected function logFailedRow(array $data, ?string $validationError = null): void
     {
-        $this->failedRows[] = [
-            'data' => $this->filterSensitiveData($data),
-            'validation_error' => $validationError,
-        ];
+        $failedRow = app(FailedImportRow::class);
+        $failedRow->import()->associate($this->import);
+        $failedRow->data = $this->filterSensitiveData($data);
+        $failedRow->validation_error = $validationError;
+        $failedRow->save();
     }
 
     /**
@@ -206,5 +200,21 @@ class ImportCsv implements ShouldQueue
         }
 
         return $value;
+    }
+
+    /**
+     * @param  array<Throwable>  $exceptions
+     */
+    protected function handleExceptions(array $exceptions): void
+    {
+        if (empty($exceptions)) {
+            return;
+        }
+
+        if (count($exceptions) > 1) {
+            throw new Exception('Multiple types of exceptions occurred: [' . implode('], [', array_keys($exceptions)) . ']');
+        }
+
+        throw Arr::first($exceptions);
     }
 }

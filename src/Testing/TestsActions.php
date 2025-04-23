@@ -2,25 +2,21 @@
 
 namespace Filament\Actions\Testing;
 
-use BackedEnum;
 use Closure;
 use Exception;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
-use Filament\Actions\ActionName;
 use Filament\Actions\Contracts\HasActions;
-use Filament\Actions\Exceptions\ActionNotResolvableException;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Actions\MountableAction;
+use Filament\Actions\StaticAction;
 use Illuminate\Support\Arr;
 use Illuminate\Testing\Assert;
-use Livewire\Component;
 use Livewire\Features\SupportTesting\Testable;
-use ReflectionClass;
 
 use function Livewire\store;
 
 /**
- * @method Component&HasActions instance()
+ * @method HasActions instance()
  *
  * @mixin Testable
  */
@@ -28,19 +24,16 @@ class TestsActions
 {
     public function mountAction(): Closure
     {
-        return function (string | TestAction | array $actions, array $arguments = []): static {
-            $initialMountedActionsCount = count($this->instance()->mountedActions);
-
-            /** @var array<array<string, mixed>> $actions */
+        return function (string | array $name, array $arguments = []): static {
+            /** @var array<string> $name */
             /** @phpstan-ignore-next-line */
-            $actions = $this->parseNestedActions($actions, $arguments);
+            $name = $this->parseNestedActionName($name);
 
-            foreach ($actions as $action) {
+            foreach ($name as $actionNestingIndex => $actionName) {
                 $this->call(
                     'mountAction',
-                    $action['name'],
-                    $action['arguments'] ?? [],
-                    $action['context'] ?? [],
+                    $actionName,
+                    $arguments[$actionName] ?? ($actionNestingIndex ? [] : $arguments),
                 );
             }
 
@@ -48,9 +41,15 @@ class TestsActions
                 return $this;
             }
 
-            if (count($this->instance()->mountedActions) !== ($initialMountedActionsCount + count($actions))) {
+            if (! count($this->instance()->mountedActions)) {
+                $this->assertNotDispatched('open-modal');
+
                 return $this;
             }
+
+            $this->assertSet('mountedActions', $name);
+
+            $this->assertDispatched('open-modal', id: "{$this->instance()->getId()}-action");
 
             return $this;
         };
@@ -68,7 +67,9 @@ class TestsActions
     public function setActionData(): Closure
     {
         return function (array $data): static {
-            $this->fillForm($data);
+            foreach (Arr::dot($data, prepend: 'mountedActionsData.' . array_key_last($this->instance()->mountedActionsData) . '.') as $key => $value) {
+                $this->set($key, $value);
+            }
 
             return $this;
         };
@@ -76,8 +77,10 @@ class TestsActions
 
     public function assertActionDataSet(): Closure
     {
-        return function (array | Closure $data): static {
-            $this->assertSchemaStateSet($data);
+        return function (array $data): static {
+            foreach (Arr::dot($data, prepend: 'mountedActionsData.' . array_key_last($this->instance()->mountedActionsData) . '.') as $key => $value) {
+                $this->assertSet($key, $value);
+            }
 
             return $this;
         };
@@ -85,16 +88,14 @@ class TestsActions
 
     public function callAction(): Closure
     {
-        return function (string | TestAction | array $actions, array $data = [], array $arguments = []): static {
-            $initialMountedActionsCount = count($this->instance()->mountedActions);
+        return function (string | array $name, array $data = [], array $arguments = []): static {
+            /** @phpstan-ignore-next-line */
+            $this->assertActionVisible($name, $arguments);
 
             /** @phpstan-ignore-next-line */
-            $this->assertActionVisible($actions, $arguments);
+            $this->mountAction($name, $arguments);
 
-            /** @phpstan-ignore-next-line */
-            $this->mountAction($actions, $arguments);
-
-            if (count($this->instance()->mountedActions) !== ($initialMountedActionsCount + count(Arr::wrap($actions)))) {
+            if (! $this->instance()->getMountedAction()) {
                 return $this;
             }
 
@@ -102,10 +103,8 @@ class TestsActions
                 return $this;
             }
 
-            if (filled($data)) {
-                /** @phpstan-ignore-next-line */
-                $this->fillForm($data);
-            }
+            /** @phpstan-ignore-next-line */
+            $this->setActionData($data);
 
             /** @phpstan-ignore-next-line */
             $this->callMountedAction($arguments);
@@ -129,41 +128,31 @@ class TestsActions
                 return $this;
             }
 
+            if (! count($this->instance()->mountedActions)) {
+                $this->assertDispatched('close-modal', id: "{$this->instance()->getId()}-action");
+            }
+
             return $this;
         };
     }
 
     public function assertActionExists(): Closure
     {
-        return function (string | TestAction | array $actions, ?Closure $checkActionUsing = null, ?Closure $generateMessageUsing = null, array $arguments = []): static {
-            /** @var array<array<string, mixed>> $actions */
+        return function (string | array $name): static {
+            /** @var array<string> $name */
             /** @phpstan-ignore-next-line */
-            $actions = $this->parseNestedActions($actions, $arguments);
+            $name = $this->parseNestedActionName($name);
 
-            $action = $this->instance()->getAction([
-                ...$this->instance()->mountedActions,
-                ...$actions,
-            ]);
+            $action = $this->instance()->getAction($name);
 
             $livewireClass = $this->instance()::class;
-            $prettyName = implode(' > ', Arr::pluck($actions, 'name'));
+            $prettyName = implode(' > ', $name);
 
             Assert::assertInstanceOf(
                 Action::class,
                 $action,
-                $generateMessageUsing ?
-                    $generateMessageUsing($prettyName, $livewireClass) :
-                    "Failed asserting that an action with name [{$prettyName}] exists on the [{$livewireClass}] component.",
+                message: "Failed asserting that an action with name [{$prettyName}] exists on the [{$livewireClass}] page.",
             );
-
-            if ($checkActionUsing) {
-                Assert::assertTrue(
-                    $checkActionUsing($action),
-                    $generateMessageUsing ?
-                        $generateMessageUsing($prettyName, $livewireClass) :
-                        "Failed asserting that an action with the name [{$prettyName}] and provided configuration exists on the [{$livewireClass}] component.",
-                );
-            }
 
             return $this;
         };
@@ -171,42 +160,24 @@ class TestsActions
 
     public function assertActionDoesNotExist(): Closure
     {
-        return function (string | TestAction | array $actions, ?Closure $checkActionUsing = null, ?Closure $generateMessageUsing = null): static {
-            /** @var array<array<string, mixed>> $actions */
+        return function (string | array $name): static {
+            /** @var array<string> $name */
             /** @phpstan-ignore-next-line */
-            $actions = $this->parseNestedActions($actions);
+            $name = $this->parseNestedActionName($name);
 
             try {
-                $action = $this->instance()->getAction($actions); /** @phpstan-ignore argument.type */
-            } catch (ActionNotResolvableException $exception) {
-                Assert::assertNull(null);
-
-                return $this;
+                $action = $this->instance()->getAction($name);
+            } catch (Exception $exception) {
+                $action = null;
             }
 
             $livewireClass = $this->instance()::class;
-            $prettyName = implode(' > ', Arr::pluck($actions, 'name'));
+            $prettyName = implode(' > ', $name);
 
-            if (! $action) {
-                Assert::assertNull($action);
-            }
-
-            if ($checkActionUsing) {
-                Assert::assertFalse(
-                    $checkActionUsing($action),
-                    $generateMessageUsing ?
-                        $generateMessageUsing($prettyName, $livewireClass) :
-                        "Failed asserting that an action with the name [{$prettyName}] and provided configuration does not exist on the [{$livewireClass}] component.",
-                );
-            } else {
-                Assert::assertNotInstanceOf(
-                    Action::class,
-                    $action,
-                    $generateMessageUsing ?
-                        $generateMessageUsing($prettyName, $livewireClass) :
-                        "Failed asserting that an action with the name [{$prettyName}] does not exist on the [{$livewireClass}] component.",
-                );
-            }
+            Assert::assertNull(
+                $action,
+                message: "Failed asserting that an action with name [{$prettyName}] does not exist on the [{$livewireClass}] page.",
+            );
 
             return $this;
         };
@@ -214,12 +185,24 @@ class TestsActions
 
     public function assertActionVisible(): Closure
     {
-        return function (string | TestAction | array $actions, array $arguments = []): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->isVisible(),
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] is visible on the [{$livewireClass}] component.",
-                arguments: $arguments,
+        return function (string | array $name, array $arguments = []): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $action->arguments($arguments);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertFalse(
+                $action->isHidden(),
+                message: "Failed asserting that an action with name [{$prettyName}] is visible on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -228,12 +211,24 @@ class TestsActions
 
     public function assertActionHidden(): Closure
     {
-        return function (string | TestAction | array $actions, array $arguments = []): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->isHidden(),
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] is hidden on the [{$livewireClass}] component.",
-                arguments: $arguments,
+        return function (string | array $name, array $arguments = []): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $action->arguments($arguments);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->isHidden(),
+                message: "Failed asserting that an action with name [{$prettyName}] is hidden on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -242,11 +237,22 @@ class TestsActions
 
     public function assertActionEnabled(): Closure
     {
-        return function (string | TestAction | array $actions): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->isEnabled(),
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] is enabled on the [{$livewireClass}] component.",
+        return function (string | array $name): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->isEnabled(),
+                message: "Failed asserting that an action with name [{$prettyName}] is enabled on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -255,11 +261,22 @@ class TestsActions
 
     public function assertActionDisabled(): Closure
     {
-        return function (string | TestAction | array $actions): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->isDisabled(),
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] is disabled on the [{$livewireClass}] component.",
+        return function (string | array $name): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->isDisabled(),
+                message: "Failed asserting that an action with name [{$prettyName}] is disabled on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -268,14 +285,22 @@ class TestsActions
 
     public function assertActionHasIcon(): Closure
     {
-        return function (string | TestAction | array $actions, string | BackedEnum $icon): static {
+        return function (string | array $name, string $icon, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
 
-            $iconValue = $icon instanceof BackedEnum ? $icon->value : $icon;
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
 
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getIcon() === $icon,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] has icon [{$iconValue}] on the [{$livewireClass}] component.",
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->getIcon() === $icon,
+                message: "Failed asserting that an action with name [{$prettyName}] has icon [{$icon}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -284,14 +309,22 @@ class TestsActions
 
     public function assertActionDoesNotHaveIcon(): Closure
     {
-        return function (string | TestAction | array $actions, string | BackedEnum $icon): static {
+        return function (string | array $name, string $icon, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
 
-            $iconValue = $icon instanceof BackedEnum ? $icon->value : $icon;
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
 
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getIcon() !== $icon,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] does not have icon [{$iconValue}] on the [{$livewireClass}] component.",
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertFalse(
+                $action->getIcon() === $icon,
+                message: "Failed asserting that an action with name [{$prettyName}] does not have icon [{$icon}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -300,11 +333,22 @@ class TestsActions
 
     public function assertActionHasLabel(): Closure
     {
-        return function (string | TestAction | array $actions, string $label): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getLabel() === $label,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] has label [{$label}] on the [{$livewireClass}] component.",
+        return function (string | array $name, string $label, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->getLabel() === $label,
+                message: "Failed asserting that an action with name [{$prettyName}] has label [{$label}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -313,11 +357,22 @@ class TestsActions
 
     public function assertActionDoesNotHaveLabel(): Closure
     {
-        return function (string | TestAction | array $actions, string $label): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getLabel() !== $label,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] does not have label [{$label}] on the [{$livewireClass}] component.",
+        return function (string | array $name, string $label, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertFalse(
+                $action->getLabel() === $label,
+                message: "Failed asserting that an action with name [{$prettyName}] does not have label [{$label}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -326,13 +381,22 @@ class TestsActions
 
     public function assertActionHasColor(): Closure
     {
-        return function (string | TestAction | array $actions, string | array $color): static {
-            $colorName = is_string($color) ? $color : 'custom';
+        return function (string | array $name, string | array $color, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
 
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getColor() === $colorName,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] has color [{$color}] on the [{$livewireClass}] component.",
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->getColor() === $color,
+                message: "Failed asserting that an action with name [{$prettyName}] has color [{$color}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -341,13 +405,22 @@ class TestsActions
 
     public function assertActionDoesNotHaveColor(): Closure
     {
-        return function (string | TestAction | array $actions, string | array $color): static {
-            $colorName = is_string($color) ? $color : 'custom';
+        return function (string | array $name, string | array $color, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
 
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getColor() !== $colorName,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] does not have color [{$color}] on the [{$livewireClass}] component.",
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertFalse(
+                $action->getColor() === $color,
+                message: "Failed asserting that an action with name [{$prettyName}] does not have color [{$color}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -356,11 +429,22 @@ class TestsActions
 
     public function assertActionHasUrl(): Closure
     {
-        return function (string | TestAction | array $actions, string $url): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getUrl() === $url,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] has URL [{$url}] on the [{$livewireClass}] component.",
+        return function (string | array $name, string $url, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->getUrl() === $url,
+                message: "Failed asserting that an action with name [{$prettyName}] has URL [{$url}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -369,11 +453,22 @@ class TestsActions
 
     public function assertActionDoesNotHaveUrl(): Closure
     {
-        return function (string | TestAction | array $actions, string $url): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->getUrl() !== $url,
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] does not have URL [{$url}] on the [{$livewireClass}] component.",
+        return function (string | array $name, string $url, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertFalse(
+                $action->getUrl() === $url,
+                message: "Failed asserting that an action with name [{$prettyName}] does not have URL [{$url}] on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -382,11 +477,22 @@ class TestsActions
 
     public function assertActionShouldOpenUrlInNewTab(): Closure
     {
-        return function (string | TestAction | array $actions): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => $action->shouldOpenUrlInNewTab(),
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] should open url in new tab on the [{$livewireClass}] component.",
+        return function (string | array $name, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertTrue(
+                $action->shouldOpenUrlInNewTab(),
+                message: "Failed asserting that an action with name [{$prettyName}] should open url in new tab on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -395,11 +501,22 @@ class TestsActions
 
     public function assertActionShouldNotOpenUrlInNewTab(): Closure
     {
-        return function (string | TestAction | array $actions): static {
-            $this->assertActionExists(
-                $actions,
-                checkActionUsing: fn (Action $action): bool => ! $action->shouldOpenUrlInNewTab(),
-                generateMessageUsing: fn (string $prettyName, string $livewireClass): string => "Failed asserting that an action with name [{$prettyName}] should not open url in new tab on the [{$livewireClass}] component.",
+        return function (string | array $name, $record = null): static {
+            /** @var array<string> $name */
+            /** @phpstan-ignore-next-line */
+            $name = $this->parseNestedActionName($name);
+
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
+
+            $action = $this->instance()->getAction($name);
+
+            $livewireClass = $this->instance()::class;
+            $prettyName = implode(' > ', $name);
+
+            Assert::assertFalse(
+                $action->shouldOpenUrlInNewTab(),
+                message: "Failed asserting that an action with name [{$prettyName}] should not open url in new tab on the [{$livewireClass}] component.",
             );
 
             return $this;
@@ -408,48 +525,15 @@ class TestsActions
 
     public function assertActionMounted(): Closure
     {
-        return function (string | TestAction | array $actions = []): static {
-            if (empty($actions)) {
-                $this->assertNotSet('mountedActions', []);
-
-                return $this;
-            }
-
-            $originalActions = Arr::wrap($actions);
-
-            /** @var array<array<string, mixed>> $actions */
+        return function (string | array $name): static {
+            /** @var array<string> $name */
             /** @phpstan-ignore-next-line */
-            $actions = $this->parseNestedActions($actions, areRelativeToMountedActions: false);
+            $name = $this->parseNestedActionName($name);
 
-            $actionNestingIndexOffset = count($this->instance()->mountedActions) - count($actions);
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
 
-            foreach ($actions as $actionNestingIndex => $action) {
-                $actionNestingIndex += $actionNestingIndexOffset;
-
-                $this->assertSet(
-                    "mountedActions.{$actionNestingIndex}.name",
-                    $action['name'],
-                );
-
-                if (array_key_exists('arguments', $action)) {
-                    $this->assertSet(
-                        "mountedActions.{$actionNestingIndex}.arguments",
-                        $action['arguments'],
-                    );
-                }
-
-                if (($originalAction = array_shift($originalActions)) instanceof TestAction) {
-                    Assert::assertTrue(
-                        $originalAction->checkArguments($this->instance()->mountedActions[$actionNestingIndex]['arguments'] ?? []),
-                        "Failed asserting that the mounted arguments for the action [{$action['name']}] match the expected arguments.",
-                    );
-                }
-
-                $this->assertSet(
-                    "mountedActions.{$actionNestingIndex}.context",
-                    $action['context'] ?? [],
-                );
-            }
+            $this->assertSet('mountedActions', $name);
 
             return $this;
         };
@@ -457,51 +541,15 @@ class TestsActions
 
     public function assertActionNotMounted(): Closure
     {
-        return function (string | TestAction | array $actions = []): static {
-            if (empty($actions)) {
-                $this->assertSet('mountedActions', []);
-
-                return $this;
-            }
-
-            $originalActions = Arr::wrap($actions);
-
-            /** @var array<array<string, mixed>> $actions */
+        return function (string | array $name): static {
+            /** @var array<string> $name */
             /** @phpstan-ignore-next-line */
-            $actions = $this->parseNestedActions($actions, areRelativeToMountedActions: false);
+            $name = $this->parseNestedActionName($name);
 
-            $actionNestingIndexOffset = count($this->instance()->mountedActions) - count($actions);
+            /** @phpstan-ignore-next-line */
+            $this->assertActionExists($name);
 
-            foreach ($actions as $actionNestingIndex => $action) {
-                $actionNestingIndex += $actionNestingIndexOffset;
-
-                if (($this->instance()->mountedActions[$actionNestingIndex]['name'] ?? null) !== $action['name']) {
-                    return $this;
-                }
-
-                if (
-                    array_key_exists('arguments', $action) &&
-                    (($this->instance()->mountedActions[$actionNestingIndex]['arguments'] ?? null) !== $action['arguments'])
-                ) {
-                    return $this;
-                }
-
-                if (
-                    (($originalAction = array_shift($originalActions)) instanceof TestAction) &&
-                    (! $originalAction->checkArguments($this->instance()->mountedActions[$actionNestingIndex]['arguments'] ?? []))
-                ) {
-                    return $this;
-                }
-
-                if (($this->instance()->mountedActions[$actionNestingIndex]['context'] ?? null) !== $action['context']) {
-                    return $this;
-                }
-            }
-
-            Assert::assertFalse(
-                true,
-                'Failed asserting that the action is not mounted.',
-            );
+            $this->assertNotSet('mountedActions', $name);
 
             return $this;
         };
@@ -523,7 +571,17 @@ class TestsActions
     public function assertHasActionErrors(): Closure
     {
         return function (array $keys = []): static {
-            $this->assertHasFormErrors($keys);
+            $this->assertHasErrors(
+                collect($keys)
+                    ->mapWithKeys(function ($value, $key): array {
+                        if (is_int($key)) {
+                            return [$key => 'mountedActionsData.' . array_key_last($this->instance()->mountedActionsData) . '.' . $value];
+                        }
+
+                        return ['mountedActionsData.' . array_key_last($this->instance()->mountedActionsData) . '.' . $key => $value];
+                    })
+                    ->all(),
+            );
 
             return $this;
         };
@@ -532,7 +590,17 @@ class TestsActions
     public function assertHasNoActionErrors(): Closure
     {
         return function (array $keys = []): static {
-            $this->assertHasNoFormErrors($keys);
+            $this->assertHasNoErrors(
+                collect($keys)
+                    ->mapWithKeys(function ($value, $key): array {
+                        if (is_int($key)) {
+                            return [$key => 'mountedActionsData.' . array_key_last($this->instance()->mountedActionsData) . '.' . $value];
+                        }
+
+                        return ['mountedActionsData.' . array_key_last($this->instance()->mountedActionsData) . '.' . $key => $value];
+                    })
+                    ->all(),
+            );
 
             return $this;
         };
@@ -544,26 +612,12 @@ class TestsActions
             $livewireClass = $this->instance()::class;
 
             /** @var array<string> $names */
-            $names = array_map(function (string $name): string {
-                if (! class_exists($name)) {
-                    return $name;
-                }
-
-                if ($actionClassNameAttributes = (new ReflectionClass($name))->getAttributes(ActionName::class)) {
-                    $name = (string) Arr::first($actionClassNameAttributes)->newInstance();
-                }
-
-                if (! is_subclass_of($name, Action::class)) {
-                    return $name;
-                }
-
-                return $name::getDefaultName();
-            }, $names);
+            $names = array_map(fn (string $name): string => $this->parseActionName($name), $names); // @phpstan-ignore-line
             $namesIndex = 0;
 
             $actions = array_reduce(
                 $actions,
-                function (array $carry, Action | ActionGroup $action): array {
+                function (array $carry, StaticAction | ActionGroup $action): array {
                     if ($action instanceof ActionGroup) {
                         return [
                             ...$carry,
@@ -590,7 +644,7 @@ class TestsActions
                 Assert::assertInstanceOf(
                     $actionClass,
                     $action,
-                    "Failed asserting that a {$actionType} action with name [{$actionName}] exists on the [{$livewireClass}] component.",
+                    message: "Failed asserting that a {$actionType} action with name [{$actionName}] exists on the [{$livewireClass}] component.",
                 );
 
                 $namesIndex++;
@@ -599,79 +653,48 @@ class TestsActions
             Assert::assertEquals(
                 count($names),
                 $namesIndex,
-                "Failed asserting that a {$actionType} actions with names [" . implode(', ', $names) . "] exist in order on the [{$livewireClass}] component.",
+                message: "Failed asserting that a {$actionType} actions with names [" . implode(', ', $names) . "] exist in order on the [{$livewireClass}] component.",
             );
 
             return $this;
         };
     }
 
-    public function parseNestedActions(): Closure
+    public function parseActionName(): Closure
     {
-        return function (string | TestAction | array $actions, array $arguments = [], bool $areRelativeToMountedActions = true): array {
-            $initialMountedActionsCount = $areRelativeToMountedActions ? count($this->instance()->mountedActions) : 0;
-
-            if (is_string($actions)) {
-                $actions = explode('.', $actions);
-            } elseif (
-                ($actions instanceof TestAction) ||
-                array_key_exists('name', $actions)
-            ) {
-                $actions = [$actions];
+        return function (string $name): string {
+            if (! class_exists($name)) {
+                return $name;
             }
 
-            $areArgumentsKeyedByActionName = false;
-
-            foreach ($actions as $actionNestingIndex => $action) {
-                if (is_string($action)) {
-                    $action = [
-                        'name' => $action,
-                    ];
-                } elseif ($action instanceof TestAction) {
-                    $action = $action->toArray(defaultSchema: ($initialMountedActionsCount + $actionNestingIndex) ? ('mountedActionSchema' . ($initialMountedActionsCount + $actionNestingIndex - 1)) : $this->instance()->getDefaultTestingSchemaName());
-                }
-
-                $actionName = $action['name'] ?? throw new Exception("Action name at index [{$actionNestingIndex}] is not specified.");
-
-                if (
-                    class_exists($actionName) &&
-                    ($actionClassNameAttributes = (new ReflectionClass($actionName))->getAttributes(ActionName::class))
-                ) {
-                    $action['name'] = $actionName = (string) Arr::first($actionClassNameAttributes)->newInstance();
-                }
-
-                if (
-                    class_exists($actionName) &&
-                    is_subclass_of($actionName, Action::class)
-                ) {
-                    $action['name'] = $actionName = $actionName::getDefaultName();
-                }
-
-                if (filled($arguments) && (! array_key_exists('arguments', $action))) {
-                    if (array_key_exists($actionName, $arguments)) {
-                        $action['arguments'] = $arguments[$actionName];
-
-                        $areArgumentsKeyedByActionName = true;
-                    } elseif (! $areArgumentsKeyedByActionName) {
-                        $action['arguments'] = [
-                            ...$arguments,
-                            ...$action['arguments'] ?? [],
-                        ];
-                    }
-                }
-
-                if (
-                    ($action['context']['table'] ?? false) &&
-                    filled($tableRecordKey = $action['context']['recordKey'] ?? null) &&
-                    ($tableRecordKey instanceof Model)
-                ) {
-                    $action['context']['recordKey'] = $this->instance()->getTableRecordKey($tableRecordKey);
-                }
-
-                $actions[$actionNestingIndex] = $action;
+            if (! is_subclass_of($name, MountableAction::class)) {
+                return $name;
             }
 
-            return $actions;
+            return $name::getDefaultName();
+        };
+    }
+
+    public function parseNestedActionName(): Closure
+    {
+        return function (string | array $name): array {
+            if (is_string($name)) {
+                $name = explode('.', $name);
+            }
+
+            foreach ($name as $actionNestingIndex => $actionName) {
+                if (! class_exists($actionName)) {
+                    continue;
+                }
+
+                if (! is_subclass_of($actionName, MountableAction::class)) {
+                    continue;
+                }
+
+                $name[$actionNestingIndex] = $actionName::getDefaultName();
+            }
+
+            return $name;
         };
     }
 }

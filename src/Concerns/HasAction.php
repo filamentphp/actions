@@ -49,9 +49,4 @@ trait HasAction
 
         return true;
     }
-
-    public function hasAction(): bool
-    {
-        return $this->action !== null;
-    }
 }
