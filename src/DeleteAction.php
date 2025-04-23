@@ -4,6 +4,7 @@ namespace Filament\Actions;
 
 use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Support\Facades\FilamentIcon;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
 
 class DeleteAction extends Action
@@ -29,11 +30,12 @@ class DeleteAction extends Action
 
         $this->color('danger');
 
-        $this->groupedIcon(FilamentIcon::resolve('actions::delete-action.grouped') ?? 'heroicon-m-trash');
+        $this->tableIcon(FilamentIcon::resolve('actions::delete-action') ?? Heroicon::Trash);
+        $this->groupedIcon(FilamentIcon::resolve('actions::delete-action.grouped') ?? Heroicon::Trash);
 
         $this->requiresConfirmation();
 
-        $this->modalIcon(FilamentIcon::resolve('actions::delete-action.modal') ?? 'heroicon-o-trash');
+        $this->modalIcon(FilamentIcon::resolve('actions::delete-action.modal') ?? Heroicon::OutlinedTrash);
 
         $this->keyBindings(['mod+d']);
 
@@ -46,7 +48,7 @@ class DeleteAction extends Action
         });
 
         $this->action(function (): void {
-            $result = $this->process(static fn (Model $record) => $record->delete());
+            $result = $this->process(static fn (Model $record): ?bool => $record->delete());
 
             if (! $result) {
                 $this->failure();

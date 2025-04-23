@@ -3,14 +3,18 @@
 namespace Filament\Actions\Exports;
 
 use Carbon\CarbonInterface;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\Exports\Enums\Contracts\ExportFormat as ExportFormatInterface;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\Exports\Models\Export;
-use Filament\Forms\Components\Component;
+use Filament\Schemas\Components\Component;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\XLSX\Options;
+use OpenSpout\Writer\XLSX\Writer;
 
 abstract class Exporter
 {
@@ -19,6 +23,9 @@ abstract class Exporter
 
     protected ?Model $record;
 
+    /**
+     * @var class-string<Model>|null
+     */
     protected static ?string $model = null;
 
     /**
@@ -55,7 +62,7 @@ abstract class Exporter
     abstract public static function getColumns(): array;
 
     /**
-     * @return array<Component>
+     * @return array<Component | Action | ActionGroup>
      */
     public static function getOptionsFormComponents(): array
     {
@@ -92,6 +99,14 @@ abstract class Exporter
     public function getJobRetryUntil(): ?CarbonInterface
     {
         return now()->addDay();
+    }
+
+    /**
+     * @return int | array<int> | null
+     */
+    public function getJobBackoff(): int | array | null
+    {
+        return [60, 120, 300, 600];
     }
 
     /**
@@ -188,6 +203,16 @@ abstract class Exporter
     public function getXlsxHeaderCellStyle(): ?Style
     {
         return null;
+    }
+
+    public function getXlsxWriterOptions(): ?Options
+    {
+        return null;
+    }
+
+    public function configureXlsxWriterBeforeClose(Writer $writer): Writer
+    {
+        return $writer;
     }
 
     public static function modifyQuery(Builder $query): Builder

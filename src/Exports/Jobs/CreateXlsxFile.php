@@ -47,12 +47,12 @@ class CreateXlsxFile implements ShouldQueue
     {
         $disk = $this->export->getFileDisk();
 
-        $writer = app(Writer::class);
+        $writer = app(Writer::class, ['options' => $this->exporter->getXlsxWriterOptions()]);
         $writer->openToFile($temporaryFile = tempnam(sys_get_temp_dir(), $this->export->file_name));
 
         $csvDelimiter = $this->exporter::getCsvDelimiter();
 
-        $writeRowsFromFile = function (string $file, ?Style $style = null) use ($csvDelimiter, $disk, $writer) {
+        $writeRowsFromFile = function (string $file, ?Style $style = null) use ($csvDelimiter, $disk, $writer): void {
             $csvReader = CsvReader::createFromStream($disk->readStream($file));
             $csvReader->setDelimiter($csvDelimiter);
             $csvResults = (new Statement)->process($csvReader);
@@ -80,6 +80,8 @@ class CreateXlsxFile implements ShouldQueue
 
             $writeRowsFromFile($file, $cellStyle);
         }
+
+        $this->exporter->configureXlsxWriterBeforeClose($writer);
 
         $writer->close();
 
