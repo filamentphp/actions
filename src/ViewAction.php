@@ -29,7 +29,7 @@ class ViewAction extends Action
         $this->modalSubmitAction(false);
         $this->modalCancelAction(fn (Action $action) => $action->label(__('filament-actions::view.single.modal.actions.close.label')));
 
-        $this->color('gray');
+        $this->defaultColor('gray');
 
         $this->tableIcon(FilamentIcon::resolve('actions::view-action') ?? Heroicon::Eye);
         $this->groupedIcon(FilamentIcon::resolve('actions::view-action.grouped') ?? Heroicon::Eye);

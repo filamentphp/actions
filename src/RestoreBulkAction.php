@@ -67,7 +67,7 @@ class RestoreBulkAction extends BulkAction
             );
         });
 
-        $this->color('gray');
+        $this->defaultColor('gray');
 
         $this->icon(FilamentIcon::resolve('actions::restore-action') ?? Heroicon::ArrowUturnLeft);
 

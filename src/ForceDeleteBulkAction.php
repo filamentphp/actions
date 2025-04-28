@@ -67,7 +67,7 @@ class ForceDeleteBulkAction extends BulkAction
             );
         });
 
-        $this->color('danger');
+        $this->defaultColor('danger');
 
         $this->icon(FilamentIcon::resolve('actions::force-delete-action') ?? Heroicon::Trash);
 

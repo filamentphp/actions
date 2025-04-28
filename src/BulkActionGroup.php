@@ -15,7 +15,7 @@ class BulkActionGroup extends ActionGroup
 
         $this->icon(FilamentIcon::resolve('tables::actions.open-bulk-actions') ?? Heroicon::EllipsisVertical);
 
-        $this->color('gray');
+        $this->defaultColor('gray');
 
         $this->button();
 

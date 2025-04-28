@@ -262,7 +262,7 @@ trait CanExportRecords
             }
         });
 
-        $this->color('gray');
+        $this->defaultColor('gray');
 
         $this->modalWidth('xl');
 

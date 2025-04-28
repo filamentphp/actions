@@ -32,7 +32,7 @@ class DissociateBulkAction extends BulkAction
 
         $this->successNotificationTitle(__('filament-actions::dissociate.multiple.notifications.dissociated.title'));
 
-        $this->color('danger');
+        $this->defaultColor('danger');
 
         $this->icon(FilamentIcon::resolve('actions::dissociate-action') ?? Heroicon::XMark);
 

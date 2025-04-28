@@ -67,7 +67,7 @@ class DeleteBulkAction extends BulkAction
             );
         });
 
-        $this->color('danger');
+        $this->defaultColor('danger');
 
         $this->icon(FilamentIcon::resolve('actions::delete-action') ?? Heroicon::Trash);
 

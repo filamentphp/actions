@@ -383,7 +383,7 @@ class ImportAction extends Action
                 }),
         ]);
 
-        $this->color('gray');
+        $this->defaultColor('gray');
 
         $this->modalWidth('xl');
 

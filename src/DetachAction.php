@@ -30,7 +30,7 @@ class DetachAction extends Action
 
         $this->successNotificationTitle(__('filament-actions::detach.single.notifications.detached.title'));
 
-        $this->color('danger');
+        $this->defaultColor('danger');
 
         $this->icon(FilamentIcon::resolve('actions::detach-action') ?? Heroicon::XMark);
 
