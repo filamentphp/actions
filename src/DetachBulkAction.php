@@ -6,9 +6,11 @@ use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Throwable;
 
 class DetachBulkAction extends BulkAction
@@ -41,9 +43,24 @@ class DetachBulkAction extends BulkAction
         $this->modalIcon(FilamentIcon::resolve('actions::detach-action.modal') ?? Heroicon::OutlinedXMark);
 
         $this->action(function (): void {
-            $this->process(function (DetachBulkAction $action, Collection $records, Table $table): void {
+            $this->process(function (DetachBulkAction $action, EloquentCollection | Collection | LazyCollection $records, Table $table): void {
                 /** @var BelongsToMany $relationship */
                 $relationship = $table->getRelationship();
+
+                if (! $action->shouldFetchSelectedRecords()) {
+                    try {
+                        $action->reportBulkProcessingSuccessfulRecordsCount(
+                            $relationship->detach($records),
+                        );
+                    } catch (Throwable $exception) {
+                        $action->reportCompleteBulkProcessingFailure();
+
+                        report($exception);
+                    }
+
+                    return;
+                }
+
                 $relationshipPivotAccessor = $relationship->getPivotAccessor();
 
                 $isFirstException = true;

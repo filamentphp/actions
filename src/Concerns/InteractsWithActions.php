@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Url;
+use ReflectionMethod;
+use ReflectionNamedType;
 use Throwable;
 
 use function Livewire\store;
@@ -432,6 +434,10 @@ trait InteractsWithActions
                 $resolvedAction = $this->resolveAction($action, $resolvedActions);
             }
 
+            if (! $resolvedAction) {
+                continue;
+            }
+
             $resolvedAction->nestingIndex($actionNestingIndex);
 
             $resolvedActions[] = $resolvedAction;
@@ -449,7 +455,7 @@ trait InteractsWithActions
      * @param  array<string, mixed>  $action
      * @param  array<Action>  $parentActions
      */
-    protected function resolveAction(array $action, array $parentActions): Action
+    protected function resolveAction(array $action, array $parentActions): ?Action
     {
         if (count($parentActions)) {
             $parentAction = Arr::last($parentActions);
@@ -469,7 +475,23 @@ trait InteractsWithActions
             } elseif (method_exists($this, $action['name'])) {
                 $methodName = $action['name'];
             } else {
-                throw new ActionNotResolvableException("Action was not resolvable from methods [{$action['name']}Action] or [{$action['name']}]");
+                return null;
+            }
+
+            $returnTypeReflection = (new ReflectionMethod($this, $methodName))->getReturnType();
+
+            if (! $returnTypeReflection) {
+                return null;
+            }
+
+            if (! $returnTypeReflection instanceof ReflectionNamedType) {
+                return null;
+            }
+
+            $type = $returnTypeReflection->getName();
+
+            if (! is_a($type, Action::class, allow_string: true)) {
+                return null;
             }
 
             $resolvedAction = $this->{$methodName}();

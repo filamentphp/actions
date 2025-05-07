@@ -7,8 +7,10 @@ use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\TrashedFilter;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Number;
 use Throwable;
 
@@ -76,7 +78,21 @@ class RestoreBulkAction extends BulkAction
         $this->modalIcon(FilamentIcon::resolve('actions::restore-action.modal') ?? Heroicon::OutlinedArrowUturnLeft);
 
         $this->action(function (): void {
-            $this->process(static function (RestoreBulkAction $action, Collection $records): void {
+            $this->process(static function (RestoreBulkAction $action, EloquentCollection | Collection | LazyCollection $records): void {
+                if (! $action->shouldFetchSelectedRecords()) {
+                    try {
+                        $action->reportBulkProcessingSuccessfulRecordsCount(
+                            $action->getSelectedRecordsQuery()->restore(), /** @phpstan-ignore method.notFound */
+                        );
+                    } catch (Throwable $exception) {
+                        $action->reportCompleteBulkProcessingFailure();
+
+                        report($exception);
+                    }
+
+                    return;
+                }
+
                 $isFirstException = true;
 
                 $records->each(static function (Model $record) use ($action, &$isFirstException): void {

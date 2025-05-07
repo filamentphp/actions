@@ -99,3 +99,30 @@ DeleteAction::make()
 ```
 
 <UtilityInjection set="actions" version="4.x">These hook functions can inject various utilities as parameters.</UtilityInjection>
+
+## Improving the performance of delete bulk actions
+
+By default, the `DeleteBulkAction` will load all Eloquent records into memory, before looping over them and deleting them one by one.
+
+If you are deleting a large number of records, you may want to use the `chunkSelectedRecords()` method to fetch a smaller number of records at a time. This will reduce the memory usage of your application:
+
+```php
+use Filament\Actions\DeleteBulkAction;
+
+DeleteBulkAction::make()
+    ->chunkSelectedRecords(250)
+```
+
+Filament loads Eloquent records into memory before deleting them for two reasons:
+
+- To allow individual records in the collection to be authorized with a model policy before deletion (using `authorizeIndividualRecords('delete')`, for example).
+- To ensure that model events are run when deleting records, such as the `deleting` and `deleted` events in a model observer.
+
+If you do not require individual record policy authorization and model events, you can use the `fetchSelectedRecords(false)` method, which will not fetch the records into memory before deleting them, and instead will delete them in a single query:
+
+```php
+use Filament\Actions\DeleteBulkAction;
+
+DeleteBulkAction::make()
+    ->fetchSelectedRecords(false)
+```

@@ -7,8 +7,10 @@ use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\TrashedFilter;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Number;
 use Throwable;
 
@@ -76,7 +78,21 @@ class ForceDeleteBulkAction extends BulkAction
         $this->modalIcon(FilamentIcon::resolve('actions::force-delete-action.modal') ?? Heroicon::OutlinedTrash);
 
         $this->action(function (): void {
-            $this->process(static function (ForceDeleteBulkAction $action, Collection $records): void {
+            $this->process(static function (ForceDeleteBulkAction $action, EloquentCollection | Collection | LazyCollection $records): void {
+                if (! $action->shouldFetchSelectedRecords()) {
+                    try {
+                        $action->reportBulkProcessingSuccessfulRecordsCount(
+                            $action->getSelectedRecordsQuery()->forceDelete(),
+                        );
+                    } catch (Throwable $exception) {
+                        $action->reportCompleteBulkProcessingFailure();
+
+                        report($exception);
+                    }
+
+                    return;
+                }
+
                 $isFirstException = true;
 
                 $records->each(static function (Model $record) use ($action, &$isFirstException): void {

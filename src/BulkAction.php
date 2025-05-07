@@ -12,7 +12,7 @@ class BulkAction extends Action
         $this->accessSelectedRecords();
 
         $this->extraAttributes([
-            'x-bind:disabled' => '! selectedRecords.length',
+            'x-bind:disabled' => '! getSelectedRecordsCount()',
         ]);
     }
 }

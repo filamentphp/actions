@@ -99,3 +99,30 @@ RestoreAction::make()
 ```
 
 <UtilityInjection set="actions" version="4.x">These hook functions can inject various utilities as parameters.</UtilityInjection>
+
+## Improving the performance of restore bulk actions
+
+By default, the `RestoreBulkAction` will load all Eloquent records into memory, before looping over them and restoring them one by one.
+
+If you are restoring a large number of records, you may want to use the `chunkSelectedRecords()` method to fetch a smaller number of records at a time. This will reduce the memory usage of your application:
+
+```php
+use Filament\Actions\RestoreBulkAction;
+
+RestoreBulkAction::make()
+    ->chunkSelectedRecords(250)
+```
+
+Filament loads Eloquent records into memory before restoring them for two reasons:
+
+- To allow individual records in the collection to be authorized with a model policy before restoration (using `authorizeIndividualRecords('restore')`, for example).
+- To ensure that model events are run when restoring records, such as the `restoring` and `restored` events in a model observer.
+
+If you do not require individual record policy authorization and model events, you can use the `fetchSelectedRecords(false)` method, which will not fetch the records into memory before restoring them, and instead will restore them in a single query:
+
+```php
+use Filament\Actions\RestoreBulkAction;
+
+RestoreBulkAction::make()
+    ->fetchSelectedRecords(false)
+```
