@@ -134,7 +134,7 @@ trait CanExportRecords
 
             $records = $action instanceof ExportBulkAction ? $action->getIndividuallyAuthorizedSelectedRecords() : null;
 
-            $totalRows = $records ? $records->count() : $query->count();
+            $totalRows = $records ? $records->count() : $query->toBase()->getCountForPagination();
             $maxRows = $action->getMaxRows() ?? $totalRows;
 
             if ($maxRows < $totalRows) {

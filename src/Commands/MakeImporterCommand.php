@@ -190,7 +190,7 @@ class MakeImporterCommand extends Command
     protected function configureIsGenerated(): void
     {
         $this->isGenerated = $this->option('generate') || confirm(
-            label: 'Would you like to generate the importer columns based on the attributes of the model?',
+            label: 'Should the importer columns be generated from the current database columns?',
             default: false,
         );
     }

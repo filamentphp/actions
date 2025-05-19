@@ -9,9 +9,12 @@ use Filament\Actions\Concerns\InteractsWithRecord;
 use Filament\Support\Components\Contracts\HasEmbeddedView;
 use Filament\Support\Components\ViewComponent;
 use Filament\Support\Concerns\HasBadge;
+use Filament\Support\Concerns\HasBadgeTooltip;
 use Filament\Support\Concerns\HasColor;
 use Filament\Support\Concerns\HasExtraAttributes;
 use Filament\Support\Concerns\HasIcon;
+use Filament\Support\Concerns\HasIconPosition;
+use Filament\Support\Concerns\HasIconSize;
 use Filament\Support\Concerns\HasTooltip;
 use Filament\Support\Enums\Width;
 use Filament\Support\Facades\FilamentIcon;
@@ -48,11 +51,14 @@ class ActionGroup extends ViewComponent implements Arrayable, HasEmbeddedView
     use Concerns\HasLabel;
     use Concerns\HasSize;
     use HasBadge;
+    use HasBadgeTooltip;
     use HasColor;
     use HasExtraAttributes;
     use HasIcon {
         HasIcon::getIcon as getBaseIcon;
     }
+    use HasIconPosition;
+    use HasIconSize;
     use HasTooltip;
     use InteractsWithRecord;
 

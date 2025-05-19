@@ -8,9 +8,12 @@ use Filament\Actions\Enums\ActionStatus;
 use Filament\Support\Components\Contracts\HasEmbeddedView;
 use Filament\Support\Components\ViewComponent;
 use Filament\Support\Concerns\HasBadge;
+use Filament\Support\Concerns\HasBadgeTooltip;
 use Filament\Support\Concerns\HasColor;
 use Filament\Support\Concerns\HasExtraAttributes;
 use Filament\Support\Concerns\HasIcon;
+use Filament\Support\Concerns\HasIconPosition;
+use Filament\Support\Concerns\HasIconSize;
 use Filament\Support\Exceptions\Cancel;
 use Filament\Support\Exceptions\Halt;
 use Filament\Support\View\Concerns\CanGenerateBadgeHtml;
@@ -81,9 +84,12 @@ class Action extends ViewComponent implements Arrayable
     use Concerns\InteractsWithRecord;
     use Concerns\InteractsWithSelectedRecords;
     use HasBadge;
+    use HasBadgeTooltip;
     use HasColor;
     use HasExtraAttributes;
     use HasIcon;
+    use HasIconPosition;
+    use HasIconSize;
     use HasTooltip;
 
     protected bool | Closure $isBulk = false;
