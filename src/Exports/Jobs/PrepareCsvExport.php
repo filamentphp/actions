@@ -75,7 +75,7 @@ class PrepareCsvExport implements ShouldQueue
             /** @var array<string, mixed> $originalBindings */
             $originalBindings = $query->getRawBindings();
 
-            if (! empty($originalOrders->all())) {
+            if (! empty($originalOrders->all()) && isset($originalOrders[0]['column'])) {
                 $query->reorder($originalOrders[0]['column'], $originalOrders[0]['direction']);
                 $originalOrders->forget(0);
             } else {
