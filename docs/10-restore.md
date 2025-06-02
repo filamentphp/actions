@@ -5,7 +5,7 @@ import UtilityInjection from "@components/UtilityInjection.astro"
 
 ## Introduction
 
-Filament includes an action that is able to restore [soft deleted](https://laravel.com/docs/eloquent#soft-deleting) Eloquent records. When the trigger button is clicked, a modal asks the user for confirmation. You may use it like so:
+Filament includes an action that is able to restore [soft-deleted](https://laravel.com/docs/eloquent#soft-deleting) Eloquent records. When the trigger button is clicked, a modal asks the user for confirmation. You may use it like so:
 
 ```php
 use Filament\Actions\RestoreAction;

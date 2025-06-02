@@ -2,6 +2,7 @@
 
 namespace Filament\Actions\Exports\Jobs;
 
+use Closure;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
 use Illuminate\Bus\Queueable;
@@ -13,7 +14,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use League\Csv\Reader as CsvReader;
 use League\Csv\Statement;
-use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Entity\Style\Style;
 use OpenSpout\Writer\XLSX\Writer;
 
@@ -52,13 +52,13 @@ class CreateXlsxFile implements ShouldQueue
 
         $csvDelimiter = $this->exporter::getCsvDelimiter();
 
-        $writeRowsFromFile = function (string $file, ?Style $style = null) use ($csvDelimiter, $disk, $writer): void {
+        $writeRowsFromFile = function (string $file, ?Style $style, ?Closure $makeRow) use ($csvDelimiter, $disk, $writer): void {
             $csvReader = CsvReader::createFromStream($disk->readStream($file));
             $csvReader->setDelimiter($csvDelimiter);
             $csvResults = (new Statement)->process($csvReader);
 
-            foreach ($csvResults->getRecords() as $row) {
-                $writer->addRow(Row::fromValues($row, $style));
+            foreach ($csvResults->getRecords() as $values) {
+                $writer->addRow($makeRow($values, $style));
             }
         };
 
@@ -67,7 +67,10 @@ class CreateXlsxFile implements ShouldQueue
         $writeRowsFromFile(
             $this->export->getFileDirectory() . DIRECTORY_SEPARATOR . 'headers.csv',
             $this->exporter->getXlsxHeaderCellStyle() ?? $cellStyle,
+            $this->exporter->makeXlsxHeaderRow(...),
         );
+
+        $makeRow = $this->exporter->makeXlsxRow(...);
 
         foreach ($disk->files($this->export->getFileDirectory()) as $file) {
             if (str($file)->endsWith('headers.csv')) {
@@ -78,7 +81,7 @@ class CreateXlsxFile implements ShouldQueue
                 continue;
             }
 
-            $writeRowsFromFile($file, $cellStyle);
+            $writeRowsFromFile($file, $cellStyle, $makeRow);
         }
 
         $this->exporter->configureXlsxWriterBeforeClose($writer);

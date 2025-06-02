@@ -5,7 +5,7 @@ import UtilityInjection from "@components/UtilityInjection.astro"
 
 ## Introduction
 
-Filament includes an action that is able to force-delete [soft deleted](https://laravel.com/docs/eloquent#soft-deleting) Eloquent records. When the trigger button is clicked, a modal asks the user for confirmation. You may use it like so:
+Filament includes an action that is able to force-delete [soft-deleted](https://laravel.com/docs/eloquent#soft-deleting) Eloquent records. When the trigger button is clicked, a modal asks the user for confirmation. You may use it like so:
 
 ```php
 use Filament\Actions\ForceDeleteAction;
@@ -13,7 +13,7 @@ use Filament\Actions\ForceDeleteAction;
 ForceDeleteAction::make()
 ```
 
-Or if you want to add it as a table bulk action, so that the user can choose which rows to force delete, use `Filament\Actions\ForceDeleteBulkAction`:
+Or if you want to add it as a table bulk action, so that the user can choose which rows to force-delete, use `Filament\Actions\ForceDeleteBulkAction`:
 
 ```php
 use Filament\Actions\ForceDeleteBulkAction;
@@ -100,7 +100,7 @@ ForceDeleteAction::make()
 
 <UtilityInjection set="actions" version="4.x">These hook functions can inject various utilities as parameters.</UtilityInjection>
 
-## Improving the performance of force delete bulk actions
+## Improving the performance of force-delete bulk actions
 
 By default, the `ForceDeleteBulkAction` will load all Eloquent records into memory, before looping over them and deleting them one by one.
 

@@ -602,6 +602,8 @@ You can only specify a single character, otherwise an exception will be thrown.
 
 ## Customizing XLSX files
 
+### Styling XLSX rows
+
 If you want to style the cells of the XLSX file, you may override the `getXlsxCellStyle()` method on the exporter class, returning an [OpenSpout `Style` object](https://github.com/openspout/openspout/blob/4.x/docs/documentation.md#styling):
 
 ```php
@@ -637,7 +639,63 @@ public function getXlsxHeaderCellStyle(): ?Style
 }
 ```
 
-Alternatively, if you want to pass "options" to the [OpenSpout XLSX `Writer`](https://github.com/openspout/openspout/blob/4.x/docs/documentation.md#column-widths), you can return an `OpenSpout\Writer\XLSX\Options` instance from the `getXlsxWriterOptions()` method of the exporter class:
+### Styling XLSX columns
+
+The `makeXlsxRow()` and `makeXlsxHeaderRow()` methods on the exporter class allow you to customize the styling of individual cells within a row. By default, the methods are implemented like this:
+
+```php
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+
+/**
+ * @param array<mixed> $values
+ */
+public function makeXlsxRow(array $values, ?Style $style = null): Row
+{
+    return Row::fromValues($values, $style);
+}
+```
+
+When a user exports, they can choose which columns to export. As such, the `$this->columnMap` property may be used to determine which columns are being exported and in which order. You can replace `Row::fromValues()` with an array of `Cell` objects, which allow you to style them individually using [OpenSpout `Style` objects](https://github.com/openspout/openspout/blob/4.x/docs/documentation.md#styling). A `StyleMerger` can be used to merge the default style with the custom style for a cell, allowing you to apply additional styles on top of the default ones:
+
+```php
+use OpenSpout\Common\Entity\Cell;use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\Common\Manager\Style\StyleMerger;
+
+/**
+ * @param array<mixed> $values
+ */
+public function makeXlsxRow(array $values, ?Style $style = null): Row
+{
+    $styleMerger = new StyleMerger();
+
+    $cells = [];
+    
+    foreach (array_keys($this->columnMap) as $columnIndex => $column) {
+        $cells[] = match ($column) {
+            'name' => Cell::fromValue(
+                $values[$columnIndex],
+                $styleMerger->merge(
+                    (new Style())->setFontUnderline(),
+                    $style,
+                ),
+            ),
+            'price' => Cell::fromValue(
+                $values[$columnIndex],
+                (new Style())->setFontSize(12),
+            ),
+            default => Cell::fromValue($values[$columnIndex]),
+        },
+    }
+    
+    return new Row($cells, $style);
+}
+```
+
+### Customizing the XLSX writer
+
+If you want to pass "options" to the [OpenSpout XLSX `Writer`](https://github.com/openspout/openspout/blob/4.x/docs/documentation.md#column-widths), you can return an `OpenSpout\Writer\XLSX\Options` instance from the `getXlsxWriterOptions()` method of the exporter class:
 
 ```php
 use OpenSpout\Writer\XLSX\Options;

@@ -181,7 +181,11 @@ trait InteractsWithRecord
             return null;
         }
 
-        return $record->getAttributeValue($titleAttribute);
+        if (str_contains($titleAttribute, '->')) {
+            $titleAttribute = str_replace('->', '.', $titleAttribute);
+        }
+
+        return data_get($record, $titleAttribute);
     }
 
     public function getRecordTitleAttribute(): ?string
