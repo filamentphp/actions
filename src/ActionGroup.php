@@ -99,6 +99,11 @@ class ActionGroup extends ViewComponent implements Arrayable, HasEmbeddedView
     protected string | Closure | null $defaultTriggerView = null;
 
     /**
+     * @var array<array<mixed> | Closure>
+     */
+    protected array $extraDropdownAttributes = [];
+
+    /**
      * @param  array<Action | ActionGroup>  $actions
      */
     public function __construct(array $actions)
@@ -436,7 +441,10 @@ class ActionGroup extends ViewComponent implements Arrayable, HasEmbeddedView
 
         ob_start(); ?>
 
-        <div x-data="filamentDropdown" class="fi-dropdown">
+        <div
+            x-data="filamentDropdown"
+            <?= $this->getExtraDropdownAttributeBag()->class(['fi-dropdown'])->toHtml() ?>
+        >
             <div
                 x-on:mousedown="toggle"
                 class="fi-dropdown-trigger"
@@ -652,5 +660,38 @@ class ActionGroup extends ViewComponent implements Arrayable, HasEmbeddedView
             fn (Action $action): Action => $action->getClone()->group($this),
             $this->flatActions,
         );
+    }
+
+    /**
+     * @param  array<mixed> | Closure  $attributes
+     */
+    public function extraDropdownAttributes(array | Closure $attributes, bool $merge = false): static
+    {
+        if ($merge) {
+            $this->extraDropdownAttributes[] = $attributes;
+        } else {
+            $this->extraDropdownAttributes = [$attributes];
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getExtraDropdownAttributes(): array
+    {
+        $temporaryAttributeBag = new ComponentAttributeBag;
+
+        foreach ($this->extraDropdownAttributes as $extraDropdownAttributes) {
+            $temporaryAttributeBag = $temporaryAttributeBag->merge($this->evaluate($extraDropdownAttributes), escape: false);
+        }
+
+        return $temporaryAttributeBag->getAttributes();
+    }
+
+    public function getExtraDropdownAttributeBag(): ComponentAttributeBag
+    {
+        return new ComponentAttributeBag($this->getExtraDropdownAttributes());
     }
 }

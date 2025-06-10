@@ -23,4 +23,16 @@ class BulkActionGroup extends ActionGroup
 
         $this->labeledFrom('sm');
     }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getExtraDropdownAttributes(): array
+    {
+        return [
+            'x-cloak' => true,
+            'x-show' => 'getSelectedRecordsCount()',
+            ...parent::getExtraAttributes(),
+        ];
+    }
 }

@@ -1,7 +1,7 @@
 export default ({ livewireId }) => ({
     actionNestingIndex: null,
 
-    init: function () {
+    init() {
         window.addEventListener('sync-action-modals', (event) => {
             if (event.detail.id !== livewireId) {
                 return
@@ -11,7 +11,7 @@ export default ({ livewireId }) => ({
         })
     },
 
-    syncActionModals: function (newActionNestingIndex) {
+    syncActionModals(newActionNestingIndex) {
         if (this.actionNestingIndex === newActionNestingIndex) {
             return
         }
@@ -39,19 +39,19 @@ export default ({ livewireId }) => ({
         this.openModal()
     },
 
-    generateModalId: function (actionNestingIndex) {
+    generateModalId(actionNestingIndex) {
         // HTML IDs must start with a letter, so if the Livewire component ID starts
         // with a number, we need to make sure it does not fail by prepending `fi-`.
         return `fi-${livewireId}-action-` + actionNestingIndex
     },
 
-    openModal: function () {
+    openModal() {
         const id = this.generateModalId(this.actionNestingIndex)
 
         this.$dispatch('open-modal', { id })
     },
 
-    closeModal: function () {
+    closeModal() {
         const id = this.generateModalId(this.actionNestingIndex)
 
         this.$dispatch('close-modal-quietly', { id })

@@ -69,7 +69,7 @@ use Filament\Tables\Table;
 public function table(Table $table): Table
 {
     return $table
-        ->bulkActions([
+        ->toolbarActions([
             ExportBulkAction::make()
                 ->exporter(ProductExporter::class),
         ]);
@@ -659,7 +659,8 @@ public function makeXlsxRow(array $values, ?Style $style = null): Row
 When a user exports, they can choose which columns to export. As such, the `$this->columnMap` property may be used to determine which columns are being exported and in which order. You can replace `Row::fromValues()` with an array of `Cell` objects, which allow you to style them individually using [OpenSpout `Style` objects](https://github.com/openspout/openspout/blob/4.x/docs/documentation.md#styling). A `StyleMerger` can be used to merge the default style with the custom style for a cell, allowing you to apply additional styles on top of the default ones:
 
 ```php
-use OpenSpout\Common\Entity\Cell;use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Cell;
+use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Entity\Style\Style;
 use OpenSpout\Writer\Common\Manager\Style\StyleMerger;
 
