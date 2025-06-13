@@ -28,7 +28,7 @@ use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Mail;
 
 Action::make('sendEmail')
-    ->form([
+    ->schema([
         TextInput::make('subject')->required(),
         RichEditor::make('body')->required(),
     ])

@@ -3,6 +3,7 @@
 namespace Filament\Actions\Exports\Models;
 
 use Carbon\CarbonInterface;
+use Exception;
 use Filament\Actions\Exports\Exporter;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -42,10 +43,20 @@ class Export extends Model
             return $this->morphTo();
         }
 
+        /** @var ?Authenticatable $authenticatable */
         $authenticatable = app(Authenticatable::class);
 
+        if ($authenticatable) {
+            /** @phpstan-ignore-next-line */
+            return $this->belongsTo($authenticatable::class);
+        }
+
+        if (! class_exists(User::class)) {
+            throw new Exception('No [App\\Models\\User] model found. Please bind an authenticatable model to the [Illuminate\\Contracts\\Auth\\Authenticatable] interface in a service provider\'s [register()] method.');
+        }
+
         /** @phpstan-ignore-next-line */
-        return $this->belongsTo($authenticatable::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
