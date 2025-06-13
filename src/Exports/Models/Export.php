@@ -2,6 +2,7 @@
 
 namespace Filament\Actions\Exports\Models;
 
+use App\Models\User;
 use Carbon\CarbonInterface;
 use Exception;
 use Filament\Actions\Exports\Exporter;
