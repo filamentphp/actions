@@ -615,7 +615,7 @@ trait CanImportRecords
     {
         $fileRules = [
             'extensions:csv,txt',
-            function (string $attribute, mixed $value, Closure $fail) {
+            fn (): Closure => function (string $attribute, mixed $value, Closure $fail) {
                 $csvStream = $this->getUploadedFileStream($value);
 
                 if (! $csvStream) {
