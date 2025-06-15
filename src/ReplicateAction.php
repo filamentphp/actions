@@ -4,6 +4,7 @@ namespace Filament\Actions;
 
 use Closure;
 use Filament\Actions\Concerns\CanCustomizeProcess;
+use Filament\Schemas\Schema;
 use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
@@ -52,7 +53,14 @@ class ReplicateAction extends Action
         });
 
         $this->action(function () {
-            $result = $this->process(function (array $data, Model $record): void {
+            $result = $this->process(function (array $data, Model $record, ?Schema $schema): void {
+                if ((! $schema) && blank($data) && $this->mutateRecordDataUsing) {
+                    $data = $this->evaluate(
+                        $this->mutateRecordDataUsing,
+                        ['data' => Arr::except($record->attributesToArray(), $this->getExcludedAttributes() ?? [])],
+                    );
+                }
+
                 $this->replica = $record->replicate($this->getExcludedAttributes());
 
                 $this->replica->fill($data);
