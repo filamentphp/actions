@@ -529,8 +529,7 @@ trait InteractsWithActions
         if (filled($action['context']['recordKey'] ?? null)) {
             $record = $this->getTableRecord($action['context']['recordKey']);
 
-            $resolvedAction->record($record);
-            $resolvedAction->getRootGroup()?->record($record);
+            $resolvedAction->getRootGroup()?->record($record) ?? $resolvedAction->record($record);
         }
 
         return $resolvedAction;
