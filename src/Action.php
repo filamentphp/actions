@@ -434,6 +434,25 @@ class Action extends ViewComponent implements Arrayable
             $argumentsParameter .= Js::from($arguments);
         }
 
+        $contextParameter = '';
+
+        if (count($context = $this->getContext())) {
+            $contextParameter .= ', ';
+            $contextParameter .= Js::from($context);
+
+            if ($argumentsParameter === '') {
+                $argumentsParameter = ', {}';
+            }
+        }
+
+        return "mountAction('{$this->getName()}'{$argumentsParameter}{$contextParameter})";
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getContext(): array
+    {
         $context = [];
 
         if ($record = $this->getRecord()) {
@@ -454,18 +473,7 @@ class Action extends ViewComponent implements Arrayable
             $context['bulk'] = true;
         }
 
-        $contextParameter = '';
-
-        if (filled($context)) {
-            $contextParameter .= ', ';
-            $contextParameter .= Js::from($context);
-
-            if ($argumentsParameter === '') {
-                $argumentsParameter = ', {}';
-            }
-        }
-
-        return "mountAction('{$this->getName()}'{$argumentsParameter}{$contextParameter})";
+        return $context;
     }
 
     /**
