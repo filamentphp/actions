@@ -39,11 +39,33 @@ class EditAction extends Action
         $this->tableIcon(FilamentIcon::resolve('actions::edit-action') ?? Heroicon::PencilSquare);
         $this->groupedIcon(FilamentIcon::resolve('actions::edit-action.grouped') ?? Heroicon::PencilSquare);
 
-        $this->fillForm(function (HasActions & HasSchemas $livewire, Model $record): array {
-            if ($translatableContentDriver = $livewire->makeFilamentTranslatableContentDriver()) {
+        $this->fillForm(function (HasActions & HasSchemas $livewire, Model $record, ?Table $table): array {
+            $translatableContentDriver = $livewire->makeFilamentTranslatableContentDriver();
+
+            if ($translatableContentDriver) {
                 $data = $translatableContentDriver->getRecordAttributesToArray($record);
             } else {
                 $data = $record->attributesToArray();
+            }
+
+            $relationship = $table?->getRelationship();
+
+            if ($relationship instanceof BelongsToMany) {
+                $pivot = $record->getRelationValue($relationship->getPivotAccessor());
+
+                $pivotColumns = $relationship->getPivotColumns();
+
+                if ($translatableContentDriver) {
+                    $data = [
+                        ...$data,
+                        ...Arr::only($translatableContentDriver->getRecordAttributesToArray($pivot), $pivotColumns),
+                    ];
+                } else {
+                    $data = [
+                        ...$data,
+                        ...Arr::only($pivot->attributesToArray(), $pivotColumns),
+                    ];
+                }
             }
 
             if ($this->mutateRecordDataUsing) {
