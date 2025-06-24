@@ -129,12 +129,14 @@ trait InteractsWithRecord
     {
         $record ??= $this->getRecord();
 
-        if (filled($title = $this->getCustomRecordTitle($record))) {
-            return $title;
-        }
+        if ($record) {
+            if (filled($title = $this->getCustomRecordTitle($record))) {
+                return $title;
+            }
 
-        if (filled($title = $this->getTable()?->getRecordTitle($record))) {
-            return $title;
+            if (filled($title = $this->getTable()?->getRecordTitle($record))) {
+                return $title;
+            }
         }
 
         if ($this instanceof Action && filled($title = $this->getHasActionsLivewire()?->getDefaultActionRecordTitle($this))) {
