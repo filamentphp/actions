@@ -51,6 +51,12 @@ trait InteractsWithActions
     public $defaultActionArguments = null;
 
     /**
+     * @var mixed
+     */
+    #[Url(as: 'actionContext')]
+    public $defaultActionContext = null;
+
+    /**
      * @var array<string, Action>
      */
     protected array $cachedActions = [];
@@ -681,6 +687,7 @@ trait InteractsWithActions
             // actually set to `'null'` strings and remain in the URL.
             $this->defaultAction = [];
             $this->defaultActionArguments = [];
+            $this->defaultActionContext = [];
 
             return;
         }
