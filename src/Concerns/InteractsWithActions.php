@@ -474,11 +474,7 @@ trait InteractsWithActions
     {
         if (count($parentActions)) {
             $parentAction = Arr::last($parentActions);
-            $resolvedAction = $parentAction->getModalAction($action['name']);
-
-            if (! $resolvedAction) {
-                throw new ActionNotResolvableException("Action [{$action['name']}] was not found for action [{$parentAction->getName()}].");
-            }
+            $resolvedAction = $parentAction->getModalAction($action['name']) ?? throw new ActionNotResolvableException("Action [{$action['name']}] was not found for action [{$parentAction->getName()}].");
         } elseif (array_key_exists($action['name'], $this->cachedActions)) {
             $resolvedAction = $this->cachedActions[$action['name']];
         } else {
@@ -533,11 +529,16 @@ trait InteractsWithActions
 
         $resolvedAction = null;
 
-        if ($action['context']['bulk'] ?? false) {
-            $resolvedAction = $this->getTable()->getBulkAction($action['name']);
-        }
+        if (count($parentActions)) {
+            $parentAction = Arr::last($parentActions);
+            $resolvedAction = $parentAction->getModalAction($action['name']) ?? throw new ActionNotResolvableException("Action [{$action['name']}] was not found for action [{$parentAction->getName()}].");
+        } else {
+            if ($action['context']['bulk'] ?? false) {
+                $resolvedAction = $this->getTable()->getBulkAction($action['name']);
+            }
 
-        $resolvedAction ??= $this->getTable()->getAction($action['name']) ?? throw new ActionNotResolvableException("Action [{$action['name']}] not found on table.");
+            $resolvedAction ??= $this->getTable()->getAction($action['name']) ?? throw new ActionNotResolvableException("Action [{$action['name']}] not found on table.");
+        }
 
         if (filled($action['context']['recordKey'] ?? null)) {
             $record = $this->getTableRecord($action['context']['recordKey']);
@@ -604,7 +605,7 @@ trait InteractsWithActions
 
     protected function getMountedActionSchema(?int $actionNestingIndex = null, ?Action $mountedAction = null): ?Schema
     {
-        $actionNestingIndex ??= array_key_last($this->mountedActions);
+        $actionNestingIndex ??= $mountedAction?->getNestingIndex() ?? array_key_last($this->mountedActions);
 
         $mountedAction ??= $this->getMountedAction($actionNestingIndex);
 
