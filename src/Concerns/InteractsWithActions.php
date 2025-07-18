@@ -57,6 +57,24 @@ trait InteractsWithActions
     public $defaultActionContext = null;
 
     /**
+     * @var mixed
+     */
+    #[Url(as: 'tableAction')]
+    public $defaultTableAction = null;
+
+    /**
+     * @var mixed
+     */
+    #[Url(as: 'tableActionRecord')]
+    public $defaultTableActionRecord = null;
+
+    /**
+     * @var mixed
+     */
+    #[Url(as: 'tableActionArguments')]
+    public $defaultTableActionArguments = null;
+
+    /**
      * @var array<string, Action>
      */
     protected array $cachedActions = [];
