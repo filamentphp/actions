@@ -766,6 +766,7 @@ class Action extends ViewComponent implements Arrayable
             tag: $url ? $shouldPostToUrl ? 'form' : 'a' : 'button',
             target: ($url && $this->shouldOpenUrlInNewTab()) ? '_blank' : null,
             tooltip: $this->getTooltip(),
+            type: $this->canSubmitForm() ? 'submit' : 'button',
         );
     }
 
