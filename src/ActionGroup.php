@@ -26,6 +26,7 @@ use Filament\Support\View\Concerns\CanGenerateDropdownItemHtml;
 use Filament\Support\View\Concerns\CanGenerateIconButtonHtml;
 use Filament\Support\View\Concerns\CanGenerateLinkHtml;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -220,11 +221,13 @@ class ActionGroup extends ViewComponent implements Arrayable, HasEmbeddedView
         return $this->getTriggerView() === static::LINK_VIEW;
     }
 
-    public function getLabel(): string
+    public function getLabel(): string | Htmlable | null
     {
         $label = $this->evaluate($this->label) ?? __('filament-actions::group.trigger.label');
 
-        return $this->shouldTranslateLabel ? __($label) : $label;
+        return is_string($label) && $this->shouldTranslateLabel
+            ? __($label)
+            : $label;
     }
 
     /**
