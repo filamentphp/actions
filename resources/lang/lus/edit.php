@@ -8,12 +8,12 @@ return [
 
         'modal' => [
 
-            'heading' => 'Edit :label',
+            'heading' => ':Label edit na',
 
             'actions' => [
 
                 'save' => [
-                    'label' => 'Save changes',
+                    'label' => 'Thlak danglamna',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'saved' => [
-                'title' => 'Saved',
+                'title' => 'A in save e.',
             ],
 
         ],

@@ -4,11 +4,11 @@ return [
 
     'single' => [
 
-        'label' => 'Attach',
+        'label' => 'Dahbelh',
 
         'modal' => [
 
-            'heading' => 'Attach :label',
+            'heading' => ':Label dahbelhna',
 
             'fields' => [
 
@@ -21,11 +21,11 @@ return [
             'actions' => [
 
                 'attach' => [
-                    'label' => 'Attach',
+                    'label' => 'Dahbelh',
                 ],
 
                 'attach_another' => [
-                    'label' => 'Attach & attach another',
+                    'label' => 'Pakhat dahbelh a adang dahbelh lehna',
                 ],
 
             ],
@@ -35,7 +35,7 @@ return [
         'notifications' => [
 
             'attached' => [
-                'title' => 'Attached',
+                'title' => 'Dahbelh a ni.',
             ],
 
         ],

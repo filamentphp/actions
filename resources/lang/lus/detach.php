@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Detach',
+        'label' => 'Paihna',
 
         'modal' => [
 
-            'heading' => 'Detach :label',
+            'heading' => ':Label paihna',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Detach',
+                    'label' => 'Paihna',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => 'Detached',
+                'title' => 'Paih a ni.',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'Detach selected',
+        'label' => 'Thlan ho paih thenna',
 
         'modal' => [
 
-            'heading' => 'Detach selected :label',
+            'heading' => ':Label thlan ho paih thenna',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'Detach',
+                    'label' => 'Paihna',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => 'Detached',
+                'title' => 'Paih then a ni.',
             ],
 
         ],

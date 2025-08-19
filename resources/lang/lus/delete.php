@@ -32,11 +32,11 @@ return [
 
     'multiple' => [
 
-        'label' => 'Delete selected',
+        'label' => 'Thlanho delete na',
 
         'modal' => [
 
-            'heading' => 'Delete selected :label',
+            'heading' => ':Label thlanho delete na',
 
             'actions' => [
 
@@ -56,14 +56,14 @@ return [
 
             'deleted_partial' => [
                 'title' => 'Deleted :count of :total',
-                'missing_authorization_failure_message' => 'You don\'t have permission to delete :count.',
-                'missing_processing_failure_message' => ':count could not be deleted.',
+                'missing_authorization_failure_message' => ':count delete phalna I neilo.',
+                'missing_processing_failure_message' => ':count hi a delete theihloh.',
             ],
 
             'deleted_none' => [
                 'title' => 'Failed to delete',
-                'missing_authorization_failure_message' => 'You don\'t have permission to delete :count.',
-                'missing_processing_failure_message' => ':count could not be deleted.',
+                'missing_authorization_failure_message' => ':count delete phalna I neilo.',
+                'missing_processing_failure_message' => ':count hi a delete theihloh.',
             ],
 
         ],
