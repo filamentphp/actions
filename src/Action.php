@@ -518,13 +518,11 @@ class Action extends ViewComponent implements Arrayable
 
     public function shouldClearRecordAfter(): bool
     {
-        $record = $this->getRecord();
-
-        if (! ($record instanceof Model)) {
+        if (! ($this->record instanceof Model)) {
             return false;
         }
 
-        return ! $record->exists;
+        return ! $this->record->exists;
     }
 
     public function clearRecordAfter(): void
