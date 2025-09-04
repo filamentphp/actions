@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'הסרת שיוך',
+        'label' => '取消關聯',
 
         'modal' => [
 
-            'heading' => 'הסר שיוך של :label',
+            'heading' => '取消關聯 :label',
 
             'actions' => [
 
                 'dissociate' => [
-                    'label' => 'הסר שיוך',
+                    'label' => '取消關聯',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'dissociated' => [
-                'title' => 'שיוך הוסר',
+                'title' => '已取消關聯',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'הסר שיוך של נבחרים',
+        'label' => '取消關聯所選的項目',
 
         'modal' => [
 
-            'heading' => 'הסר שיוך נבחרים של :label',
+            'heading' => '取消關聯所選的 :label',
 
             'actions' => [
 
                 'dissociate' => [
-                    'label' => 'הסר שיוך',
+                    'label' => '取消關聯所選的項目',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'dissociated' => [
-                'title' => 'שיוך הוסר',
+                'title' => '已取消關聯',
             ],
 
         ],

@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'מחיקה',
+        'label' => '強制刪除',
 
         'modal' => [
 
-            'heading' => 'מחיקת :label',
+            'heading' => '強制刪除 :label',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'מחק',
+                    'label' => '刪除',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => 'נמחק',
+                'title' => '已刪除資料',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'מחק נבחרים',
+        'label' => '強制刪除所選的項目',
 
         'modal' => [
 
-            'heading' => 'מחק את ה:label שנבחרו',
+            'heading' => '強制刪除所選的 :label',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'מחק',
+                    'label' => '刪除',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => 'נמחק',
+                'title' => '已刪除資料',
             ],
 
         ],

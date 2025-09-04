@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'שכפול',
+        'label' => '複製',
 
         'modal' => [
 
-            'heading' => 'שכפול :label',
+            'heading' => '複製 :label',
 
             'actions' => [
 
                 'replicate' => [
-                    'label' => 'שכפל',
+                    'label' => '複製',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'replicated' => [
-                'title' => 'שוכפל',
+                'title' => '已複製資料',
             ],
 
         ],

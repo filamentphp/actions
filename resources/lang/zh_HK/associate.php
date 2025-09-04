@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'שיוך',
+        'label' => '關聯',
 
         'modal' => [
 
-            'heading' => 'שייך את :label',
+            'heading' => '關聯 :label',
 
             'fields' => [
 
                 'record_id' => [
-                    'label' => 'רשומה',
+                    'label' => '資料',
                 ],
 
             ],
@@ -21,11 +21,11 @@ return [
             'actions' => [
 
                 'associate' => [
-                    'label' => 'שייך',
+                    'label' => '關聯',
                 ],
 
                 'associate_another' => [
-                    'label' => 'שייך ושייך אחד נוסף',
+                    'label' => '關聯後繼續關聯另一個',
                 ],
 
             ],
@@ -35,7 +35,7 @@ return [
         'notifications' => [
 
             'associated' => [
-                'title' => 'שויך',
+                'title' => '已關聯',
             ],
 
         ],

@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'הסרת קישור',
+        'label' => '解除附加',
 
         'modal' => [
 
-            'heading' => 'הסר קישור של :label',
+            'heading' => '解除附加 :label',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'הסר קישור',
+                    'label' => '解除附加',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => 'קישור הוסר',
+                'title' => '解除附加',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'הסר קישור של נבחרים',
+        'label' => '解除附加所選的項目',
 
         'modal' => [
 
-            'heading' => 'הסר קישור נבחרים של :label',
+            'heading' => '解除附加所選的 :label',
 
             'actions' => [
 
                 'detach' => [
-                    'label' => 'הסר קישור',
+                    'label' => '解除附加所選的項目',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'detached' => [
-                'title' => 'קישורים הוסרו',
+                'title' => '已解除附加',
             ],
 
         ],

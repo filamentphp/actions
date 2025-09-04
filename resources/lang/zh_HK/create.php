@@ -4,20 +4,20 @@ return [
 
     'single' => [
 
-        'label' => 'יצירת :label',
+        'label' => '新增 :label',
 
         'modal' => [
 
-            'heading' => 'יצירת :label',
+            'heading' => '建立 :label',
 
             'actions' => [
 
                 'create' => [
-                    'label' => 'יצירה',
+                    'label' => '建立',
                 ],
 
                 'create_another' => [
-                    'label' => 'צור וצור עוד אחד',
+                    'label' => '建立後繼續建立另一個',
                 ],
 
             ],
@@ -27,7 +27,7 @@ return [
         'notifications' => [
 
             'created' => [
-                'title' => 'נוצר',
+                'title' => '已建立',
             ],
 
         ],

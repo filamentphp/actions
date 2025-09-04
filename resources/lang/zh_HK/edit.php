@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'עריכה',
+        'label' => '編輯',
 
         'modal' => [
 
-            'heading' => 'עריכת :label',
+            'heading' => '編輯 :label',
 
             'actions' => [
 
                 'save' => [
-                    'label' => 'שמור שינויים',
+                    'label' => '保存',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'saved' => [
-                'title' => 'נשמר',
+                'title' => '已保存',
             ],
 
         ],

@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'שחזור',
+        'label' => '還原',
 
         'modal' => [
 
-            'heading' => 'שחזור :label',
+            'heading' => '還原 :label',
 
             'actions' => [
 
                 'restore' => [
-                    'label' => 'שחזור',
+                    'label' => '還原',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'restored' => [
-                'title' => 'שוחזר',
+                'title' => '已還原資料',
             ],
 
         ],
@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'שחזר את הנבחרים',
+        'label' => '已還原所選的資料',
 
         'modal' => [
 
-            'heading' => 'שוחזרו הנבחרים מ :label',
+            'heading' => '已選擇 :label',
 
             'actions' => [
 
                 'restore' => [
-                    'label' => 'שחזר',
+                    'label' => '還原',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'restored' => [
-                'title' => 'שוחזר',
+                'title' => '已還原資料',
             ],
 
         ],
