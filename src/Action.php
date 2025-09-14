@@ -461,22 +461,29 @@ class Action extends ViewComponent implements Arrayable
     {
         $context = [];
 
-        if ($record = $this->getRecord()) {
-            $context['recordKey'] = $this->resolveRecordKey($record);
-        }
-
-        if (filled($schemaComponentKey = ($this->getSchemaContainer() ?? $this->getSchemaComponent())?->getKey())) {
-            $context['schemaComponent'] = $schemaComponentKey;
-        }
-
         $table = $this->getTable();
 
         if ($table) {
             $context['table'] = true;
         }
 
+        $record = $this->getRecord();
+
+        if ($record && (
+            (! $table)
+            || (! $record instanceof Model)
+            || blank($table->getModel())
+            || ($record::class === $table->getModel())
+        )) {
+            $context['recordKey'] = $this->resolveRecordKey($record);
+        }
+
         if ($table && $this->isBulk()) {
             $context['bulk'] = true;
+        }
+
+        if (filled($schemaComponentKey = ($this->getSchemaContainer() ?? $this->getSchemaComponent())?->getKey())) {
+            $context['schemaComponent'] = $schemaComponentKey;
         }
 
         return $context;
@@ -491,9 +498,9 @@ class Action extends ViewComponent implements Arrayable
             'arguments' => [$this->getArguments()],
             'data' => [$this->getData()],
             'livewire' => [$this->getLivewire()],
-            'model' => [$this->getModel() ?? $this->getSchemaContainer()?->getModel() ?? $this->getSchemaComponent()?->getModel()],
+            'model' => [$this->getModel()],
             'mountedActions' => [$this->getLivewire()->getMountedActions()],
-            'record' => [$this->getRecord() ?? $this->getSchemaContainer()?->getRecord() ?? $this->getSchemaComponent()?->getRecord()],
+            'record' => [$this->getRecord()],
             'selectedRecords', 'records' => [$this->getIndividuallyAuthorizedSelectedRecords()],
             'selectedRecordsQuery', 'recordsQuery' => [$this->getSelectedRecordsQuery()],
             'schema' => [$this->getSchemaContainer()],
@@ -512,7 +519,7 @@ class Action extends ViewComponent implements Arrayable
      */
     protected function resolveDefaultClosureDependencyForEvaluationByType(string $parameterType): array
     {
-        $record = $this->getRecord() ?? $this->getSchemaContainer()?->getRecord() ?? $this->getSchemaComponent()?->getRecord();
+        $record = $this->getRecord();
 
         return match ($parameterType) {
             Builder::class => [$this->getSelectedRecordsQuery()],

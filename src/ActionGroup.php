@@ -371,9 +371,9 @@ class ActionGroup extends ViewComponent implements Arrayable, HasEmbeddedView
     {
         return match ($parameterName) {
             'livewire' => [$this->getLivewire()],
-            'model' => [$this->getModel() ?? $this->getSchemaContainer()?->getModel() ?? $this->getSchemaComponent()?->getModel()],
+            'model' => [$this->getModel()],
             'mountedActions' => [$this->getLivewire()->getMountedActions()],
-            'record' => [$this->getRecord() ?? $this->getSchemaContainer()?->getRecord() ?? $this->getSchemaComponent()?->getRecord()],
+            'record' => [$this->getRecord()],
             'schema' => [$this->getSchemaContainer()],
             'schemaComponent', 'component' => [$this->getSchemaComponent()],
             'schemaOperation', 'context', 'operation' => [$this->getSchemaContainer()?->getOperation() ?? $this->getSchemaComponent()?->getContainer()->getOperation()],
