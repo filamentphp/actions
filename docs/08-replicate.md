@@ -1,6 +1,7 @@
 ---
 title: Replicate action
 ---
+import AutoScreenshot from "@components/AutoScreenshot.astro"
 import UtilityInjection from "@components/UtilityInjection.astro"
 
 ## Introduction
@@ -12,6 +13,8 @@ use Filament\Actions\ReplicateAction;
 
 ReplicateAction::make()
 ```
+
+<AutoScreenshot name="actions/replicate-action/modal" alt="Replicate action modal" version="5.x" />
 
 ## Excluding attributes
 
