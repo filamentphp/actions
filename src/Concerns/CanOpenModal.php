@@ -777,9 +777,4 @@ trait CanOpenModal
 
         return $this;
     }
-
-    public function hasCustomModalPresence(): bool
-    {
-        return $this->hasModal !== null;
-    }
 }

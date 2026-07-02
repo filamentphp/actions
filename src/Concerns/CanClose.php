@@ -19,9 +19,4 @@ trait CanClose
     {
         return (bool) $this->evaluate($this->shouldClose);
     }
-
-    public function hasClose(): bool
-    {
-        return $this->shouldClose !== false;
-    }
 }

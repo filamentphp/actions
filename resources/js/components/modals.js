@@ -1,14 +1,14 @@
 export default ({ livewireId }) => ({
     actionNestingIndex: null,
 
+    shouldOverlayParentActions: false,
+
     closedActionNestingIndexes: [],
 
-    boundSyncActionModals: null,
-
-    boundOnModalClosed: null,
+    focusTargetsByNestingIndex: {},
 
     init() {
-        this.boundSyncActionModals = (event) => {
+        window.addEventListener('sync-action-modals', (event) => {
             if (event.detail.id !== livewireId) {
                 return
             }
@@ -17,9 +17,9 @@ export default ({ livewireId }) => ({
                 event.detail.newActionNestingIndex,
                 event.detail.shouldOverlayParentActions ?? false,
             )
-        }
+        })
 
-        this.boundOnModalClosed = (event) => {
+        window.addEventListener('modal-closed', (event) => {
             const actionNestingIndex = this.getActionNestingIndexFromModalId(
                 event.detail.id,
             )
@@ -28,32 +28,13 @@ export default ({ livewireId }) => ({
                 return
             }
 
+            // Stacked mode and top modal return close immediately restore focus (close the modal without waiting for Livewire requests upon return)
+            if (this.shouldOverlayParentActions || actionNestingIndex === 0) {
+                this.restorePreviouslyFocusedElement(actionNestingIndex - 1)
+            }
+
             this.closedActionNestingIndexes.push(actionNestingIndex)
-        }
-
-        window.addEventListener(
-            'sync-action-modals',
-            this.boundSyncActionModals,
-        )
-
-        window.addEventListener('modal-closed', this.boundOnModalClosed)
-    },
-
-    destroy() {
-        if (this.boundSyncActionModals) {
-            window.removeEventListener(
-                'sync-action-modals',
-                this.boundSyncActionModals,
-            )
-
-            this.boundSyncActionModals = null
-        }
-
-        if (this.boundOnModalClosed) {
-            window.removeEventListener('modal-closed', this.boundOnModalClosed)
-
-            this.boundOnModalClosed = null
-        }
+        })
     },
 
     syncActionModals(
@@ -73,6 +54,18 @@ export default ({ livewireId }) => ({
             newActionNestingIndex !== null &&
             newActionNestingIndex > this.actionNestingIndex
 
+        const isNestingDecrease =
+            this.actionNestingIndex !== null &&
+            newActionNestingIndex !== null &&
+            newActionNestingIndex < this.actionNestingIndex
+
+        const isEnteringActionModalStack =
+            this.actionNestingIndex === null && newActionNestingIndex !== null
+
+        if (isNestingIncrease || isEnteringActionModalStack) {
+            this.rememberPreviouslyFocusedElement()
+        }
+
         if (
             this.actionNestingIndex !== null &&
             !(shouldOverlayParentActions && isNestingIncrease)
@@ -83,10 +76,15 @@ export default ({ livewireId }) => ({
         this.actionNestingIndex = newActionNestingIndex
 
         if (this.actionNestingIndex === null) {
+            this.restorePreviouslyFocusedElement(-1)
             this.closedActionNestingIndexes = []
+            this.focusTargetsByNestingIndex = {}
+            this.shouldOverlayParentActions = false
 
             return
         }
+
+        this.shouldOverlayParentActions = shouldOverlayParentActions
 
         this.closedActionNestingIndexes =
             this.closedActionNestingIndexes.filter(
@@ -103,12 +101,69 @@ export default ({ livewireId }) => ({
                 `#${this.generateModalId(newActionNestingIndex)}`,
             )
         ) {
-            this.$nextTick(() => this.openModal())
+            this.$nextTick(() => {
+                this.openModal()
+
+                if (isNestingDecrease) {
+                    this.restorePreviouslyFocusedElement()
+                }
+            })
 
             return
         }
 
         this.openModal()
+        if (isNestingDecrease) {
+            this.restorePreviouslyFocusedElement()
+        }
+    },
+
+    rememberPreviouslyFocusedElement() {
+        const focused = this.$focus.focused()
+
+        if (!focused) {
+            return
+        }
+
+        if (this.actionNestingIndex === null) {
+            this.focusTargetsByNestingIndex[-1] = focused
+            return
+        }
+
+        const modal = this.$el.querySelector(
+            `#${this.generateModalId(this.actionNestingIndex)}`,
+        )
+
+        if (!modal?.contains(focused)) {
+            return
+        }
+
+        this.focusTargetsByNestingIndex[this.actionNestingIndex] = focused
+    },
+
+    restorePreviouslyFocusedElement(
+        actionNestingIndex = this.actionNestingIndex,
+    ) {
+        const previouslyFocusedElement =
+            this.focusTargetsByNestingIndex[actionNestingIndex]
+
+        if (!previouslyFocusedElement) {
+            return
+        }
+
+        for (const focusTargetNestingIndex in this.focusTargetsByNestingIndex) {
+            if (Number(focusTargetNestingIndex) >= actionNestingIndex) {
+                delete this.focusTargetsByNestingIndex[focusTargetNestingIndex]
+            }
+        }
+
+        requestAnimationFrame(() =>
+            requestAnimationFrame(() =>
+                this.$nextTick(() => {
+                    previouslyFocusedElement.focus({ preventScroll: false })
+                }),
+            ),
+        )
     },
 
     generateModalId(actionNestingIndex) {
