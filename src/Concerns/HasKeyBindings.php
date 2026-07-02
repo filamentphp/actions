@@ -31,9 +31,4 @@ trait HasKeyBindings
 
         return count($keyBindings) ? $keyBindings : null;
     }
-
-    public function hasKeyBindings(): bool
-    {
-        return $this->keyBindings !== null;
-    }
 }

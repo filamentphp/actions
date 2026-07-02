@@ -19,9 +19,4 @@ trait BelongsToTable
     {
         return $this->table ?? $this->getGroup()?->getTable();
     }
-
-    public function hasTable(): bool
-    {
-        return $this->getTable() !== null;
-    }
 }
