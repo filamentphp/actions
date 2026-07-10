@@ -143,6 +143,38 @@ ExportAction::make()
     ->enableVisibleTableColumnsByDefault()
 ```
 
+### Hiding an export column
+
+You may hide a column entirely by using the `hidden()` or `visible()` method. A hidden column is not shown in the column selection form, and is never written to the exported file:
+
+```php
+use Filament\Actions\Exports\ExportColumn;
+
+ExportColumn::make('sku')
+    ->hidden()
+
+ExportColumn::make('sku')
+    ->visible()
+```
+
+To hide a column conditionally, you may pass a boolean value to either method:
+
+```php
+use Filament\Actions\Exports\ExportColumn;
+
+ExportColumn::make('cost_price')
+    ->hidden(fn (): bool => ! auth()->user()->isAdmin())
+
+ExportColumn::make('cost_price')
+    ->visible(fn (): bool => auth()->user()->isAdmin())
+```
+
+<Aside variant="info">
+    Unlike table columns, export columns are resolved without a record, so a `hidden()` or `visible()` closure cannot depend on row data. Use it for schema-level conditions such as the authenticated user, feature flags, or configuration.
+
+    To keep a column selectable but unchecked by default instead of hiding it entirely, use [`enabledByDefault(false)`](#configuring-the-default-column-selection).
+</Aside>
+
 ### Configuring the column selection form layout
 
 By default, the column selection form uses a single column layout. You can change this using the `columnMappingColumns()` method, passing the number of columns you would like to use for the layout on large screens:
@@ -733,7 +765,29 @@ public function getXlsxWriterOptions(): ?Options
 }
 ```
 
-If you want to customize the XLSX writer before it is closed, you can override the `configureXlsxWriterBeforeClosing()` method on the exporter class. This method receives the `Writer` instance as a parameter, and you can modify it before it is closed:
+If you want to customize the XLSX writer immediately after it is opened, before any rows have been written, you can override the `configureXlsxWriterAfterOpen()` method on the exporter class. This method receives the `Writer` instance as a parameter, and you can modify it before the header and data rows are written. This is useful for adding custom rows, such as a title or sub-header, above the exported table:
+
+```php
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\XLSX\Writer;
+
+public function configureXlsxWriterAfterOpen(Writer $writer): Writer
+{
+    $writer->addRow(Row::fromValues(
+        ['This is a custom header added after opening the XLSX writer.'],
+        (new Style())->setShouldWrapText(false),
+    ));
+
+    return $writer;
+}
+```
+
+<Aside variant="warning">
+    Any rows you add here appear above the header row, shifting the exported table down. If you also use `configureXlsxWriterBeforeClose()` to freeze rows, remember to account for the extra rows in `setFreezeRow()`.
+</Aside>
+
+If you want to customize the XLSX writer before it is closed, you can override the `configureXlsxWriterBeforeClose()` method on the exporter class. This method receives the `Writer` instance as a parameter, and you can modify it before it is closed:
 
 ```php
 use OpenSpout\Writer\XLSX\Entity\SheetView;
