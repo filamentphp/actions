@@ -2,34 +2,34 @@
 
 return [
     'single' => [
-        'label' => 'သီးခြား',
+        'label' => 'Alisin ang pagkakaugnay',
         'modal' => [
-            'heading' => ':label သီးခြား',
+            'heading' => 'Alisin ang pagkakaugnay ng :label',
             'actions' => [
                 'dissociate' => [
-                    'label' => 'သီးခြား',
+                    'label' => 'Alisin ang pagkakaugnay',
                 ],
             ],
         ],
         'notifications' => [
             'dissociated' => [
-                'title' => 'သိမ်းဆည်းပြီး',
+                'title' => 'Naalis na ang pagkakaugnay',
             ],
         ],
     ],
     'multiple' => [
-        'label' => 'Dissociate selected',
+        'label' => 'Alisin ang pagkakaugnay ng mga napili',
         'modal' => [
-            'heading' => 'Dissociate selected :label',
+            'heading' => 'Alisin ang pagkakaugnay ng mga napiling :label',
             'actions' => [
                 'dissociate' => [
-                    'label' => 'Dissociate selected',
+                    'label' => 'Alisin ang pagkakaugnay',
                 ],
             ],
         ],
         'notifications' => [
             'dissociated' => [
-                'title' => 'Dissociated',
+                'title' => 'Naalis na ang pagkakaugnay',
             ],
         ],
     ],
