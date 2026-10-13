@@ -835,7 +835,7 @@ use Illuminate\Queue\Middleware\WithoutOverlapping;
 public function getJobMiddleware(): array
 {
     return [
-        (new WithoutOverlapping("import{$this->import->getKey()}"))->expireAfter(600),
+        (new WithoutOverlapping("filament:imports:{$this->import->getKey()}"))->expireAfter(600),
     ];
 }
 ```
