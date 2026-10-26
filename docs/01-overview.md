@@ -247,7 +247,7 @@ Action::make('edit')
 ```
 
 <Aside variant="info">
-    In a panel resource or relation manager, policy-backed CRUD actions such as `CreateAction`, `EditAction`, and `DeleteAction` use the resource or related model's policy. By default, missing policies or policy methods allow access, and skipping resource authorization bypasses the resource's policy checks. Built-in bulk delete, force-delete, and restore actions check their `*Any()` abilities rather than each record's policy unless you enable [individual record authorization](../tables/actions#authorizing-bulk-actions). These defaults do not apply to custom actions or standalone Livewire components. Attach, associate, detach, and dissociate actions also need explicit authorization when access must be restricted. See [resource authorization](../resources/overview#authorization).
+    In a panel resource or relation manager, policy-backed CRUD actions such as `CreateAction`, `EditAction`, and `DeleteAction` use the resource or related model's policy. By default, missing policies or policy methods allow access, and skipping resource authorization bypasses the resource's policy checks. Built-in bulk delete, force-delete, and restore actions check their `*Any()` abilities rather than each record's policy unless you enable [individual record authorization](../tables/actions#authorizing-bulk-actions). These defaults do not apply to custom actions or standalone Livewire components. Attach, associate, detach, dissociate, and [Select option actions](../forms/select#authorizing-option-actions) also need explicit authorization when access must be restricted. See [resource authorization](../resources/overview#authorization).
 </Aside>
 
 If your policy method returns a [response message](https://laravel.com/docs/authorization#policy-responses), you can disable the action instead of hiding it, and add a tooltip containing the message, using the `authorizationTooltip()` method:
@@ -556,7 +556,7 @@ If the component is inside an inactive tab, your link must also select that tab 
 
 ### Initializing URL actions
 
-An action is initialized once per component lifetime, so closing its modal or re-rendering the component does not reopen it. Deferred table actions wait until the table has loaded. Prefer linking to one action at a time rather than combining `action` and `tableAction`.
+An action is initialized once per component lifetime, so closing its modal or re-rendering the component does not reopen it. Actions on lazy tables wait until the table has loaded. Prefer linking to one action at a time rather than combining `action` and `tableAction`.
 
 Closing an ordinary action removes its action parameters from the URL. Table action parameters remain; a newly mounted component, including after navigation or destroying and recreating a child, can consume a link still present in the URL again.
 
