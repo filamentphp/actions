@@ -1,7 +1,6 @@
 ---
 title: Modals
 ---
-import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## Overview
 
@@ -19,7 +18,7 @@ Action::make('delete')
     ->requiresConfirmation()
 ```
 
-<AutoScreenshot name="actions/modal/confirmation" alt="Confirmation modal" version="3.x" />
+<AutoScreenshot name="actions/modal/confirmation" alt="Confirmation modal" />
 
 > The confirmation modal is not available when a `url()` is set instead of an `action()`. Instead, you should redirect to the URL within the `action()` closure.
 
@@ -47,7 +46,7 @@ Action::make('updateAuthor')
     })
 ```
 
-<AutoScreenshot name="actions/modal/form" alt="Modal with form" version="3.x" />
+<AutoScreenshot name="actions/modal/form" alt="Modal with form" />
 
 ### Filling the form with existing data
 
@@ -115,7 +114,7 @@ Action::make('create')
     ])
 ```
 
-<AutoScreenshot name="actions/modal/wizard" alt="Modal with wizard" version="3.x" />
+<AutoScreenshot name="actions/modal/wizard" alt="Modal with wizard" />
 
 ### Disabling all form fields
 
@@ -142,6 +141,8 @@ Action::make('approvePost')
     })
 ```
 
+The form is still validated when submitted, but its fields are not passed to the action's `$data` and its relationships are not automatically saved, even if fields use `dehydrated()`. The action itself still runs. Read any values it needs from the `$record`, as in the example above.
+
 ## Customizing the modal's heading, description, and submit action label
 
 You may customize the heading, description and label of the submit button in the modal:
@@ -157,7 +158,7 @@ Action::make('delete')
     ->modalSubmitActionLabel('Yes, delete it')
 ```
 
-<AutoScreenshot name="actions/modal/confirmation-custom-text" alt="Confirmation modal with custom text" version="3.x" />
+<AutoScreenshot name="actions/modal/confirmation-custom-text" alt="Confirmation modal with custom text" />
 
 ## Adding an icon inside the modal
 
@@ -172,7 +173,7 @@ Action::make('delete')
     ->modalIcon('heroicon-o-trash')
 ```
 
-<AutoScreenshot name="actions/modal/icon" alt="Confirmation modal with icon" version="3.x" />
+<AutoScreenshot name="actions/modal/icon" alt="Confirmation modal with icon" />
 
 By default, the icon will inherit the color of the action button. You may customize the color of the icon using the `modalIconColor()` method:
 
@@ -287,7 +288,7 @@ Action::make('updateAuthor')
     ->slideOver()
 ```
 
-<AutoScreenshot name="actions/modal/slide-over" alt="Slide over with form" version="3.x" />
+<AutoScreenshot name="actions/modal/slide-over" alt="Slide over with form" />
 
 Instead of opening in the center of the screen, the modal content will now slide in from the right and consume the entire height of the browser.
 
