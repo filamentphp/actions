@@ -14,14 +14,19 @@ use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Filament\Support\Components\Attributes\Exposed;
 use Filament\Support\Components\Attributes\Unexposed;
+use Filament\Support\Components\ViewComponent;
 use Filament\Support\Exceptions\Cancel;
 use Filament\Support\Exceptions\Halt;
 use Filament\Support\Livewire\Partials\PartialsComponentHook;
+use Filament\Support\View\Concerns\InteractsWithLivewireRendering;
+use Filament\Tables\Columns\Column;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Js;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
@@ -34,6 +39,7 @@ use function Livewire\store;
 
 trait InteractsWithActions /** @phpstan-ignore trait.unused */
 {
+    use InteractsWithLivewireRendering;
     use WithRateLimiting;
 
     /**
@@ -109,6 +115,54 @@ trait InteractsWithActions /** @phpstan-ignore trait.unused */
     protected ?array $cachedMountedActions = null;
 
     protected bool $hasActionsModalRendered = false;
+
+    /**
+     * @internal Never call or override this method. It is not part of the public API and may change in minor and patch releases.
+     */
+    #[Unexposed]
+    public function generateActionModalsHtml(): HtmlString
+    {
+        if (ViewComponent::hasPublishedEmbeddedViewOverride('filament-actions::components.modals')) {
+            return new HtmlString(view('filament-actions::components.modals')->render());
+        }
+
+        if ($this->hasActionsModalRendered) {
+            return new HtmlString('');
+        }
+
+        $mountedActions = $this->getMountedActions();
+        $mountedActionsCount = count($mountedActions);
+        $mountedActionIndex = 0;
+
+        ob_start(); ?>
+
+        <div
+            wire:partial="action-modals"
+            x-data="filamentActionModals({
+                    livewireId: <?= Js::from($this->getId()) ?>,
+                })"
+            style="height: 0"
+        >
+            <?= $this->generateMorphMarkerHtml(); ?>
+            <?php foreach ($this->iterateRenderLoop($mountedActions) as $action) { ?>
+                <?= $this->generateMorphMarkerHtml(); ?>
+                <?php if ((++$mountedActionIndex < $mountedActionsCount) || $this->mountedActionShouldOpenModal()) { ?>
+                    <?= e($action->toModalHtmlable()) ?>
+                <?php } ?>
+                <?= $this->generateMorphMarkerHtml(isEnd: true); ?>
+            <?php } ?>
+            <?= $this->generateMorphMarkerHtml(isEnd: true); ?>
+        </div>
+
+        <?php if ($this->shouldMountDefaultActions()) { ?>
+            <div wire:init="mountDefaultActions"></div>
+        <?php } ?>
+
+        <?php
+        $this->hasActionsModalRendered = true;
+
+        return new HtmlString(ob_get_clean());
+    }
 
     #[Unexposed]
     public function getDefaultActionUrlIdentifier(): ?string
@@ -260,6 +314,14 @@ trait InteractsWithActions /** @phpstan-ignore trait.unused */
                 return null;
             }
 
+            if (
+                ($this instanceof HasTable) &&
+                $action->hasCanAccessSelectedRecords() &&
+                method_exists($this, 'flushCachedTableRecords')
+            ) {
+                $this->flushCachedTableRecords();
+            }
+
             if ($action->isDisabled()) {
                 $this->unmountAction(cancelParentActions: false);
 
@@ -381,6 +443,14 @@ trait InteractsWithActions /** @phpstan-ignore trait.unused */
 
         if (! $action) {
             return null;
+        }
+
+        if (
+            ($this instanceof HasTable) &&
+            $action->hasCanAccessSelectedRecords() &&
+            method_exists($this, 'flushCachedTableRecords')
+        ) {
+            $this->flushCachedTableRecords();
         }
 
         $originalActionArguments = $action->getArguments();
@@ -824,6 +894,13 @@ trait InteractsWithActions /** @phpstan-ignore trait.unused */
         $resolvedAction ??= $this->getTable()->getAction($action['name']) ?? throw new ActionNotResolvableException("Action [{$action['name']}] not found on table.");
 
         if (filled($action['context']['recordKey'] ?? null)) {
+            if (
+                (! in_array($resolvedAction, $this->getTable()->getFlatRecordActions(), strict: true)) &&
+                (! Arr::first($this->getTable()->getColumns(), static fn (Column $column): bool => $column->getAction() === $resolvedAction))
+            ) {
+                throw new ActionNotResolvableException("Action [{$action['name']}] is not registered as a table record action.");
+            }
+
             $record = $this->getTableRecord($action['context']['recordKey']);
 
             if (! $record) {
